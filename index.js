@@ -1236,6 +1236,64 @@ app.delete('/api/historial/:id', async (req, res) => {
     });
   }
 });
+// Actualizar una tutoría
+app.put('/api/tutorias/:id', async (req, res) => {
+  const id = Number(req.params.id);
+  const { estudiante_id, docente_id, tema_id, fecha, hora_inicio, hora_fin, salon, materia } = req.body;
+  try {
+    const result = await sql`
+      UPDATE tutoria
+      SET estudiante_id = ${estudiante_id}, docente_id = ${docente_id}, tema_id = ${tema_id},
+          fecha = ${fecha}, hora_inicio = ${hora_inicio}, hora_fin = ${hora_fin},
+          salon = ${salon}, materia = ${materia}
+      WHERE id = ${id}
+      RETURNING *;
+    `;
+    if (result.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "TUTORIA NO ENCONTRADA"
+      });
+    }
+    res.status(200).json({
+      success: true,
+      message: "TUTORIA ACTUALIZADA",
+      data: result[0]
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'ERROR ACTUALIZANDO TUTORIA',
+      details: error.message || 'ERROR DESCONOCIDO'
+    });
+  }
+});
+
+// Eliminar una tutoría
+app.delete('/api/tutorias/:id', async (req, res) => {
+  const id = Number(req.params.id);
+  try {
+    const result = await sql`DELETE FROM tutoria WHERE id = ${id} RETURNING *;`;
+    if (result.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "TUTORIA NO ENCONTRADA"
+      });
+    }
+    res.status(200).json({
+      success: true,
+      message: "TUTORIA ELIMINADA",
+      data: result[0]
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'ERROR ELIMINANDO TUTORIA',
+      details: error.message || 'ERROR DESCONOCIDO'
+    });
+  }
+});
+
 
 
 

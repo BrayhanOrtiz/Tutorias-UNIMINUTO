@@ -16,12 +16,13 @@
     "url": "https://github.com/BrayhanOrtiz/Tutorias-UNIMINUTO/issues"
   },
   "homepage": "https://github.com/BrayhanOrtiz/Tutorias-UNIMINUTO#readme",
-  "description": "",
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "pg": "^8.15.6",
     "postgres": "^3.4.5"
-  }
+  },
+  "devDependencies": {},
+  "description": ""
 }
