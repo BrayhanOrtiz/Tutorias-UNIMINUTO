@@ -1237,8 +1237,22 @@ app.delete('/api/historial/:id', async (req, res) => {
   }
 });
 
+
+
+// Manejo de rutas no encontradas
+app.use((req, res) => {
+  res.status(404).json({ message: 'Ruta no encontrada' })
+})
+
 // Iniciar el servidor
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en el puerto ${PORT}`);
 });
+
+// Manejo de cierre
+process.on('SIGTERM', () => {
+  server.close(() => {
+    console.log('Servidor cerrado')
+  })
+})
