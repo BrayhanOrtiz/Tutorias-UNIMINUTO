@@ -3,7 +3,35 @@ import sql from '../db/connection.js';
 
 
 //crear Usuario
-export const crearUsuario = async (req, res) => {
+export const crearUsuarioEstudiante = async (req, res) => {
+  const {
+    id, nombre, apellido, correo_institucional,
+    contraseña, carrera_id, fecha_nacimiento
+  } = req.body;
+
+  try {
+    const newUser = await sql.begin(async (tx) => {
+      const [user] = await tx`
+        INSERT INTO usuario
+          (id, nombre, apellido, correo_institucional, "contraseña", carrera_id, fecha_nacimiento)
+        VALUES
+          (${id}, ${nombre}, ${apellido}, ${correo_institucional}, ${contraseña}, ${carrera_id}, ${fecha_nacimiento})
+        RETURNING *
+      `;
+      await tx`
+        INSERT INTO usuario_rol (usuario_id, rol_id)
+        VALUES (${user.id}, 1)
+      `;
+      return user;
+    });
+
+    res.status(201).json({ success: true, data: newUser });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+export const crearUsuarioDocente = async (req, res) => {
   const {
     id, nombre, apellido, correo_institucional,
     contraseña, carrera_id, fecha_nacimiento
@@ -30,7 +58,6 @@ export const crearUsuario = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
-
 
 // Obtener todos los usuarios
 export const obtenerUsuarios = async (req, res) => {

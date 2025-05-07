@@ -1,10 +1,11 @@
 import express from 'express';
 import { body } from 'express-validator';
 import {
-  crearUsuario,
+  crearUsuarioEstudiante,
   obtenerUsuarios,
   obtenerUsuarioPorId,    // ← importar
   actualizarUsuario,
+  crearUsuarioDocente,
   eliminarUsuario
 } from '../controllers/usuariosController.js';
 
@@ -17,8 +18,9 @@ router.get('/', obtenerUsuarios);
 router.get('/:id', obtenerUsuarioPorId);
 
 // Crear
+// Crear usuario estudiante
 router.post(
-  '/',
+  '/estudiantes',
   [
     body('id').isInt(),
     body('nombre').isString(),
@@ -28,8 +30,24 @@ router.post(
     body('carrera_id').isInt(),
     body('fecha_nacimiento').isISO8601()
   ],
-  crearUsuario
+  crearUsuarioEstudiante
 );
+
+// Crear usuario docente
+router.post(
+  '/docentes',
+  [
+    body('id').isInt(),
+    body('nombre').isString(),
+    body('apellido').isString(),
+    body('correo_institucional').isEmail(),
+    body('contraseña').isLength({ min: 6 }),
+    body('carrera_id').isInt(),
+    body('fecha_nacimiento').isISO8601()
+  ],
+  crearUsuarioDocente
+);
+
 
 // Actualizar
 router.put(
