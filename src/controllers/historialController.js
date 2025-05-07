@@ -1,26 +1,7 @@
 // historialController.js
 import sql from '../db/connection.js';
 
-export const registrarCambio = async (req, res) => {
-    const { usuario_id, horario_id, campo_modificado, valor_anterior, valor_nuevo } = req.body;
-    
-    // Verificar que el horario_id existe en la tabla horario
-    const horario = await sql`SELECT * FROM horario WHERE id = ${horario_id}`;
-    if (horario.length === 0) {
-      return res.status(404).json({ success: false, message: 'El horario no existe' });
-    }
-  
-    try {
-      const [newCambio] = await sql`
-        INSERT INTO historial_cambios (usuario_id, horario_id, campo_modificado, valor_anterior, valor_nuevo)
-        VALUES (${usuario_id}, ${horario_id}, ${campo_modificado}, ${valor_anterior}, ${valor_nuevo})
-        RETURNING *;
-      `;
-      res.status(201).json({ success: true, data: newCambio });
-    } catch (error) {
-      res.status(500).json({ success: false, message: error.message });
-    }
-  };
+
   
   
 
@@ -56,21 +37,7 @@ export const obtenerHistorialPorUsuario = async (req, res) => {
   }
 };
 
-export const crearHistorial = async (req, res) => {
-  const { usuario_id, horario_id, campo_modificado, valor_anterior, valor_nuevo } = req.body;
-  try {
-    const [newH] = await sql`
-      INSERT INTO historial_cambios
-        (usuario_id, horario_id, campo_modificado, valor_anterior, valor_nuevo)
-      VALUES
-        (${usuario_id}, ${horario_id}, ${campo_modificado}, ${valor_anterior}, ${valor_nuevo})
-      RETURNING *;
-    `;
-    res.status(201).json({ success: true, data: newH });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
-  }
-};
+
 
 export const eliminarHistorial = async (req, res) => {
   const { id } = req.params;

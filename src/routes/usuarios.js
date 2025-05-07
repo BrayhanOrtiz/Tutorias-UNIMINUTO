@@ -11,12 +11,92 @@ import {
 
 const router = express.Router();
 
+/**
+ * @swagger
+ * tags:
+ *   name: Usuarios
+ *   description: Endpoints para gestionar usuarios
+ */
+
+/**
+ * @swagger
+ * /api/usuarios:
+ *   get:
+ *     summary: Obtiene todos los usuarios
+ *     tags: [Usuarios]
+ *     responses:
+ *       200:
+ *         description: Lista de todos los usuarios
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ */
 // Listar todos
 router.get('/', obtenerUsuarios);
 
+/**
+ * @swagger
+ * /api/usuarios/{id}:
+ *   get:
+ *     summary: Obtiene un usuario por su ID
+ *     tags: [Usuarios]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID del usuario
+ *     responses:
+ *       200:
+ *         description: Usuario encontrado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *       404:
+ *         description: Usuario no encontrado
+ */
 // Obtener uno por ID
 router.get('/:id', obtenerUsuarioPorId);
 
+/**
+ * @swagger
+ * /api/usuarios/estudiantes:
+ *   post:
+ *     summary: Crea un nuevo usuario estudiante
+ *     tags: [Usuarios]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id:
+ *                 type: integer
+ *               nombre:
+ *                 type: string
+ *               apellido:
+ *                 type: string
+ *               correo_institucional:
+ *                 type: string
+ *                 format: email
+ *               contraseña:
+ *                 type: string
+ *                 minLength: 6
+ *               carrera_id:
+ *                 type: integer
+ *               fecha_nacimiento:
+ *                 type: string
+ *                 format: date
+ *     responses:
+ *       201:
+ *         description: Usuario estudiante creado correctamente
+ */
 // Crear
 // Crear usuario estudiante
 router.post(
@@ -33,6 +113,40 @@ router.post(
   crearUsuarioEstudiante
 );
 
+/**
+ * @swagger
+ * /api/usuarios/docentes:
+ *   post:
+ *     summary: Crea un nuevo usuario docente
+ *     tags: [Usuarios]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id:
+ *                 type: integer
+ *               nombre:
+ *                 type: string
+ *               apellido:
+ *                 type: string
+ *               correo_institucional:
+ *                 type: string
+ *                 format: email
+ *               contraseña:
+ *                 type: string
+ *                 minLength: 6
+ *               carrera_id:
+ *                 type: integer
+ *               fecha_nacimiento:
+ *                 type: string
+ *                 format: date
+ *     responses:
+ *       201:
+ *         description: Usuario docente creado correctamente
+ */
 // Crear usuario docente
 router.post(
   '/docentes',
@@ -48,7 +162,49 @@ router.post(
   crearUsuarioDocente
 );
 
-
+/**
+ * @swagger
+ * /api/usuarios/{id}:
+ *   put:
+ *     summary: Actualiza un usuario por su ID
+ *     tags: [Usuarios]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID del usuario
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               nombre:
+ *                 type: string
+ *               apellido:
+ *                 type: string
+ *               correo_institucional:
+ *                 type: string
+ *                 format: email
+ *               contraseña:
+ *                 type: string
+ *                 minLength: 6
+ *               carrera_id:
+ *                 type: integer
+ *               fecha_nacimiento:
+ *                 type: string
+ *                 format: date
+ *               rol_id:
+ *                 type: integer
+ *     responses:
+ *       200:
+ *         description: Usuario actualizado correctamente
+ *       404:
+ *         description: Usuario no encontrado
+ */
 // Actualizar
 router.put(
   '/:id',
@@ -64,6 +220,25 @@ router.put(
   actualizarUsuario
 );
 
+/**
+ * @swagger
+ * /api/usuarios/{id}:
+ *   delete:
+ *     summary: Elimina un usuario por su ID
+ *     tags: [Usuarios]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID del usuario
+ *     responses:
+ *       200:
+ *         description: Usuario eliminado correctamente
+ *       404:
+ *         description: Usuario no encontrado
+ */
 // Eliminar
 router.delete('/:id', eliminarUsuario);
 

@@ -24,7 +24,9 @@
     "express-validator": "^7.2.1",
     "pg": "^8.15.6",
     "postgres": "^3.4.5",
-    "sql-template-strings": "^2.2.2"
+    "sql-template-strings": "^2.2.2",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   },
   "description": ""
 }
