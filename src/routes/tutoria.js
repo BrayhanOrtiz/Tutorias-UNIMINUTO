@@ -7,10 +7,74 @@ import {
     deleteTutoria,
     getTutoriasByEstudiante,
     getTutoriasByDocente,
-    getTutoriasByTema
+    getTutoriasByTema,
+    habilitarFirmaTutoria
 } from '../controllers/tutoriasController.js';
 
 const router = express.Router();
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Tutoria:
+ *       type: object
+ *       required:
+ *         - estudiante_id
+ *         - docente_id
+ *         - tema_id
+ *         - fecha_hora_agendada
+ *       properties:
+ *         id:
+ *           type: integer
+ *           description: ID único de la tutoría
+ *         estudiante_id:
+ *           type: integer
+ *           description: ID del estudiante
+ *         docente_id:
+ *           type: integer
+ *           description: ID del docente
+ *         tema_id:
+ *           type: integer
+ *           description: ID del tema
+ *         fecha_hora_agendada:
+ *           type: string
+ *           format: date-time
+ *           description: Fecha y hora programada de la tutoría
+ *         hora_inicio_real:
+ *           type: string
+ *           format: date-time
+ *           description: Hora real de inicio de la tutoría
+ *         hora_fin_real:
+ *           type: string
+ *           format: date-time
+ *           description: Hora real de finalización de la tutoría
+ *         firma_docente_habilitada:
+ *           type: boolean
+ *           description: Indica si el docente ha habilitado la firma
+ *         firmada_estudiante:
+ *           type: boolean
+ *           description: Indica si el estudiante ha firmado
+ *     Error:
+ *       type: object
+ *       properties:
+ *         error:
+ *           type: string
+ *           description: Mensaje de error
+ *         detalles:
+ *           type: string
+ *           description: Detalles adicionales del error
+ *         codigo:
+ *           type: string
+ *           description: Código de error
+ */
+
+/**
+ * @swagger
+ * tags:
+ *   name: Tutorías
+ *   description: API para la gestión de tutorías
+ */
 
 /**
  * @swagger
@@ -21,6 +85,18 @@ const router = express.Router();
  *     responses:
  *       200:
  *         description: Lista de tutorías
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Tutoria'
+ *       500:
+ *         description: Error del servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
  */
 router.get('/', getTutorias);
 
@@ -36,11 +112,20 @@ router.get('/', getTutorias);
  *         required: true
  *         schema:
  *           type: integer
+ *         description: ID de la tutoría
  *     responses:
  *       200:
  *         description: Tutoría encontrada
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Tutoria'
  *       404:
  *         description: Tutoría no encontrada
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
  */
 router.get('/:id', getTutoriaById);
 
@@ -55,30 +140,26 @@ router.get('/:id', getTutoriaById);
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             required:
- *               - estudiante_id
- *               - docente_id
- *               - tema_id
- *               - fecha_hora_agendada
- *             properties:
- *               estudiante_id:
- *                 type: integer
- *               docente_id:
- *                 type: integer
- *               tema_id:
- *                 type: integer
- *               fecha_hora_agendada:
- *                 type: string
- *                 format: date-time
- *               estado:
- *                 type: string
- *                 enum: [pendiente, confirmada, cancelada, completada]
+ *             $ref: '#/components/schemas/Tutoria'
  *     responses:
  *       201:
- *         description: Tutoría creada
+ *         description: Tutoría creada exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Tutoria'
  *       400:
  *         description: Datos inválidos
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Error del servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
  */
 router.post('/', createTutoria);
 
@@ -94,30 +175,32 @@ router.post('/', createTutoria);
  *         required: true
  *         schema:
  *           type: integer
+ *         description: ID de la tutoría
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               estudiante_id:
- *                 type: integer
- *               docente_id:
- *                 type: integer
- *               tema_id:
- *                 type: integer
- *               fecha_hora_agendada:
- *                 type: string
- *                 format: date-time
- *               estado:
- *                 type: string
- *                 enum: [pendiente, confirmada, cancelada, completada]
+ *             $ref: '#/components/schemas/Tutoria'
  *     responses:
  *       200:
- *         description: Tutoría actualizada
+ *         description: Tutoría actualizada exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Tutoria'
  *       404:
  *         description: Tutoría no encontrada
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Error del servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
  */
 router.put('/:id', updateTutoria);
 
@@ -133,11 +216,22 @@ router.put('/:id', updateTutoria);
  *         required: true
  *         schema:
  *           type: integer
+ *         description: ID de la tutoría
  *     responses:
  *       200:
- *         description: Tutoría eliminada
+ *         description: Tutoría eliminada exitosamente
  *       404:
  *         description: Tutoría no encontrada
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Error del servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
  */
 router.delete('/:id', deleteTutoria);
 
@@ -153,9 +247,22 @@ router.delete('/:id', deleteTutoria);
  *         required: true
  *         schema:
  *           type: integer
+ *         description: ID del estudiante
  *     responses:
  *       200:
  *         description: Lista de tutorías del estudiante
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Tutoria'
+ *       500:
+ *         description: Error del servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
  */
 router.get('/estudiante/:estudianteId', getTutoriasByEstudiante);
 
@@ -171,9 +278,22 @@ router.get('/estudiante/:estudianteId', getTutoriasByEstudiante);
  *         required: true
  *         schema:
  *           type: integer
+ *         description: ID del docente
  *     responses:
  *       200:
  *         description: Lista de tutorías del docente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Tutoria'
+ *       500:
+ *         description: Error del servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
  */
 router.get('/docente/:docenteId', getTutoriasByDocente);
 
@@ -189,10 +309,82 @@ router.get('/docente/:docenteId', getTutoriasByDocente);
  *         required: true
  *         schema:
  *           type: integer
+ *         description: ID del tema
  *     responses:
  *       200:
  *         description: Lista de tutorías del tema
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Tutoria'
+ *       500:
+ *         description: Error del servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
  */
 router.get('/tema/:temaId', getTutoriasByTema);
+
+/**
+ * @swagger
+ * /api/tutorias/{id}/habilitar-firma:
+ *   post:
+ *     summary: Habilitar la firma de una tutoría
+ *     tags: [Tutorías]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID de la tutoría
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - docente_id
+ *             properties:
+ *               docente_id:
+ *                 type: integer
+ *                 description: ID del docente que habilita la firma
+ *     responses:
+ *       200:
+ *         description: Firma habilitada exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Tutoria'
+ *       400:
+ *         description: No se puede habilitar la firma
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       403:
+ *         description: No tiene permiso para habilitar la firma
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       404:
+ *         description: Tutoría no encontrada
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Error del servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
+router.post('/:id/habilitar-firma', habilitarFirmaTutoria);
 
 export default router; 

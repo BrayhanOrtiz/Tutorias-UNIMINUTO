@@ -15,6 +15,7 @@ import horariosRoutes from './src/routes/horarios.js';
 import rolesRoutes from './src/routes/roles.js';
 import carrerasRoutes from './src/routes/carreras.js';
 import usuariosRoutes from './src/routes/usuarios.js';
+import reportesRoutes from './src/routes/reportes.js';
 
 const app = express();
 
@@ -56,6 +57,7 @@ app.use('/api/horarios', horariosRoutes);
 app.use('/api/roles', rolesRoutes);
 app.use('/api/carreras', carrerasRoutes);
 app.use('/api/usuarios', usuariosRoutes);
+app.use('/api/reportes', reportesRoutes);
 
 // Ruta de prueba
 app.get('/', (req, res) => {

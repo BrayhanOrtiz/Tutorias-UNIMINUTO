@@ -37,6 +37,25 @@ const router = express.Router();
  *           type: string
  *           format: date-time
  *           description: Fecha y hora del registro
+ *     Error:
+ *       type: object
+ *       properties:
+ *         error:
+ *           type: string
+ *           description: Mensaje de error
+ *         detalles:
+ *           type: string
+ *           description: Detalles adicionales del error
+ *         codigo:
+ *           type: string
+ *           description: Código de error
+ */
+
+/**
+ * @swagger
+ * tags:
+ *   name: Asistencias
+ *   description: API para la gestión de asistencias a tutorías
  */
 
 /**
@@ -48,6 +67,18 @@ const router = express.Router();
  *     responses:
  *       200:
  *         description: Lista de asistencias
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/AsistenciaTutoria'
+ *       500:
+ *         description: Error del servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
  */
 router.get('/', getAsistencias);
 
@@ -63,11 +94,26 @@ router.get('/', getAsistencias);
  *         required: true
  *         schema:
  *           type: integer
+ *         description: ID de la asistencia
  *     responses:
  *       200:
  *         description: Asistencia encontrada
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/AsistenciaTutoria'
  *       404:
  *         description: Asistencia no encontrada
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Error del servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
  */
 router.get('/:id', getAsistenciaById);
 
@@ -82,22 +128,26 @@ router.get('/:id', getAsistenciaById);
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             required:
- *               - tutoria_id
- *               - estudiante_id
- *             properties:
- *               tutoria_id:
- *                 type: integer
- *               estudiante_id:
- *                 type: integer
- *               observaciones:
- *                 type: string
+ *             $ref: '#/components/schemas/AsistenciaTutoria'
  *     responses:
  *       201:
- *         description: Asistencia creada
+ *         description: Asistencia creada exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/AsistenciaTutoria'
  *       400:
  *         description: Datos inválidos
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Error del servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
  */
 router.post('/', createAsistencia);
 
@@ -113,24 +163,32 @@ router.post('/', createAsistencia);
  *         required: true
  *         schema:
  *           type: integer
+ *         description: ID de la asistencia
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               tutoria_id:
- *                 type: integer
- *               estudiante_id:
- *                 type: integer
- *               observaciones:
- *                 type: string
+ *             $ref: '#/components/schemas/AsistenciaTutoria'
  *     responses:
  *       200:
- *         description: Asistencia actualizada
+ *         description: Asistencia actualizada exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/AsistenciaTutoria'
  *       404:
  *         description: Asistencia no encontrada
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Error del servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
  */
 router.put('/:id', updateAsistencia);
 
@@ -146,11 +204,22 @@ router.put('/:id', updateAsistencia);
  *         required: true
  *         schema:
  *           type: integer
+ *         description: ID de la asistencia
  *     responses:
  *       200:
- *         description: Asistencia eliminada
+ *         description: Asistencia eliminada exitosamente
  *       404:
  *         description: Asistencia no encontrada
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Error del servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
  */
 router.delete('/:id', deleteAsistencia);
 
@@ -166,9 +235,22 @@ router.delete('/:id', deleteAsistencia);
  *         required: true
  *         schema:
  *           type: integer
+ *         description: ID de la tutoría
  *     responses:
  *       200:
  *         description: Lista de asistencias de la tutoría
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/AsistenciaTutoria'
+ *       500:
+ *         description: Error del servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
  */
 router.get('/tutoria/:tutoriaId', getAsistenciasByTutoria);
 
@@ -184,9 +266,22 @@ router.get('/tutoria/:tutoriaId', getAsistenciasByTutoria);
  *         required: true
  *         schema:
  *           type: integer
+ *         description: ID del estudiante
  *     responses:
  *       200:
  *         description: Lista de asistencias del estudiante
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/AsistenciaTutoria'
+ *       500:
+ *         description: Error del servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
  */
 router.get('/estudiante/:estudianteId', getAsistenciasByEstudiante);
 

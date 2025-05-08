@@ -258,4 +258,54 @@ export const getTutoriasByTema = async (req, res) => {
         console.error('Error al obtener tutorías por tema:', error);
         res.status(500).json({ error: 'Error al obtener las tutorías del tema' });
     }
+};
+
+// Habilitar firma de tutoría
+export const habilitarFirmaTutoria = async (req, res) => {
+    const { id } = req.params;
+    const { docente_id } = req.body; // ID del docente que está realizando la acción
+
+    try {
+        // Verificar si la tutoría existe y pertenece al docente
+        const tutoria = await sql`
+            SELECT id, docente_id, fecha_hora_agendada, hora_inicio_real
+            FROM tutoria 
+            WHERE id = ${id}
+        `;
+
+        if (tutoria.length === 0) {
+            return res.status(404).json({ error: 'Tutoría no encontrada' });
+        }
+
+        if (tutoria[0].docente_id !== docente_id) {
+            return res.status(403).json({ error: 'No tienes permiso para habilitar la firma de esta tutoría' });
+        }
+
+        // Verificar que la tutoría no haya comenzado aún
+        const ahora = new Date();
+        const fechaTutoria = new Date(tutoria[0].fecha_hora_agendada);
+        
+        if (ahora > fechaTutoria) {
+            return res.status(400).json({ error: 'No se puede habilitar la firma para una tutoría que ya pasó' });
+        }
+
+        // Habilitar la firma
+        const result = await sql`
+            UPDATE tutoria
+            SET firma_docente_habilitada = true
+            WHERE id = ${id}
+            RETURNING *
+        `;
+
+        // Aquí podríamos agregar la lógica para enviar notificación al estudiante
+        // TODO: Implementar sistema de notificaciones
+
+        res.json({
+            message: 'Firma habilitada exitosamente',
+            tutoria: result[0]
+        });
+    } catch (error) {
+        console.error('Error al habilitar firma:', error);
+        res.status(500).json({ error: 'Error al habilitar la firma de la tutoría' });
+    }
 }; 

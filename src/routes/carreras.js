@@ -72,14 +72,15 @@ router.get('/:id', obtenerCarreraPorId);
  *           schema:
  *             type: object
  *             properties:
- *               nombre:
- *                 type: string
- *               descripcion:
+ *               id:
+ *                 type: integer
+ *               nombre_carrera:
  *                 type: string
  *     responses:
  *       201:
  *         description: Carrera creada correctamente
  */
+
 router.post('/', crearCarrera);
 
 /**

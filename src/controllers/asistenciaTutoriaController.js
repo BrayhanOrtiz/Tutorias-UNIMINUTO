@@ -61,11 +61,19 @@ export const createAsistencia = async (req, res) => {
             observaciones
         } = req.body;
 
-        // Validar que la tutoría existe
-        const tutoria = await sql`SELECT id FROM tutoria WHERE id = ${tutoria_id}`;
+      // Validar que la tutoría existe y que el docente habilitó la firma
+        const tutoria = await sql`
+            SELECT id, hora_inicio_real, firma_docente_habilitada 
+            FROM tutoria 
+            WHERE id = ${tutoria_id}
+        `;
         if (tutoria.length === 0) {
             return res.status(400).json({ error: 'Tutoría no encontrada' });
         }
+        if (!tutoria[0].firma_docente_habilitada) {
+            return res.status(400).json({ error: 'El docente aún no ha habilitado la firma para esta tutoría.' });
+        }
+
 
         // Validar que el estudiante existe
         const estudiante = await sql`SELECT id FROM usuario WHERE id = ${estudiante_id}`;
@@ -82,6 +90,7 @@ export const createAsistencia = async (req, res) => {
             return res.status(400).json({ error: 'Ya existe una asistencia registrada para esta tutoría y estudiante' });
         }
 
+        // Insertar la asistencia
         const [nuevaAsistencia] = await sql`
             INSERT INTO asistencia_tutoria (
                 tutoria_id,
@@ -96,12 +105,29 @@ export const createAsistencia = async (req, res) => {
             RETURNING *
         `;
 
+        // Actualizar la tutoría: marcar como firmada por el estudiante
+        if (tutoria[0].hora_inicio_real == null) {
+            await sql`
+                UPDATE tutoria
+                SET firmada_estudiante = true,
+                    hora_inicio_real = CURRENT_TIMESTAMP
+                WHERE id = ${tutoria_id}
+            `;
+        } else {
+            await sql`
+                UPDATE tutoria
+                SET firmada_estudiante = true
+                WHERE id = ${tutoria_id}
+            `;
+        }
+
         res.status(201).json(nuevaAsistencia);
     } catch (error) {
         console.error('Error al crear asistencia:', error);
         res.status(500).json({ error: 'Error al crear la asistencia' });
     }
 };
+
 
 // Actualizar una asistencia
 export const updateAsistencia = async (req, res) => {
