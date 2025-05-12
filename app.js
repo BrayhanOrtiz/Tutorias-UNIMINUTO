@@ -16,6 +16,7 @@ import rolesRoutes from './src/routes/roles.js';
 import carrerasRoutes from './src/routes/carreras.js';
 import usuariosRoutes from './src/routes/usuarios.js';
 import reportesRoutes from './src/routes/reportes.js';
+import loginRoutes from './src/routes/login.js';
 
 const app = express();
 
@@ -46,6 +47,7 @@ const swaggerDocs = swaggerJsdoc(swaggerOptions);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 // Rutas
+app.use('/api/login', loginRoutes);
 app.use('/api/tutorias', tutoriaRoutes);
 app.use('/api/asistencia-tutoria', asistenciaTutoriaRoutes);
 app.use('/api/encuesta-satisfaccion', encuestaSatisfaccionRoutes);

@@ -1,0 +1,84 @@
+table 'Tabla Usuario'
+	lineageTag: 76efa02e-9ae1-4f74-b013-8a6cd5164d96
+
+	column id
+		dataType: int64
+		formatString: 0
+		lineageTag: 4eb68b71-b1e3-4ae3-a893-1ecc5b03a011
+		summarizeBy: none
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	column nombre
+		dataType: string
+		lineageTag: acc85829-d1d6-4673-9fc3-8a837c038e8c
+		summarizeBy: none
+		sourceColumn: nombre
+
+		annotation SummarizationSetBy = Automatic
+
+	column apellido
+		dataType: string
+		lineageTag: 6077aea8-0850-4dbd-a3d3-129abc490cba
+		summarizeBy: none
+		sourceColumn: apellido
+
+		annotation SummarizationSetBy = Automatic
+
+	column fecha_nacimiento
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: ccf7bc8c-e36f-4d5e-ae91-29fdfe55d9d8
+		summarizeBy: none
+		sourceColumn: fecha_nacimiento
+
+		variation Variación
+			isDefault
+			relationship: 3b82e6fb-7d8c-4b0b-ad67-5c51e443682a
+			defaultHierarchy: LocalDateTable_cb54d724-0daa-4e80-a997-cf034bf67038.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column correo_institucional
+		dataType: string
+		lineageTag: 522e9674-f022-4abe-ac64-4b3aa251070f
+		summarizeBy: none
+		sourceColumn: correo_institucional
+
+		annotation SummarizationSetBy = Automatic
+
+	column contraseña
+		dataType: string
+		lineageTag: 29223dce-c9e3-424a-8d8d-39b5f34ce71b
+		summarizeBy: none
+		sourceColumn: contraseña
+
+		annotation SummarizationSetBy = Automatic
+
+	column carrera_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 210b8e8e-ba56-4e56-b21b-be53d9a45a61
+		summarizeBy: none
+		sourceColumn: carrera_id
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Tabla Usuario' = m
+		mode: import
+		source =
+				let
+				    Origen = Json.Document(Web.Contents("https://todqutcrfyuqdqckjhlt.supabase.co/rest/v1/usuario", [Headers=[apikey="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvZHF1dGNyZnl1cWRxY2tqaGx0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU4ODczNzYsImV4cCI6MjA2MTQ2MzM3Nn0.HjZ6YxCYUKj2m5aaydriz-ZFQl93M7kyUGCxM1Hjwr4", Authorization="Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvZHF1dGNyZnl1cWRxY2tqaGx0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU4ODczNzYsImV4cCI6MjA2MTQ2MzM3Nn0.HjZ6YxCYUKj2m5aaydriz-ZFQl93M7kyUGCxM1Hjwr4", Accept="application/json"]])),
+				    #"Convertida en tabla" = Table.FromList(Origen, Splitter.SplitByNothing(), null, null, ExtraValues.Error),
+				    #"Se expandió Column1" = Table.ExpandRecordColumn(#"Convertida en tabla", "Column1", {"id", "nombre", "apellido", "fecha_nacimiento", "correo_institucional", "contraseña", "carrera_id"}, {"id", "nombre", "apellido", "fecha_nacimiento", "correo_institucional", "contraseña", "carrera_id"}),
+				    #"Tipo cambiado" = Table.TransformColumnTypes(#"Se expandió Column1",{{"id", Int64.Type}, {"nombre", type text}, {"apellido", type text}, {"fecha_nacimiento", type date}, {"correo_institucional", type text}, {"contraseña", type text}, {"carrera_id", Int64.Type}})
+				in
+				    #"Tipo cambiado"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

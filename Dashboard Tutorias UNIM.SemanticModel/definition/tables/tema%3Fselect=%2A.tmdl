@@ -1,0 +1,35 @@
+table 'tema?select=*'
+	lineageTag: 2dd04b01-4381-4fd5-aec6-58a0ec5f61f2
+
+	column id
+		dataType: int64
+		formatString: 0
+		lineageTag: 25a16944-d1b3-4cfe-881a-d67590d60a33
+		summarizeBy: none
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	column nombre_tema
+		dataType: string
+		lineageTag: cd4c790c-c322-4637-a958-b4a0b423fc88
+		summarizeBy: none
+		sourceColumn: nombre_tema
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'tema?select=*' = m
+		mode: import
+		source =
+				let
+				    Origen = Json.Document(Web.Contents("https://todqutcrfyuqdqckjhlt.supabase.co/rest/v1/tema?select=*", [Headers=[apikey="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvZHF1dGNyZnl1cWRxY2tqaGx0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU4ODczNzYsImV4cCI6MjA2MTQ2MzM3Nn0.HjZ6YxCYUKj2m5aaydriz-ZFQl93M7kyUGCxM1Hjwr4", Authorization="Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvZHF1dGNyZnl1cWRxY2tqaGx0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU4ODczNzYsImV4cCI6MjA2MTQ2MzM3Nn0.HjZ6YxCYUKj2m5aaydriz-ZFQl93M7kyUGCxM1Hjwr4", Accept="application/json"]])),
+				    #"Convertida en tabla" = Table.FromList(Origen, Splitter.SplitByNothing(), null, null, ExtraValues.Error),
+				    #"Se expandió Column1" = Table.ExpandRecordColumn(#"Convertida en tabla", "Column1", {"id", "nombre_tema"}, {"id", "nombre_tema"}),
+				    #"Tipo cambiado" = Table.TransformColumnTypes(#"Se expandió Column1",{{"id", Int64.Type}, {"nombre_tema", type text}})
+				in
+				    #"Tipo cambiado"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

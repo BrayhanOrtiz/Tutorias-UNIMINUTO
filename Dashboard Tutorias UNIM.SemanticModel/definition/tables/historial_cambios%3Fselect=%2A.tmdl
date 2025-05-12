@@ -1,0 +1,83 @@
+table 'historial_cambios?select=*'
+	lineageTag: 52871356-943b-473f-9e45-e9b95e19420a
+
+	column id
+		dataType: int64
+		formatString: 0
+		lineageTag: 28046ff0-fb2f-4ead-afab-b479f45ed2f5
+		summarizeBy: sum
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	column usuario_id
+		dataType: int64
+		formatString: 0
+		lineageTag: bb017096-7209-4a7d-84bf-172dff5d75c4
+		summarizeBy: sum
+		sourceColumn: usuario_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column horario_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 1c209f96-f378-4964-981a-3c05e73e935b
+		summarizeBy: sum
+		sourceColumn: horario_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column fecha_hora_cambio
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 0003ef60-662a-417c-9fd0-aa6152d972a9
+		summarizeBy: none
+		sourceColumn: fecha_hora_cambio
+
+		variation Variación
+			isDefault
+			relationship: 0f455e5a-75e5-4bf9-ace8-838e13eb937c
+			defaultHierarchy: LocalDateTable_804d2ec3-3054-432b-b19e-29024e6b066f.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+	column campo_modificado
+		dataType: string
+		lineageTag: f941b23c-1082-4ece-8e89-fff75f4b7597
+		summarizeBy: none
+		sourceColumn: campo_modificado
+
+		annotation SummarizationSetBy = Automatic
+
+	column valor_anterior
+		dataType: string
+		lineageTag: 4aa3db75-9f4d-43ff-b88e-e986eae531c4
+		summarizeBy: none
+		sourceColumn: valor_anterior
+
+		annotation SummarizationSetBy = Automatic
+
+	column valor_nuevo
+		dataType: string
+		lineageTag: 9ada3534-46ac-4ac9-af09-5e2674b3d449
+		summarizeBy: none
+		sourceColumn: valor_nuevo
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'historial_cambios?select=*' = m
+		mode: import
+		source =
+				let
+				    Origen = Json.Document(Web.Contents("https://todqutcrfyuqdqckjhlt.supabase.co/rest/v1/historial_cambios?select=*", [Headers=[apikey="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvZHF1dGNyZnl1cWRxY2tqaGx0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU4ODczNzYsImV4cCI6MjA2MTQ2MzM3Nn0.HjZ6YxCYUKj2m5aaydriz-ZFQl93M7kyUGCxM1Hjwr4", Authorization="Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvZHF1dGNyZnl1cWRxY2tqaGx0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU4ODczNzYsImV4cCI6MjA2MTQ2MzM3Nn0.HjZ6YxCYUKj2m5aaydriz-ZFQl93M7kyUGCxM1Hjwr4", Accept="application/json"]])),
+				    #"Convertida en tabla" = Table.FromList(Origen, Splitter.SplitByNothing(), null, null, ExtraValues.Error),
+				    #"Se expandió Column1" = Table.ExpandRecordColumn(#"Convertida en tabla", "Column1", {"id", "usuario_id", "horario_id", "fecha_hora_cambio", "campo_modificado", "valor_anterior", "valor_nuevo"}, {"id", "usuario_id", "horario_id", "fecha_hora_cambio", "campo_modificado", "valor_anterior", "valor_nuevo"}),
+				    #"Tipo cambiado" = Table.TransformColumnTypes(#"Se expandió Column1",{{"id", Int64.Type}, {"usuario_id", Int64.Type}, {"horario_id", Int64.Type}, {"fecha_hora_cambio", type datetime}, {"campo_modificado", type text}, {"valor_anterior", type text}, {"valor_nuevo", type text}})
+				in
+				    #"Tipo cambiado"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

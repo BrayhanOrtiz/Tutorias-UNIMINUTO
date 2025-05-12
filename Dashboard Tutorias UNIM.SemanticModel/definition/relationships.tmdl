@@ -1,0 +1,55 @@
+relationship 3b82e6fb-7d8c-4b0b-ad67-5c51e443682a
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'Tabla Usuario'.fecha_nacimiento
+	toColumn: LocalDateTable_cb54d724-0daa-4e80-a997-cf034bf67038.Date
+
+relationship d4ccced7-153f-43a0-b923-41ac0b4d47fd
+	joinOnDateBehavior: datePartOnly
+	fromColumn: asistencia_tutoria.fecha_registro
+	toColumn: LocalDateTable_3e8faeab-3ba3-4ba1-82ce-4c8db9cf3013.Date
+
+relationship 0f455e5a-75e5-4bf9-ace8-838e13eb937c
+	joinOnDateBehavior: datePartOnly
+	fromColumn: 'historial_cambios?select=*'.fecha_hora_cambio
+	toColumn: LocalDateTable_804d2ec3-3054-432b-b19e-29024e6b066f.Date
+
+relationship 6da22b13-9238-4107-b4e1-1ce0e3a083e9
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Tutoria.fecha_hora_agendada
+	toColumn: LocalDateTable_4cc08878-3ef2-4ba5-8253-041a8d76fe47.Date
+
+relationship d1723bfb-3d65-45a3-92b0-a83c8b0c76d6
+	joinOnDateBehavior: datePartOnly
+	fromColumn: Tutoria.hora_inicio_real
+	toColumn: LocalDateTable_d6b6e936-2da4-4194-88d8-dedb0891ae52.Date
+
+relationship dae66845-cc2b-cdf6-69ae-a443ba6be421
+	fromColumn: 'Tabla Usuario'.carrera_id
+	toColumn: 'carrera?select=*'.id
+
+relationship dc23e708-abd1-7c89-8e1e-9fa126e6abf4
+	fromColumn: Tutoria.tema_id
+	toColumn: 'tema?select=*'.id
+
+relationship 683eb17e-be67-7918-ffe4-8e5e8093f75e
+	fromColumn: Tutoria.estudiante_id
+	toColumn: 'Tabla Usuario'.id
+
+relationship 4965b2dd-3948-2dbd-4bcd-ab4b1d908cd4
+	isActive: false
+	fromColumn: Tutoria.docente_id
+	toColumn: 'Tabla Usuario'.id
+
+relationship 3ec6bd59-9147-8400-2019-d8fd68b5fdc5
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: asistencia_tutoria.tutoria_id
+	toColumn: Tutoria.id
+
+relationship b017380a-b776-dbe6-4e0a-0ddceef91c51
+	isActive: false
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: asistencia_tutoria.estudiante_id
+	toColumn: 'Tabla Usuario'.id
+

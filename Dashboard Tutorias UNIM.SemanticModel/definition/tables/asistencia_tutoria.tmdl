@@ -1,0 +1,67 @@
+table asistencia_tutoria
+	lineageTag: 6758baea-3753-4b88-9394-af9ec50030a2
+
+	column id
+		dataType: int64
+		formatString: 0
+		lineageTag: 33cc48df-8097-46aa-8ad5-d73c04a75e37
+		summarizeBy: sum
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	column tutoria_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 2acf9bc6-5763-486b-bc78-6e2c9083e044
+		summarizeBy: none
+		sourceColumn: tutoria_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column estudiante_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 82294f8f-ba70-4f64-939a-9f34b30ab8fd
+		summarizeBy: sum
+		sourceColumn: estudiante_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column observaciones
+		dataType: string
+		lineageTag: beb67322-a8e0-4c23-9b6f-d695e03db951
+		summarizeBy: none
+		sourceColumn: observaciones
+
+		annotation SummarizationSetBy = Automatic
+
+	column fecha_registro
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: d765e5a8-d1a6-47ef-86f0-05053d69a62e
+		summarizeBy: none
+		sourceColumn: fecha_registro
+
+		variation Variación
+			isDefault
+			relationship: d4ccced7-153f-43a0-b923-41ac0b4d47fd
+			defaultHierarchy: LocalDateTable_3e8faeab-3ba3-4ba1-82ce-4c8db9cf3013.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+	partition asistencia_tutoria = m
+		mode: import
+		source =
+				let
+				    Origen = Json.Document(Web.Contents("https://todqutcrfyuqdqckjhlt.supabase.co/rest/v1/asistencia_tutoria?select=*", [Headers=[apikey="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvZHF1dGNyZnl1cWRxY2tqaGx0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU4ODczNzYsImV4cCI6MjA2MTQ2MzM3Nn0.HjZ6YxCYUKj2m5aaydriz-ZFQl93M7kyUGCxM1Hjwr4", Authorization="Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvZHF1dGNyZnl1cWRxY2tqaGx0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU4ODczNzYsImV4cCI6MjA2MTQ2MzM3Nn0.HjZ6YxCYUKj2m5aaydriz-ZFQl93M7kyUGCxM1Hjwr4", Accept="application/json"]])),
+				    #"Convertida en tabla" = Table.FromList(Origen, Splitter.SplitByNothing(), null, null, ExtraValues.Error),
+				    #"Se expandió Column1" = Table.ExpandRecordColumn(#"Convertida en tabla", "Column1", {"id", "tutoria_id", "estudiante_id", "observaciones", "fecha_registro"}, {"id", "tutoria_id", "estudiante_id", "observaciones", "fecha_registro"}),
+				    #"Tipo cambiado" = Table.TransformColumnTypes(#"Se expandió Column1",{{"id", Int64.Type}, {"tutoria_id", Int64.Type}, {"estudiante_id", Int64.Type}, {"observaciones", type text}, {"fecha_registro", type datetime}})
+				in
+				    #"Tipo cambiado"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+
