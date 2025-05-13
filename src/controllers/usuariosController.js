@@ -48,7 +48,7 @@ export const crearUsuarioDocente = async (req, res) => {
       `;
       await tx`
         INSERT INTO usuario_rol (usuario_id, rol_id)
-        VALUES (${user.id}, 2)
+        VALUES (${user.id}, 3)
       `;
       return user;
     });
@@ -151,4 +151,45 @@ export const eliminarUsuario = async (req, res) => {
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
+};
+
+// Obtener información del usuario actual
+export const obtenerUsuarioActual = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        
+        const [usuario] = await sql`
+            SELECT u.*, ur.rol_id, r.nombre_rol
+            FROM usuario u
+            LEFT JOIN usuario_rol ur ON u.id = ur.usuario_id
+            LEFT JOIN rol r ON ur.rol_id = r.id
+            WHERE u.id = ${userId}
+        `;
+
+        if (!usuario) {
+            return res.status(404).json({
+                success: false,
+                message: 'Usuario no encontrado'
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            data: {
+                id: usuario.id,
+                nombre: usuario.nombre,
+                apellido: usuario.apellido,
+                correo_institucional: usuario.correo_institucional,
+                rol_id: usuario.rol_id,
+                nombre_rol: usuario.nombre_rol,
+                carrera_id: usuario.carrera_id
+            }
+        });
+    } catch (error) {
+        console.error('Error al obtener usuario actual:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error al obtener la información del usuario'
+        });
+    }
 };

@@ -31,8 +31,14 @@ const router = express.Router();
  *               type: array
  *               items:
  *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                     description: ID del rol
+ *                   nombre_rol:
+ *                     type: string
+ *                     description: Nombre del rol
  */
-// Listar todos los roles
 router.get('/', obtenerRoles);
 
 /**
@@ -55,10 +61,16 @@ router.get('/', obtenerRoles);
  *           application/json:
  *             schema:
  *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                   description: ID del rol
+ *                 nombre_rol:
+ *                   type: string
+ *                   description: Nombre del rol
  *       404:
  *         description: Rol no encontrado
  */
-// Obtener un rol por ID
 router.get('/:id', obtenerRolPorId);
 
 /**
@@ -74,15 +86,24 @@ router.get('/:id', obtenerRolPorId);
  *           schema:
  *             type: object
  *             properties:
- *               nombre:
+ *               nombre_rol:
  *                 type: string
- *               descripcion:
- *                 type: string
+ *                 description: Nombre del rol
  *     responses:
  *       201:
  *         description: Rol creado correctamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                   description: ID del nuevo rol
+ *                 nombre_rol:
+ *                   type: string
+ *                   description: Nombre del nuevo rol
  */
-// Crear un nuevo rol
 router.post('/', crearRol);
 
 /**
@@ -105,17 +126,26 @@ router.post('/', crearRol);
  *           schema:
  *             type: object
  *             properties:
- *               nombre:
+ *               nombre_rol:
  *                 type: string
- *               descripcion:
- *                 type: string
+ *                 description: Nombre del rol a actualizar
  *     responses:
  *       200:
  *         description: Rol actualizado correctamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                   description: ID del rol actualizado
+ *                 nombre_rol:
+ *                   type: string
+ *                   description: Nombre del rol actualizado
  *       404:
  *         description: Rol no encontrado
  */
-// Actualizar un rol
 router.put('/:id', actualizarRol);
 
 /**
@@ -137,7 +167,6 @@ router.put('/:id', actualizarRol);
  *       404:
  *         description: Rol no encontrado
  */
-// Eliminar un rol
 router.delete('/:id', eliminarRol);
 
 export default router;
