@@ -14,7 +14,7 @@ table 'historial_cambios?select=*'
 		dataType: int64
 		formatString: 0
 		lineageTag: bb017096-7209-4a7d-84bf-172dff5d75c4
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: usuario_id
 
 		annotation SummarizationSetBy = Automatic

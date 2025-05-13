@@ -52,7 +52,7 @@ table 'horario?select=*'
 		dataType: int64
 		formatString: 0
 		lineageTag: 4001b15d-a12c-4dc4-be28-0c8a2e09be02
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: usuario_id
 
 		annotation SummarizationSetBy = Automatic

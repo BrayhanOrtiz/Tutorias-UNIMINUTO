@@ -53,3 +53,11 @@ relationship b017380a-b776-dbe6-4e0a-0ddceef91c51
 	fromColumn: asistencia_tutoria.estudiante_id
 	toColumn: 'Tabla Usuario'.id
 
+relationship AutoDetected_0243f46e-9f29-45be-80f0-ccfe8b9ef0c9
+	fromColumn: 'historial_cambios?select=*'.usuario_id
+	toColumn: 'usuario_rol?select=*'.usuario_id
+
+relationship AutoDetected_3bc8c91e-4f85-4247-b4a5-0e9d2f6b6b1b
+	fromColumn: 'horario?select=*'.usuario_id
+	toColumn: 'usuario_rol?select=*'.usuario_id
+
