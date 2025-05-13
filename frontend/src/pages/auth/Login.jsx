@@ -11,9 +11,13 @@ import {
   Container,
   Alert,
   Snackbar,
+  Paper,
+  useTheme,
 } from '@mui/material';
+import { alpha } from '@mui/material/styles';
 
 const Login = () => {
+  const theme = useTheme();
   const navigate = useNavigate();
   const { login } = useAuth();
   const [credentials, setCredentials] = useState({
@@ -100,12 +104,13 @@ const Login = () => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        bgcolor: 'background.default',
+        background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.1)} 0%, ${alpha(theme.palette.secondary.main, 0.1)} 100%)`,
         position: 'fixed',
         top: 0,
         left: 0,
         right: 0,
-        bottom: 0
+        bottom: 0,
+        overflow: 'auto'
       }}
     >
       <Container 
@@ -120,13 +125,22 @@ const Login = () => {
           width: '100%'
         }}
       >
-        <Card 
-          elevation={3}
-          sx={{ 
+        <Paper
+          elevation={0}
+          sx={{
             width: '100%',
             maxWidth: 600,
-            borderRadius: 2,
-            overflow: 'hidden'
+            borderRadius: 4,
+            overflow: 'hidden',
+            background: 'rgba(255, 255, 255, 0.9)',
+            backdropFilter: 'blur(10px)',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+            border: '1px solid rgba(255, 255, 255, 0.2)',
+            transition: 'transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out',
+            '&:hover': {
+              transform: 'translateY(-5px)',
+              boxShadow: '0 12px 40px rgba(0, 0, 0, 0.15)'
+            }
           }}
         >
           <CardContent sx={{ p: 5 }}>
@@ -135,7 +149,16 @@ const Login = () => {
               variant="h4" 
               align="center" 
               gutterBottom
-              sx={{ mb: 4, fontWeight: 'bold' }}
+              sx={{ 
+                mb: 4, 
+                fontWeight: 700,
+                background: `linear-gradient(45deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+                backgroundClip: 'text',
+                textFillColor: 'transparent',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                letterSpacing: '0.5px'
+              }}
             >
               Tutorías UNIMINUTO
             </Typography>
@@ -164,7 +187,18 @@ const Login = () => {
                 size="large"
                 sx={{ 
                   '& .MuiInputBase-root': {
-                    height: '56px'
+                    height: '56px',
+                    borderRadius: 2,
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                      backgroundColor: alpha(theme.palette.primary.main, 0.04)
+                    },
+                    '&.Mui-focused': {
+                      backgroundColor: alpha(theme.palette.primary.main, 0.08)
+                    }
+                  },
+                  '& .MuiOutlinedInput-notchedOutline': {
+                    borderColor: alpha(theme.palette.primary.main, 0.2)
                   }
                 }}
               />
@@ -183,7 +217,18 @@ const Login = () => {
                 size="large"
                 sx={{ 
                   '& .MuiInputBase-root': {
-                    height: '56px'
+                    height: '56px',
+                    borderRadius: 2,
+                    transition: 'all 0.3s ease',
+                    '&:hover': {
+                      backgroundColor: alpha(theme.palette.primary.main, 0.04)
+                    },
+                    '&.Mui-focused': {
+                      backgroundColor: alpha(theme.palette.primary.main, 0.08)
+                    }
+                  },
+                  '& .MuiOutlinedInput-notchedOutline': {
+                    borderColor: alpha(theme.palette.primary.main, 0.2)
                   }
                 }}
               />
@@ -197,14 +242,25 @@ const Login = () => {
                   mt: 2,
                   height: '56px',
                   fontSize: '1.1rem',
-                  textTransform: 'none'
+                  textTransform: 'none',
+                  borderRadius: 2,
+                  background: `linear-gradient(45deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
+                  boxShadow: `0 4px 14px ${alpha(theme.palette.primary.main, 0.4)}`,
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    transform: 'translateY(-2px)',
+                    boxShadow: `0 6px 20px ${alpha(theme.palette.primary.main, 0.6)}`
+                  },
+                  '&:active': {
+                    transform: 'translateY(0)'
+                  }
                 }}
               >
                 {loading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
               </Button>
             </Box>
           </CardContent>
-        </Card>
+        </Paper>
       </Container>
 
       <Snackbar 
@@ -216,7 +272,14 @@ const Login = () => {
         <Alert 
           onClose={handleCloseError} 
           severity="error" 
-          sx={{ width: '100%' }}
+          sx={{ 
+            width: '100%',
+            borderRadius: 2,
+            boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+            '& .MuiAlert-icon': {
+              fontSize: '1.5rem'
+            }
+          }}
         >
           {error}
         </Alert>
