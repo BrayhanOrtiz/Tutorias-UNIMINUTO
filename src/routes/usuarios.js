@@ -6,8 +6,10 @@ import {
   obtenerUsuarioPorId,    // ← importar
   actualizarUsuario,
   crearUsuarioDocente,
-  eliminarUsuario
+  eliminarUsuario,
+  obtenerUsuarioActual
 } from '../controllers/usuariosController.js';
+import { verifyToken } from '../middleware/auth.js';
 
 const router = express.Router();
 
@@ -241,5 +243,47 @@ router.put(
  */
 // Eliminar
 router.delete('/:id', eliminarUsuario);
+
+/**
+ * @swagger
+ * /api/usuarios/me:
+ *   get:
+ *     summary: Obtiene la información del usuario actual
+ *     tags: [Usuarios]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Información del usuario actual
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: integer
+ *                     nombre:
+ *                       type: string
+ *                     apellido:
+ *                       type: string
+ *                     correo_institucional:
+ *                       type: string
+ *                     rol_id:
+ *                       type: integer
+ *                     nombre_rol:
+ *                       type: string
+ *                     carrera_id:
+ *                       type: integer
+ *       401:
+ *         description: No autorizado
+ *       404:
+ *         description: Usuario no encontrado
+ */
+router.get('/me', verifyToken, obtenerUsuarioActual);
 
 export default router;

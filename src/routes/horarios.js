@@ -9,8 +9,13 @@ import {
   eliminarHorarioEspecifico,
   obtenerHorariosPorUsuario
 } from '../controllers/horarioController.js';
+import { obtenerHorariosTutorias } from '../controllers/horariosController.js';
+import { verifyToken } from '../middleware/auth.js';
 
 const router = express.Router();
+
+// Aplicar middleware de autenticación a todas las rutas
+router.use(verifyToken);
 
 /**
  * @swagger
@@ -112,6 +117,50 @@ router.put('/usuario/:usuario_id/:id', actualizarHorarioEspecifico);
  *         description: Usuario no encontrado
  */
 router.get('/usuario/:usuario_id', obtenerHorariosPorUsuario);
+
+/**
+ * @swagger
+ * /api/horarios/tutorias:
+ *   get:
+ *     summary: Obtener horarios de tutorías de todos los docentes
+ *     tags: [Horarios]
+ *     responses:
+ *       200:
+ *         description: Lista de horarios de tutorías
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                       dia_semana:
+ *                         type: string
+ *                       hora_inicio:
+ *                         type: string
+ *                       hora_fin:
+ *                         type: string
+ *                       salon:
+ *                         type: string
+ *                       estado:
+ *                         type: string
+ *                       nombre_docente:
+ *                         type: string
+ *                       apellido_docente:
+ *                         type: string
+ *                       nombre_carrera:
+ *                         type: string
+ *                       nombre_materia:
+ *                         type: string
+ */
+router.get('/tutorias', obtenerHorariosTutorias);
 
 /**
  * @swagger
