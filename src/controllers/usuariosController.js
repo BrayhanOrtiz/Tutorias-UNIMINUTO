@@ -15,7 +15,15 @@ export const crearUsuarioEstudiante = async (req, res) => {
         INSERT INTO usuario
           (id, nombre, apellido, correo_institucional, "contraseña", carrera_id, fecha_nacimiento)
         VALUES
-          (${id}, ${nombre}, ${apellido}, ${correo_institucional}, ${contraseña}, ${carrera_id}, ${fecha_nacimiento})
+          (
+            ${id ?? null},
+            ${nombre ?? null},
+            ${apellido ?? null},
+            ${correo_institucional ?? null},
+            ${contraseña ?? null},
+            ${carrera_id ?? null},
+            ${fecha_nacimiento ?? null}
+          )
         RETURNING *
       `;
       await tx`
@@ -27,6 +35,7 @@ export const crearUsuarioEstudiante = async (req, res) => {
 
     res.status(201).json({ success: true, data: newUser });
   } catch (error) {
+    console.error('Error al crear usuario estudiante:', error);
     res.status(500).json({ success: false, message: error.message });
   }
 };
@@ -43,7 +52,15 @@ export const crearUsuarioDocente = async (req, res) => {
         INSERT INTO usuario
           (id, nombre, apellido, correo_institucional, "contraseña", carrera_id, fecha_nacimiento)
         VALUES
-          (${id}, ${nombre}, ${apellido}, ${correo_institucional}, ${contraseña}, ${carrera_id}, ${fecha_nacimiento})
+          (
+            ${id ?? null},
+            ${nombre ?? null},
+            ${apellido ?? null},
+            ${correo_institucional ?? null},
+            ${contraseña ?? null},
+            ${carrera_id ?? null},
+            ${fecha_nacimiento ?? null}
+          )
         RETURNING *
       `;
       await tx`
@@ -191,5 +208,5 @@ export const obtenerUsuarioActual = async (req, res) => {
             success: false,
             message: 'Error al obtener la información del usuario'
         });
-    }
+  }
 };

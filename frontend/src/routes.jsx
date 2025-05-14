@@ -8,6 +8,7 @@ import DashboardAdmin from './pages/admin/DashboardAdmin';
 import Tareas from './pages/estudiante/Tareas';
 import Horarios from './pages/estudiante/Horarios';
 import Tutorias from './pages/estudiante/Tutorias';
+import Register from './pages/auth/Register';
 
 // Componente para rutas protegidas con redirección basada en rol
 const PrivateRoute = ({ children, allowedRoles }) => {
@@ -58,6 +59,7 @@ const AppRoutes = () => {
       <Route path="/login" element={
         user ? <Navigate to={getInitialRoute()} /> : <Login />
       } />
+      <Route path="/register" element={<Register />} />
 
       {/* Rutas de estudiante */}
       <Route

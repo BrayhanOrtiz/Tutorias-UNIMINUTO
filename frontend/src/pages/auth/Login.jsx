@@ -258,6 +258,19 @@ const Login = () => {
               >
                 {loading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
               </Button>
+
+              <Box sx={{ mt: 2, textAlign: 'center', width: '100%' }}>
+                <Typography variant="body2" sx={{ color: '#64748b' }}>
+                  ¿No tienes una cuenta?{' '}
+                  <Button
+                    variant="text"
+                    sx={{ color: '#2563eb', fontWeight: 700, textTransform: 'none', p: 0, minWidth: 0 }}
+                    onClick={() => navigate('/register')}
+                  >
+                    Regístrate
+                  </Button>
+                </Typography>
+              </Box>
             </Box>
           </CardContent>
         </Paper>
@@ -272,14 +285,7 @@ const Login = () => {
         <Alert 
           onClose={handleCloseError} 
           severity="error" 
-          sx={{ 
-            width: '100%',
-            borderRadius: 2,
-            boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-            '& .MuiAlert-icon': {
-              fontSize: '1.5rem'
-            }
-          }}
+          sx={{ width: '100%' }}
         >
           {error}
         </Alert>
