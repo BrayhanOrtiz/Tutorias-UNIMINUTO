@@ -1,5 +1,6 @@
 import { validationResult } from 'express-validator';
 import sql from '../db/connection.js';
+// import logo from '../../assets/logo-uniminuto.png';
 
 
 //crear Usuario

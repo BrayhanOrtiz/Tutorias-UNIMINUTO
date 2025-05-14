@@ -9,6 +9,8 @@ import Tareas from './pages/estudiante/Tareas';
 import Horarios from './pages/estudiante/Horarios';
 import Tutorias from './pages/estudiante/Tutorias';
 import Register from './pages/auth/Register';
+import ForgotPassword from './pages/auth/ForgotPassword';
+import ResetPassword from './pages/auth/ResetPassword';
 
 // Componente para rutas protegidas con redirección basada en rol
 const PrivateRoute = ({ children, allowedRoles }) => {
@@ -60,6 +62,8 @@ const AppRoutes = () => {
         user ? <Navigate to={getInitialRoute()} /> : <Login />
       } />
       <Route path="/register" element={<Register />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password/:token" element={<ResetPassword />} />
 
       {/* Rutas de estudiante */}
       <Route

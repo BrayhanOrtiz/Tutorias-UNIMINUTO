@@ -1,62 +1,38 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import {
   Box,
-  Card,
-  CardContent,
+  Paper,
+  Typography,
   TextField,
   Button,
-  Typography,
-  Container,
-  Alert,
   Snackbar,
-  Paper,
-  useTheme,
+  Alert,
+  InputAdornment,
+  IconButton
 } from '@mui/material';
-import { alpha } from '@mui/material/styles';
+import { Email, Lock, Visibility, VisibilityOff } from '@mui/icons-material';
+import logo from '../../assets/logo-uniminuto.png';
 
 const Login = () => {
-  const theme = useTheme();
   const navigate = useNavigate();
   const { login } = useAuth();
   const [credentials, setCredentials] = useState({
     correo_institucional: '',
     contraseña: '',
   });
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [showError, setShowError] = useState(false);
 
-  // Cargar el estado del error al iniciar el componente
-  useEffect(() => {
-    const savedError = localStorage.getItem('loginError');
-    if (savedError) {
-      setError(savedError);
-      setShowError(true);
-    }
-  }, []);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setCredentials((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-    // Limpiar el error cuando el usuario empiece a escribir
+    setCredentials((prev) => ({ ...prev, [name]: value }));
     if (showError) {
       setShowError(false);
       setError('');
-      localStorage.removeItem('loginError');
-    }
-  };
-
-  const getRedirectPath = (rol_id) => {
-    switch (rol_id) {
-      case 1: return '/estudiante';  // Estudiante
-      case 2: return '/docente';     // Docente
-      case 3: return '/admin';       // Administrador
-      default: return '/login';
     }
   };
 
@@ -65,35 +41,20 @@ const Login = () => {
     setError('');
     setLoading(true);
     setShowError(false);
-    localStorage.removeItem('loginError');
-    
     try {
       const result = await login(credentials);
       if (result.success) {
-        // Limpiar el error al tener un login exitoso
-        localStorage.removeItem('loginError');
-        const redirectPath = getRedirectPath(result.user.rol_id);
-        navigate(redirectPath);
+        navigate('/');
       } else {
         setError(result.error);
         setShowError(true);
-        // Guardar el error en localStorage
-        localStorage.setItem('loginError', result.error);
       }
     } catch {
-      const errorMessage = 'Error al iniciar sesión. Por favor, intente nuevamente.';
-      setError(errorMessage);
+      setError('Error al iniciar sesión. Por favor, intente nuevamente.');
       setShowError(true);
-      // Guardar el error en localStorage
-      localStorage.setItem('loginError', errorMessage);
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleCloseError = () => {
-    setShowError(false);
-    localStorage.removeItem('loginError');
   };
 
   return (
@@ -104,189 +65,150 @@ const Login = () => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: `linear-gradient(135deg, ${alpha(theme.palette.primary.main, 0.1)} 0%, ${alpha(theme.palette.secondary.main, 0.1)} 100%)`,
+        background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
         position: 'fixed',
         top: 0,
         left: 0,
         right: 0,
         bottom: 0,
-        overflow: 'auto'
+        overflow: 'auto',
       }}
     >
-      <Container 
-        component="main" 
-        maxWidth="sm"
+      <Paper
+        elevation={8}
         sx={{
+          p: 4,
+          width: '100%',
+          maxWidth: 400,
+          borderRadius: 5,
+          background: 'rgba(30,41,59,0.85)',
+          backdropFilter: 'blur(10px)',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          justifyContent: 'center',
-          p: 3,
-          width: '100%'
         }}
       >
-        <Paper
-          elevation={0}
+        <img src={logo} alt="UNIMINUTO" style={{ width: 90, marginBottom: 16, borderRadius: 8 }} />
+        <Typography
+          variant="h4"
+          align="center"
           sx={{
-            width: '100%',
-            maxWidth: 600,
-            borderRadius: 4,
-            overflow: 'hidden',
-            background: 'rgba(255, 255, 255, 0.9)',
-            backdropFilter: 'blur(10px)',
-            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
-            border: '1px solid rgba(255, 255, 255, 0.2)',
-            transition: 'transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out',
-            '&:hover': {
-              transform: 'translateY(-5px)',
-              boxShadow: '0 12px 40px rgba(0, 0, 0, 0.15)'
-            }
+            mb: 2,
+            fontWeight: 700,
+            letterSpacing: 1,
+            color: '#facc15',
           }}
         >
-          <CardContent sx={{ p: 5 }}>
-            <Typography 
-              component="h1" 
-              variant="h4" 
-              align="center" 
-              gutterBottom
-              sx={{ 
-                mb: 4, 
-                fontWeight: 700,
-                background: `linear-gradient(45deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
-                backgroundClip: 'text',
-                textFillColor: 'transparent',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                letterSpacing: '0.5px'
-              }}
-            >
-              Tutorías UNIMINUTO
-            </Typography>
-            <Box 
-              component="form" 
-              onSubmit={handleSubmit}
-              sx={{ 
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 3,
-                width: '100%'
-              }}
-            >
-              <TextField
-                required
-                fullWidth
-                id="correo_institucional"
-                label="Correo institucional"
-                name="correo_institucional"
-                autoComplete="email"
-                autoFocus
-                value={credentials.correo_institucional}
-                onChange={handleChange}
-                disabled={loading}
-                error={showError}
-                size="large"
-                sx={{ 
-                  '& .MuiInputBase-root': {
-                    height: '56px',
-                    borderRadius: 2,
-                    transition: 'all 0.3s ease',
-                    '&:hover': {
-                      backgroundColor: alpha(theme.palette.primary.main, 0.04)
-                    },
-                    '&.Mui-focused': {
-                      backgroundColor: alpha(theme.palette.primary.main, 0.08)
-                    }
-                  },
-                  '& .MuiOutlinedInput-notchedOutline': {
-                    borderColor: alpha(theme.palette.primary.main, 0.2)
-                  }
-                }}
-              />
-              <TextField
-                required
-                fullWidth
-                name="contraseña"
-                label="Contraseña"
-                type="password"
-                id="contraseña"
-                autoComplete="current-password"
-                value={credentials.contraseña}
-                onChange={handleChange}
-                disabled={loading}
-                error={showError}
-                size="large"
-                sx={{ 
-                  '& .MuiInputBase-root': {
-                    height: '56px',
-                    borderRadius: 2,
-                    transition: 'all 0.3s ease',
-                    '&:hover': {
-                      backgroundColor: alpha(theme.palette.primary.main, 0.04)
-                    },
-                    '&.Mui-focused': {
-                      backgroundColor: alpha(theme.palette.primary.main, 0.08)
-                    }
-                  },
-                  '& .MuiOutlinedInput-notchedOutline': {
-                    borderColor: alpha(theme.palette.primary.main, 0.2)
-                  }
-                }}
-              />
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                size="large"
-                disabled={loading}
-                sx={{ 
-                  mt: 2,
-                  height: '56px',
-                  fontSize: '1.1rem',
-                  textTransform: 'none',
-                  borderRadius: 2,
-                  background: `linear-gradient(45deg, ${theme.palette.primary.main}, ${theme.palette.secondary.main})`,
-                  boxShadow: `0 4px 14px ${alpha(theme.palette.primary.main, 0.4)}`,
-                  transition: 'all 0.3s ease',
-                  '&:hover': {
-                    transform: 'translateY(-2px)',
-                    boxShadow: `0 6px 20px ${alpha(theme.palette.primary.main, 0.6)}`
-                  },
-                  '&:active': {
-                    transform: 'translateY(0)'
-                  }
-                }}
-              >
-                {loading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
-              </Button>
-
-              <Box sx={{ mt: 2, textAlign: 'center', width: '100%' }}>
-                <Typography variant="body2" sx={{ color: '#64748b' }}>
-                  ¿No tienes una cuenta?{' '}
-                  <Button
-                    variant="text"
-                    sx={{ color: '#2563eb', fontWeight: 700, textTransform: 'none', p: 0, minWidth: 0 }}
-                    onClick={() => navigate('/register')}
-                  >
-                    Regístrate
-                  </Button>
-                </Typography>
-              </Box>
-            </Box>
-          </CardContent>
-        </Paper>
-      </Container>
-
-      <Snackbar 
-        open={showError} 
-        autoHideDuration={null} 
-        onClose={handleCloseError}
+          Iniciar Sesión
+        </Typography>
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          sx={{ width: '100%', display: 'flex', flexDirection: 'column', gap: 2 }}
+        >
+          <TextField
+            label="Correo institucional"
+            name="correo_institucional"
+            value={credentials.correo_institucional}
+            onChange={handleChange}
+            fullWidth
+            required
+            autoFocus
+            InputLabelProps={{ style: { color: '#cbd5e1' } }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Email sx={{ color: '#60a5fa' }} />
+                </InputAdornment>
+              ),
+              style: { color: '#f1f5f9' },
+            }}
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': { borderColor: '#475569' },
+                '&:hover fieldset': { borderColor: '#93c5fd' },
+                '&.Mui-focused fieldset': { borderColor: '#facc15' },
+              },
+            }}
+          />
+          <TextField
+            label="Contraseña"
+            name="contraseña"
+            value={credentials.contraseña}
+            onChange={handleChange}
+            fullWidth
+            required
+            type={showPassword ? 'text' : 'password'}
+            InputLabelProps={{ style: { color: '#cbd5e1' } }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Lock sx={{ color: '#60a5fa' }} />
+                </InputAdornment>
+              ),
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton onClick={() => setShowPassword((v) => !v)} edge="end" sx={{ color: '#facc15' }}>
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+              style: { color: '#f1f5f9' },
+            }}
+            sx={{
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': { borderColor: '#475569' },
+                '&:hover fieldset': { borderColor: '#93c5fd' },
+                '&.Mui-focused fieldset': { borderColor: '#facc15' },
+              },
+            }}
+          />
+          <Button
+            type="submit"
+            variant="contained"
+            fullWidth
+            size="large"
+            sx={{
+              mt: 2,
+              fontWeight: 600,
+              borderRadius: 2,
+              height: 48,
+              fontSize: '1.1rem',
+              textTransform: 'none',
+              backgroundColor: '#3b82f6',
+              boxShadow: '0 4px 14px #2563eb33',
+              '&:hover': { backgroundColor: '#2563eb' },
+            }}
+            disabled={loading}
+          >
+            {loading ? 'Ingresando...' : 'Ingresar'}
+          </Button>
+        </Box>
+        <Button
+          variant="text"
+          fullWidth
+          sx={{ mt: 1, color: '#f8fafc', fontWeight: 600, textTransform: 'none' }}
+          onClick={() => navigate('/forgot-password')}
+        >
+          ¿Olvidaste tu contraseña? Recuperar acceso
+        </Button>
+        <Button
+          variant="text"
+          fullWidth
+          sx={{ mt: 2, color: '#f8fafc', fontWeight: 600, textTransform: 'none' }}
+          onClick={() => navigate('/register')}
+        >
+          ¿No tienes cuenta? Regístrate
+        </Button>
+      </Paper>
+      <Snackbar
+        open={showError}
+        autoHideDuration={5000}
+        onClose={() => setShowError(false)}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
-        <Alert 
-          onClose={handleCloseError} 
-          severity="error" 
-          sx={{ width: '100%' }}
-        >
+        <Alert severity="error" sx={{ width: '100%' }}>
           {error}
         </Alert>
       </Snackbar>
@@ -294,4 +216,4 @@ const Login = () => {
   );
 };
 
-export default Login; 
+export default Login;

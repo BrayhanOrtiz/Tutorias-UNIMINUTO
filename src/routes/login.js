@@ -1,6 +1,6 @@
 import express from 'express';
 import { body } from 'express-validator';
-import { login } from '../controllers/loginController.js';
+import { login, solicitarRecuperacion, restablecerContrasena } from '../controllers/loginController.js';
 
 const router = express.Router();
 
@@ -73,5 +73,10 @@ router.post('/',
     ],
     login
 );
+
+// Recuperar contraseña (solicitud)
+router.post('/recuperar-password', solicitarRecuperacion);
+// Restablecer contraseña (con token)
+router.post('/reset-password/:token', restablecerContrasena);
 
 export default router; 
