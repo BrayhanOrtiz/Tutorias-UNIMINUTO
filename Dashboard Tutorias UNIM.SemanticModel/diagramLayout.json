@@ -4,8 +4,8 @@
     {
       "ordinal": 0,
       "scrollPosition": {
-        "x": 13,
-        "y": 74
+        "x": 0,
+        "y": 70
       },
       "nodes": [
         {
@@ -94,6 +94,45 @@
           "nodeIndex": "Tutoria",
           "size": {
             "height": 296,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1061,
+            "y": 192
+          },
+          "nodeIndex": "usuario_rol?select=*",
+          "nodeLineageTag": "67b72bda-4794-4490-9abf-45a704f0265d",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1345,
+            "y": 0
+          },
+          "nodeIndex": "rol?select=*",
+          "nodeLineageTag": "03f92a5e-2296-4eb7-98e0-2f57e3bdc9a2",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1629,
+            "y": 204
+          },
+          "nodeIndex": "encuesta_satisfaccion?select=* (2)",
+          "nodeLineageTag": "5ed0a389-0253-41d2-a982-8c776184bb48",
+          "size": {
+            "height": 104,
             "width": 234
           },
           "zIndex": 0

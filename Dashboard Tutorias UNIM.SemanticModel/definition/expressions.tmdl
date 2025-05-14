@@ -11,3 +11,16 @@ expression 'encuesta_satisfaccion?select=*' =
 
 	annotation PBI_ResultType = Table
 
+expression 'pregunta_encuesta?select=*' =
+		let
+		    Origen = Json.Document(Web.Contents("https://todqutcrfyuqdqckjhlt.supabase.co/rest/v1/pregunta_encuesta?select=*", [Headers=[apikey="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvZHF1dGNyZnl1cWRxY2tqaGx0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU4ODczNzYsImV4cCI6MjA2MTQ2MzM3Nn0.HjZ6YxCYUKj2m5aaydriz-ZFQl93M7kyUGCxM1Hjwr4", Authorization="Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvZHF1dGNyZnl1cWRxY2tqaGx0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU4ODczNzYsImV4cCI6MjA2MTQ2MzM3Nn0.HjZ6YxCYUKj2m5aaydriz-ZFQl93M7kyUGCxM1Hjwr4", Accept="application/json"]])),
+		    #"Convertida en tabla" = Table.FromList(Origen, Splitter.SplitByNothing(), null, null, ExtraValues.Error),
+		    #"Tipo cambiado" = Table.TransformColumnTypes(#"Convertida en tabla",{})
+		in
+		    #"Tipo cambiado"
+	lineageTag: ba8e60b4-f801-4b49-892f-c02c5715cc1a
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

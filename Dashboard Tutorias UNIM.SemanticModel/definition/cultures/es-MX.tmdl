@@ -2,8 +2,5715 @@ cultureInfo es-MX
 
 	linguisticMetadata =
 			{
-			  "Version": "1.0.0",
-			  "Language": "en-US"
+			  "Version": "4.1.0",
+			  "Language": "en-US",
+			  "Entities": {
+			    "tabla_usuario": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Tabla Usuario"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "tabla usuario": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "tabla_usuario.id": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Tabla Usuario",
+			          "ConceptualProperty": "id"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "id": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "identification": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.736
+			          }
+			        },
+			        {
+			          "identity": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.736
+			          }
+			        },
+			        {
+			          "credential": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.714
+			          }
+			        }
+			      ],
+			      "NameType": "Identifier"
+			    },
+			    "tabla_usuario.nombre": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Tabla Usuario",
+			          "ConceptualProperty": "nombre"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "nombre": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "tabla_usuario.apellido": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Tabla Usuario",
+			          "ConceptualProperty": "apellido"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "apellido": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "tabla_usuario.fecha_nacimiento": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Tabla Usuario",
+			          "ConceptualProperty": "fecha_nacimiento"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "fecha nacimiento": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "fecha_nacimiento": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.99
+			          }
+			        },
+			        {
+			          "date": {
+			            "State": "Generated",
+			            "Weight": 0.7
+			          }
+			        }
+			      ],
+			      "SemanticType": "Time"
+			    },
+			    "tabla_usuario.fecha_nacimiento.jerarquía_de_fecha": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Tabla Usuario",
+			          "VariationSource": "fecha_nacimiento",
+			          "VariationSet": "Variación",
+			          "Hierarchy": "Jerarquía de fechas"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "jerarquía de fecha": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "tabla_usuario.fecha_nacimiento.año": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Tabla Usuario",
+			          "VariationSource": "fecha_nacimiento",
+			          "VariationSet": "Variación",
+			          "Hierarchy": "Jerarquía de fechas",
+			          "HierarchyLevel": "Año"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "año": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "fecha nacimiento año": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "tabla_usuario.fecha_nacimiento.trimestre": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Tabla Usuario",
+			          "VariationSource": "fecha_nacimiento",
+			          "VariationSet": "Variación",
+			          "Hierarchy": "Jerarquía de fechas",
+			          "HierarchyLevel": "Trimestre"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "trimestre": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "fecha nacimiento trimestre": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "tabla_usuario.fecha_nacimiento.me": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Tabla Usuario",
+			          "VariationSource": "fecha_nacimiento",
+			          "VariationSet": "Variación",
+			          "Hierarchy": "Jerarquía de fechas",
+			          "HierarchyLevel": "Mes"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "me": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "fecha nacimiento me": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "tabla_usuario.fecha_nacimiento.día": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Tabla Usuario",
+			          "VariationSource": "fecha_nacimiento",
+			          "VariationSet": "Variación",
+			          "Hierarchy": "Jerarquía de fechas",
+			          "HierarchyLevel": "Día"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "día": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "fecha nacimiento día": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "tabla_usuario.correo_institucional": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Tabla Usuario",
+			          "ConceptualProperty": "correo_institucional"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "correo institucional": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "correo_institucional": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.99
+			          }
+			        }
+			      ]
+			    },
+			    "tabla_usuario.contraseña": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Tabla Usuario",
+			          "ConceptualProperty": "contraseña"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "contraseña": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "tabla_usuario.carrera_id": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Tabla Usuario",
+			          "ConceptualProperty": "carrera_id"
+			        }
+			      },
+			      "State": "Generated",
+			      "Visibility": {
+			        "Value": "Hidden"
+			      },
+			      "Terms": [
+			        {
+			          "carrera id": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "carrera_id": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.99
+			          }
+			        },
+			        {
+			          "carrera": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        },
+			        {
+			          "carrera identification": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.75
+			          }
+			        },
+			        {
+			          "carrera identity": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.75
+			          }
+			        },
+			        {
+			          "carrera identifier": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.75
+			          }
+			        },
+			        {
+			          "carrera credential": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.727
+			          }
+			        }
+			      ]
+			    },
+			    "asistencia_tutoria": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "asistencia_tutoria"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "asistencia tutoria": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "asistencia_tutoria": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.99
+			          }
+			        }
+			      ]
+			    },
+			    "asistencia_tutoria.id": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "asistencia_tutoria",
+			          "ConceptualProperty": "id"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "id": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "identification": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.736
+			          }
+			        },
+			        {
+			          "identity": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.736
+			          }
+			        },
+			        {
+			          "credential": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.714
+			          }
+			        }
+			      ],
+			      "NameType": "Identifier"
+			    },
+			    "asistencia_tutoria.tutoria_id": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "asistencia_tutoria",
+			          "ConceptualProperty": "tutoria_id"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "tutoria id": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "tutoria_id": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.99
+			          }
+			        },
+			        {
+			          "tutoria identification": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.75
+			          }
+			        },
+			        {
+			          "tutoria identity": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.75
+			          }
+			        },
+			        {
+			          "tutoria identifier": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.75
+			          }
+			        },
+			        {
+			          "tutoria credential": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.727
+			          }
+			        }
+			      ]
+			    },
+			    "asistencia_tutoria.estudiante_id": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "asistencia_tutoria",
+			          "ConceptualProperty": "estudiante_id"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "estudiante id": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "estudiante_id": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.99
+			          }
+			        },
+			        {
+			          "estudiante identification": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.75
+			          }
+			        },
+			        {
+			          "estudiante identity": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.75
+			          }
+			        },
+			        {
+			          "estudiante identifier": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.75
+			          }
+			        },
+			        {
+			          "estudiante credential": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.727
+			          }
+			        }
+			      ]
+			    },
+			    "asistencia_tutoria.observacione": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "asistencia_tutoria",
+			          "ConceptualProperty": "observaciones"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "observacione": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "asistencia_tutoria.fecha_registro": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "asistencia_tutoria",
+			          "ConceptualProperty": "fecha_registro"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "fecha registro": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "fecha_registro": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.99
+			          }
+			        },
+			        {
+			          "date": {
+			            "State": "Generated",
+			            "Weight": 0.7
+			          }
+			        }
+			      ],
+			      "SemanticType": "Time"
+			    },
+			    "asistencia_tutoria.fecha_registro.jerarquía_de_fecha": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "asistencia_tutoria",
+			          "VariationSource": "fecha_registro",
+			          "VariationSet": "Variación",
+			          "Hierarchy": "Jerarquía de fechas"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "jerarquía de fecha": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "asistencia_tutoria.fecha_registro.año": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "asistencia_tutoria",
+			          "VariationSource": "fecha_registro",
+			          "VariationSet": "Variación",
+			          "Hierarchy": "Jerarquía de fechas",
+			          "HierarchyLevel": "Año"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "año": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "fecha registro año": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "asistencia_tutoria.fecha_registro.trimestre": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "asistencia_tutoria",
+			          "VariationSource": "fecha_registro",
+			          "VariationSet": "Variación",
+			          "Hierarchy": "Jerarquía de fechas",
+			          "HierarchyLevel": "Trimestre"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "trimestre": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "fecha registro trimestre": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "asistencia_tutoria.fecha_registro.me": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "asistencia_tutoria",
+			          "VariationSource": "fecha_registro",
+			          "VariationSet": "Variación",
+			          "Hierarchy": "Jerarquía de fechas",
+			          "HierarchyLevel": "Mes"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "me": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "fecha registro me": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "asistencia_tutoria.fecha_registro.día": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "asistencia_tutoria",
+			          "VariationSource": "fecha_registro",
+			          "VariationSet": "Variación",
+			          "Hierarchy": "Jerarquía de fechas",
+			          "HierarchyLevel": "Día"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "día": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "fecha registro día": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "carreraselect": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "carrera?select=*"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "carrera?select=*": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "carreraselect.id": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "carrera?select=*",
+			          "ConceptualProperty": "id"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "id": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "identification": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.736
+			          }
+			        },
+			        {
+			          "identity": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.736
+			          }
+			        },
+			        {
+			          "credential": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.714
+			          }
+			        }
+			      ],
+			      "NameType": "Identifier"
+			    },
+			    "carreraselect.nombre_carrera": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "carrera?select=*",
+			          "ConceptualProperty": "nombre_carrera"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "nombre carrera": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "nombre_carrera": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.99
+			          }
+			        }
+			      ]
+			    },
+			    "historial_cambiosselect": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "historial_cambios?select=*"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "historial_cambios?select=*": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "historial_cambio?select=*": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.78
+			          }
+			        }
+			      ]
+			    },
+			    "historial_cambiosselect.id": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "historial_cambios?select=*",
+			          "ConceptualProperty": "id"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "id": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "identification": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.736
+			          }
+			        },
+			        {
+			          "identity": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.736
+			          }
+			        },
+			        {
+			          "credential": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.714
+			          }
+			        }
+			      ],
+			      "NameType": "Identifier"
+			    },
+			    "historial_cambiosselect.usuario_id": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "historial_cambios?select=*",
+			          "ConceptualProperty": "usuario_id"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "usuario id": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "usuario_id": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.99
+			          }
+			        },
+			        {
+			          "usuario identification": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.75
+			          }
+			        },
+			        {
+			          "usuario identity": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.75
+			          }
+			        },
+			        {
+			          "usuario identifier": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.75
+			          }
+			        },
+			        {
+			          "usuario credential": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.727
+			          }
+			        }
+			      ]
+			    },
+			    "historial_cambiosselect.horario_id": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "historial_cambios?select=*",
+			          "ConceptualProperty": "horario_id"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "horario id": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "horario_id": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.99
+			          }
+			        },
+			        {
+			          "horario identification": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.75
+			          }
+			        },
+			        {
+			          "horario identity": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.75
+			          }
+			        },
+			        {
+			          "horario identifier": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.75
+			          }
+			        },
+			        {
+			          "horario credential": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.727
+			          }
+			        }
+			      ]
+			    },
+			    "historial_cambiosselect.fecha_hora_cambio": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "historial_cambios?select=*",
+			          "ConceptualProperty": "fecha_hora_cambio"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "fecha hora cambio": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "fecha_hora_cambio": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.99
+			          }
+			        },
+			        {
+			          "date": {
+			            "State": "Generated",
+			            "Weight": 0.7
+			          }
+			        }
+			      ],
+			      "SemanticType": "Time"
+			    },
+			    "historial_cambiosselect.fecha_hora_cambio.jerarquía_de_fecha": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "historial_cambios?select=*",
+			          "VariationSource": "fecha_hora_cambio",
+			          "VariationSet": "Variación",
+			          "Hierarchy": "Jerarquía de fechas"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "jerarquía de fecha": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "historial_cambiosselect.fecha_hora_cambio.año": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "historial_cambios?select=*",
+			          "VariationSource": "fecha_hora_cambio",
+			          "VariationSet": "Variación",
+			          "Hierarchy": "Jerarquía de fechas",
+			          "HierarchyLevel": "Año"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "año": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "fecha hora cambio año": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "historial_cambiosselect.fecha_hora_cambio.trimestre": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "historial_cambios?select=*",
+			          "VariationSource": "fecha_hora_cambio",
+			          "VariationSet": "Variación",
+			          "Hierarchy": "Jerarquía de fechas",
+			          "HierarchyLevel": "Trimestre"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "trimestre": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "fecha hora cambio trimestre": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "historial_cambiosselect.fecha_hora_cambio.me": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "historial_cambios?select=*",
+			          "VariationSource": "fecha_hora_cambio",
+			          "VariationSet": "Variación",
+			          "Hierarchy": "Jerarquía de fechas",
+			          "HierarchyLevel": "Mes"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "me": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "fecha hora cambio me": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "historial_cambiosselect.fecha_hora_cambio.día": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "historial_cambios?select=*",
+			          "VariationSource": "fecha_hora_cambio",
+			          "VariationSet": "Variación",
+			          "Hierarchy": "Jerarquía de fechas",
+			          "HierarchyLevel": "Día"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "día": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "fecha hora cambio día": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "historial_cambiosselect.campo_modificado": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "historial_cambios?select=*",
+			          "ConceptualProperty": "campo_modificado"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "campo modificado": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "campo_modificado": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.99
+			          }
+			        }
+			      ]
+			    },
+			    "historial_cambiosselect.valor_anterior": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "historial_cambios?select=*",
+			          "ConceptualProperty": "valor_anterior"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "valor anterior": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "valor_anterior": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.99
+			          }
+			        },
+			        {
+			          "courage anterior": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.5
+			          }
+			        },
+			        {
+			          "bravery anterior": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.5
+			          }
+			        },
+			        {
+			          "heroism anterior": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.5
+			          }
+			        },
+			        {
+			          "fearlessness anterior": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.5
+			          }
+			        },
+			        {
+			          "boldness anterior": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.5
+			          }
+			        },
+			        {
+			          "gallantry anterior": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.5
+			          }
+			        },
+			        {
+			          "lionheartedness anterior": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.5
+			          }
+			        },
+			        {
+			          "pluck anterior": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.485
+			          }
+			        },
+			        {
+			          "spirit anterior": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.485
+			          }
+			        },
+			        {
+			          "nerve anterior": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.485
+			          }
+			        }
+			      ]
+			    },
+			    "historial_cambiosselect.valor_nuevo": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "historial_cambios?select=*",
+			          "ConceptualProperty": "valor_nuevo"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "valor nuevo": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "valor_nuevo": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.99
+			          }
+			        },
+			        {
+			          "nuevo": {
+			            "State": "Generated",
+			            "Weight": 0.97
+			          }
+			        }
+			      ]
+			    },
+			    "horarioselect": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "horario?select=*"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "horario?select=*": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "horarioselect.id": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "horario?select=*",
+			          "ConceptualProperty": "id"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "id": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "identification": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.736
+			          }
+			        },
+			        {
+			          "identity": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.736
+			          }
+			        },
+			        {
+			          "credential": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.714
+			          }
+			        }
+			      ],
+			      "NameType": "Identifier"
+			    },
+			    "horarioselect.dia_semana": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "horario?select=*",
+			          "ConceptualProperty": "dia_semana"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "dia semana": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "dia_semana": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.99
+			          }
+			        }
+			      ]
+			    },
+			    "horarioselect.hora_inicio": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "horario?select=*",
+			          "ConceptualProperty": "hora_inicio"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "hora inicio": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "hora_inicio": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.99
+			          }
+			        },
+			        {
+			          "time": {
+			            "State": "Generated",
+			            "Weight": 0.7
+			          }
+			        }
+			      ],
+			      "SemanticType": "Time"
+			    },
+			    "horarioselect.hora_fin": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "horario?select=*",
+			          "ConceptualProperty": "hora_fin"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "hora fin": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "hora_fin": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.99
+			          }
+			        },
+			        {
+			          "time": {
+			            "State": "Generated",
+			            "Weight": 0.7
+			          }
+			        },
+			        {
+			          "hora appendage": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.5
+			          }
+			        },
+			        {
+			          "hora limb": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.5
+			          }
+			        },
+			        {
+			          "hora organ": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.5
+			          }
+			        },
+			        {
+			          "hora member": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.5
+			          }
+			        },
+			        {
+			          "hora flipper": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.485
+			          }
+			        },
+			        {
+			          "hora paddle": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.485
+			          }
+			        },
+			        {
+			          "hora projection": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.475
+			          }
+			        },
+			        {
+			          "hora propeller": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.475
+			          }
+			        },
+			        {
+			          "hora rudder": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.475
+			          }
+			        },
+			        {
+			          "hora stabilizer": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.461
+			          }
+			        }
+			      ],
+			      "SemanticType": "Time"
+			    },
+			    "horarioselect.salon": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "horario?select=*",
+			          "ConceptualProperty": "salon"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "salon": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "barbershop": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.476
+			          }
+			        },
+			        {
+			          "shop": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.476
+			          }
+			        },
+			        {
+			          "store": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.476
+			          }
+			        },
+			        {
+			          "soiree": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.466
+			          }
+			        },
+			        {
+			          "soirée": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.466
+			          }
+			        },
+			        {
+			          "meeting": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.452
+			          }
+			        },
+			        {
+			          "rendezvous": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.452
+			          }
+			        },
+			        {
+			          "get-together": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.452
+			          }
+			        },
+			        {
+			          "gathering": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.452
+			          }
+			        }
+			      ]
+			    },
+			    "horarioselect.usuario_id": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "horario?select=*",
+			          "ConceptualProperty": "usuario_id"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "usuario id": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "usuario_id": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.99
+			          }
+			        },
+			        {
+			          "usuario identification": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.75
+			          }
+			        },
+			        {
+			          "usuario identity": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.75
+			          }
+			        },
+			        {
+			          "usuario identifier": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.75
+			          }
+			        },
+			        {
+			          "usuario credential": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.727
+			          }
+			        }
+			      ]
+			    },
+			    "temaselect": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "tema?select=*"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "tema?select=*": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "temaselect.id": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "tema?select=*",
+			          "ConceptualProperty": "id"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "id": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "identification": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.736
+			          }
+			        },
+			        {
+			          "identity": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.736
+			          }
+			        },
+			        {
+			          "credential": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.714
+			          }
+			        }
+			      ],
+			      "NameType": "Identifier"
+			    },
+			    "temaselect.nombre_tema": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "tema?select=*",
+			          "ConceptualProperty": "nombre_tema"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "nombre tema": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "nombre_tema": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.99
+			          }
+			        },
+			        {
+			          "TEMA": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "tutoria": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Tutoria"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "tutoria": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "tutoria.id": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Tutoria",
+			          "ConceptualProperty": "id"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "id": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "identification": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.736
+			          }
+			        },
+			        {
+			          "identity": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.736
+			          }
+			        },
+			        {
+			          "credential": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.714
+			          }
+			        }
+			      ],
+			      "NameType": "Identifier"
+			    },
+			    "tutoria.estudiante_id": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Tutoria",
+			          "ConceptualProperty": "estudiante_id"
+			        }
+			      },
+			      "State": "Generated",
+			      "Visibility": {
+			        "Value": "Hidden"
+			      },
+			      "Terms": [
+			        {
+			          "estudiante id": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "estudiante_id": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.99
+			          }
+			        },
+			        {
+			          "estudiante identification": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.75
+			          }
+			        },
+			        {
+			          "estudiante identity": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.75
+			          }
+			        },
+			        {
+			          "estudiante identifier": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.75
+			          }
+			        },
+			        {
+			          "estudiante credential": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.727
+			          }
+			        }
+			      ]
+			    },
+			    "tutoria.docente_id": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Tutoria",
+			          "ConceptualProperty": "docente_id"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "docente id": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "docente_id": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.99
+			          }
+			        },
+			        {
+			          "docente identification": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.75
+			          }
+			        },
+			        {
+			          "docente identity": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.75
+			          }
+			        },
+			        {
+			          "docente identifier": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.75
+			          }
+			        },
+			        {
+			          "docente credential": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.727
+			          }
+			        }
+			      ]
+			    },
+			    "tutoria.fecha_hora_agendada": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Tutoria",
+			          "ConceptualProperty": "fecha_hora_agendada"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "fecha hora agendada": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "fecha_hora_agendada": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.99
+			          }
+			        },
+			        {
+			          "date": {
+			            "State": "Generated",
+			            "Weight": 0.7
+			          }
+			        }
+			      ],
+			      "SemanticType": "Time"
+			    },
+			    "tutoria.fecha_hora_agendada.jerarquía_de_fecha": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Tutoria",
+			          "VariationSource": "fecha_hora_agendada",
+			          "VariationSet": "Variación",
+			          "Hierarchy": "Jerarquía de fechas"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "jerarquía de fecha": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "tutoria.fecha_hora_agendada.año": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Tutoria",
+			          "VariationSource": "fecha_hora_agendada",
+			          "VariationSet": "Variación",
+			          "Hierarchy": "Jerarquía de fechas",
+			          "HierarchyLevel": "Año"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "año": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "fecha hora agendada año": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "tutoria.fecha_hora_agendada.trimestre": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Tutoria",
+			          "VariationSource": "fecha_hora_agendada",
+			          "VariationSet": "Variación",
+			          "Hierarchy": "Jerarquía de fechas",
+			          "HierarchyLevel": "Trimestre"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "trimestre": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "fecha hora agendada trimestre": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "tutoria.fecha_hora_agendada.me": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Tutoria",
+			          "VariationSource": "fecha_hora_agendada",
+			          "VariationSet": "Variación",
+			          "Hierarchy": "Jerarquía de fechas",
+			          "HierarchyLevel": "Mes"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "me": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "fecha hora agendada me": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "tutoria.fecha_hora_agendada.día": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Tutoria",
+			          "VariationSource": "fecha_hora_agendada",
+			          "VariationSet": "Variación",
+			          "Hierarchy": "Jerarquía de fechas",
+			          "HierarchyLevel": "Día"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "día": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "fecha hora agendada día": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "tutoria.tema_id": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Tutoria",
+			          "ConceptualProperty": "tema_id"
+			        }
+			      },
+			      "State": "Generated",
+			      "Visibility": {
+			        "Value": "Hidden"
+			      },
+			      "Terms": [
+			        {
+			          "tema id": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "tema_id": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.99
+			          }
+			        },
+			        {
+			          "tema identification": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.75
+			          }
+			        },
+			        {
+			          "tema identity": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.75
+			          }
+			        },
+			        {
+			          "tema identifier": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.75
+			          }
+			        },
+			        {
+			          "tema credential": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.727
+			          }
+			        }
+			      ]
+			    },
+			    "tutoria.hora_inicio_real": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Tutoria",
+			          "ConceptualProperty": "hora_inicio_real"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "hora inicio real": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "hora_inicio_real": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.99
+			          }
+			        },
+			        {
+			          "date": {
+			            "State": "Generated",
+			            "Weight": 0.7
+			          }
+			        }
+			      ],
+			      "SemanticType": "Time"
+			    },
+			    "tutoria.hora_inicio_real.jerarquía_de_fecha": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Tutoria",
+			          "VariationSource": "hora_inicio_real",
+			          "VariationSet": "Variación",
+			          "Hierarchy": "Jerarquía de fechas"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "jerarquía de fecha": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "tutoria.hora_inicio_real.año": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Tutoria",
+			          "VariationSource": "hora_inicio_real",
+			          "VariationSet": "Variación",
+			          "Hierarchy": "Jerarquía de fechas",
+			          "HierarchyLevel": "Año"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "año": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "hora inicio real año": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "tutoria.hora_inicio_real.trimestre": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Tutoria",
+			          "VariationSource": "hora_inicio_real",
+			          "VariationSet": "Variación",
+			          "Hierarchy": "Jerarquía de fechas",
+			          "HierarchyLevel": "Trimestre"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "trimestre": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "hora inicio real trimestre": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "tutoria.hora_inicio_real.me": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Tutoria",
+			          "VariationSource": "hora_inicio_real",
+			          "VariationSet": "Variación",
+			          "Hierarchy": "Jerarquía de fechas",
+			          "HierarchyLevel": "Mes"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "me": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "hora inicio real me": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "tutoria.hora_inicio_real.día": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Tutoria",
+			          "VariationSource": "hora_inicio_real",
+			          "VariationSet": "Variación",
+			          "Hierarchy": "Jerarquía de fechas",
+			          "HierarchyLevel": "Día"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "día": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "hora inicio real día": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "tutoria.hora_fin_real": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Tutoria",
+			          "ConceptualProperty": "hora_fin_real"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "hora fin real": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "hora_fin_real": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.99
+			          }
+			        }
+			      ]
+			    },
+			    "tutoria.firma_docente_habilitada": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Tutoria",
+			          "ConceptualProperty": "firma_docente_habilitada"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "firma docente habilitada": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "firma_docente_habilitada": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.99
+			          }
+			        }
+			      ]
+			    },
+			    "tutoria.firmada_estudiante": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "Tutoria",
+			          "ConceptualProperty": "firmada_estudiante"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "firmada estudiante": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "firmada_estudiante": {
+			            "Type": "Noun",
+			            "State": "Generated",
+			            "Weight": 0.99
+			          }
+			        }
+			      ]
+			    }
+			  },
+			  "Relationships": {
+			    "tutoria_hora_inicio_real_has_jerarquía_de_fecha": {
+			      "Binding": {
+			        "ConceptualEntity": "Tutoria"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "tutoria.hora_inicio_real": {
+			          "Target": {
+			            "Entity": "tutoria.hora_inicio_real"
+			          }
+			        },
+			        "tutoria.hora_inicio_real.jerarquía_de_fecha": {
+			          "Target": {
+			            "Entity": "tutoria.hora_inicio_real.jerarquía_de_fecha"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tutoria.hora_inicio_real"
+			            },
+			            "Object": {
+			              "Role": "tutoria.hora_inicio_real.jerarquía_de_fecha"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "hora_inicio_reals_have_jerarquía_de_fechas"
+			        }
+			      ]
+			    },
+			    "tutoria_fecha_hora_agendada_me_has_tutoria_fecha_hora_agendada_día": {
+			      "Binding": {
+			        "ConceptualEntity": "Tutoria"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "tutoria.fecha_hora_agendada.me": {
+			          "Target": {
+			            "Entity": "tutoria.fecha_hora_agendada.me"
+			          }
+			        },
+			        "tutoria.fecha_hora_agendada.día": {
+			          "Target": {
+			            "Entity": "tutoria.fecha_hora_agendada.día"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tutoria.fecha_hora_agendada.me"
+			            },
+			            "Object": {
+			              "Role": "tutoria.fecha_hora_agendada.día"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "me_have_días"
+			        },
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tutoria.fecha_hora_agendada.día"
+			            },
+			            "Object": {
+			              "Role": "tutoria.fecha_hora_agendada.me"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "días_have_me"
+			        },
+			        {
+			          "Preposition": {
+			            "Subject": {
+			              "Role": "tutoria.fecha_hora_agendada.día"
+			            },
+			            "Prepositions": [
+			              {
+			                "in": {
+			                  "State": "Generated"
+			                }
+			              }
+			            ],
+			            "Object": {
+			              "Role": "tutoria.fecha_hora_agendada.me"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "días_are_in_me3"
+			        }
+			      ]
+			    },
+			    "tutoria_fecha_hora_agendada_trimestre_has_tutoria_fecha_hora_agendada_me": {
+			      "Binding": {
+			        "ConceptualEntity": "Tutoria"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "tutoria.fecha_hora_agendada.trimestre": {
+			          "Target": {
+			            "Entity": "tutoria.fecha_hora_agendada.trimestre"
+			          }
+			        },
+			        "tutoria.fecha_hora_agendada.me": {
+			          "Target": {
+			            "Entity": "tutoria.fecha_hora_agendada.me"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tutoria.fecha_hora_agendada.trimestre"
+			            },
+			            "Object": {
+			              "Role": "tutoria.fecha_hora_agendada.me"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "trimestres_have_me"
+			        },
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tutoria.fecha_hora_agendada.me"
+			            },
+			            "Object": {
+			              "Role": "tutoria.fecha_hora_agendada.trimestre"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "me_have_trimestres"
+			        },
+			        {
+			          "Preposition": {
+			            "Subject": {
+			              "Role": "tutoria.fecha_hora_agendada.me"
+			            },
+			            "Prepositions": [
+			              {
+			                "in": {
+			                  "State": "Generated"
+			                }
+			              }
+			            ],
+			            "Object": {
+			              "Role": "tutoria.fecha_hora_agendada.trimestre"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "me_are_in_trimestres3"
+			        }
+			      ]
+			    },
+			    "tutoria_fecha_hora_agendada_año_has_tutoria_fecha_hora_agendada_trimestre": {
+			      "Binding": {
+			        "ConceptualEntity": "Tutoria"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "tutoria.fecha_hora_agendada.año": {
+			          "Target": {
+			            "Entity": "tutoria.fecha_hora_agendada.año"
+			          }
+			        },
+			        "tutoria.fecha_hora_agendada.trimestre": {
+			          "Target": {
+			            "Entity": "tutoria.fecha_hora_agendada.trimestre"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tutoria.fecha_hora_agendada.año"
+			            },
+			            "Object": {
+			              "Role": "tutoria.fecha_hora_agendada.trimestre"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "años_have_trimestres"
+			        },
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tutoria.fecha_hora_agendada.trimestre"
+			            },
+			            "Object": {
+			              "Role": "tutoria.fecha_hora_agendada.año"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "trimestres_have_años"
+			        },
+			        {
+			          "Preposition": {
+			            "Subject": {
+			              "Role": "tutoria.fecha_hora_agendada.trimestre"
+			            },
+			            "Prepositions": [
+			              {
+			                "in": {
+			                  "State": "Generated"
+			                }
+			              }
+			            ],
+			            "Object": {
+			              "Role": "tutoria.fecha_hora_agendada.año"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "trimestres_are_in_años3"
+			        }
+			      ]
+			    },
+			    "tutoria_fecha_hora_agendada_jerarquía_de_fecha_has_tutoria_fecha_hora_agendada_día": {
+			      "Binding": {
+			        "ConceptualEntity": "Tutoria"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "tutoria.fecha_hora_agendada.jerarquía_de_fecha": {
+			          "Target": {
+			            "Entity": "tutoria.fecha_hora_agendada.jerarquía_de_fecha"
+			          }
+			        },
+			        "tutoria.fecha_hora_agendada.día": {
+			          "Target": {
+			            "Entity": "tutoria.fecha_hora_agendada.día"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tutoria.fecha_hora_agendada.jerarquía_de_fecha"
+			            },
+			            "Object": {
+			              "Role": "tutoria.fecha_hora_agendada.día"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "jerarquía_de_fechas_have_días"
+			        }
+			      ]
+			    },
+			    "tutoria_fecha_hora_agendada_jerarquía_de_fecha_has_tutoria_fecha_hora_agendada_me": {
+			      "Binding": {
+			        "ConceptualEntity": "Tutoria"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "tutoria.fecha_hora_agendada.jerarquía_de_fecha": {
+			          "Target": {
+			            "Entity": "tutoria.fecha_hora_agendada.jerarquía_de_fecha"
+			          }
+			        },
+			        "tutoria.fecha_hora_agendada.me": {
+			          "Target": {
+			            "Entity": "tutoria.fecha_hora_agendada.me"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tutoria.fecha_hora_agendada.jerarquía_de_fecha"
+			            },
+			            "Object": {
+			              "Role": "tutoria.fecha_hora_agendada.me"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "jerarquía_de_fechas_have_me"
+			        }
+			      ]
+			    },
+			    "tutoria_fecha_hora_agendada_jerarquía_de_fecha_has_tutoria_fecha_hora_agendada_trimestre": {
+			      "Binding": {
+			        "ConceptualEntity": "Tutoria"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "tutoria.fecha_hora_agendada.jerarquía_de_fecha": {
+			          "Target": {
+			            "Entity": "tutoria.fecha_hora_agendada.jerarquía_de_fecha"
+			          }
+			        },
+			        "tutoria.fecha_hora_agendada.trimestre": {
+			          "Target": {
+			            "Entity": "tutoria.fecha_hora_agendada.trimestre"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tutoria.fecha_hora_agendada.jerarquía_de_fecha"
+			            },
+			            "Object": {
+			              "Role": "tutoria.fecha_hora_agendada.trimestre"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "jerarquía_de_fechas_have_trimestres"
+			        }
+			      ]
+			    },
+			    "tutoria_fecha_hora_agendada_jerarquía_de_fecha_has_tutoria_fecha_hora_agendada_año": {
+			      "Binding": {
+			        "ConceptualEntity": "Tutoria"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "tutoria.fecha_hora_agendada.jerarquía_de_fecha": {
+			          "Target": {
+			            "Entity": "tutoria.fecha_hora_agendada.jerarquía_de_fecha"
+			          }
+			        },
+			        "tutoria.fecha_hora_agendada.año": {
+			          "Target": {
+			            "Entity": "tutoria.fecha_hora_agendada.año"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tutoria.fecha_hora_agendada.jerarquía_de_fecha"
+			            },
+			            "Object": {
+			              "Role": "tutoria.fecha_hora_agendada.año"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "jerarquía_de_fechas_have_años"
+			        }
+			      ]
+			    },
+			    "tutoria_fecha_hora_agendada_has_jerarquía_de_fecha": {
+			      "Binding": {
+			        "ConceptualEntity": "Tutoria"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "tutoria.fecha_hora_agendada": {
+			          "Target": {
+			            "Entity": "tutoria.fecha_hora_agendada"
+			          }
+			        },
+			        "tutoria.fecha_hora_agendada.jerarquía_de_fecha": {
+			          "Target": {
+			            "Entity": "tutoria.fecha_hora_agendada.jerarquía_de_fecha"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tutoria.fecha_hora_agendada"
+			            },
+			            "Object": {
+			              "Role": "tutoria.fecha_hora_agendada.jerarquía_de_fecha"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "fecha_hora_agendadas_have_jerarquía_de_fechas"
+			        }
+			      ]
+			    },
+			    "historial_cambiosselect_fecha_hora_cambio_me_has_historial_cambiosselect_fecha_hora_cambio_día": {
+			      "Binding": {
+			        "ConceptualEntity": "historial_cambios?select=*"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "historial_cambiosselect.fecha_hora_cambio.me": {
+			          "Target": {
+			            "Entity": "historial_cambiosselect.fecha_hora_cambio.me"
+			          }
+			        },
+			        "historial_cambiosselect.fecha_hora_cambio.día": {
+			          "Target": {
+			            "Entity": "historial_cambiosselect.fecha_hora_cambio.día"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "historial_cambiosselect.fecha_hora_cambio.me"
+			            },
+			            "Object": {
+			              "Role": "historial_cambiosselect.fecha_hora_cambio.día"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "me_have_días1"
+			        },
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "historial_cambiosselect.fecha_hora_cambio.día"
+			            },
+			            "Object": {
+			              "Role": "historial_cambiosselect.fecha_hora_cambio.me"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "días_have_me1"
+			        },
+			        {
+			          "Preposition": {
+			            "Subject": {
+			              "Role": "historial_cambiosselect.fecha_hora_cambio.día"
+			            },
+			            "Prepositions": [
+			              {
+			                "in": {
+			                  "State": "Generated"
+			                }
+			              }
+			            ],
+			            "Object": {
+			              "Role": "historial_cambiosselect.fecha_hora_cambio.me"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "días_are_in_me2"
+			        }
+			      ]
+			    },
+			    "historial_cambiosselect_fecha_hora_cambio_trimestre_has_historial_cambiosselect_fecha_hora_cambio_me": {
+			      "Binding": {
+			        "ConceptualEntity": "historial_cambios?select=*"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "historial_cambiosselect.fecha_hora_cambio.trimestre": {
+			          "Target": {
+			            "Entity": "historial_cambiosselect.fecha_hora_cambio.trimestre"
+			          }
+			        },
+			        "historial_cambiosselect.fecha_hora_cambio.me": {
+			          "Target": {
+			            "Entity": "historial_cambiosselect.fecha_hora_cambio.me"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "historial_cambiosselect.fecha_hora_cambio.trimestre"
+			            },
+			            "Object": {
+			              "Role": "historial_cambiosselect.fecha_hora_cambio.me"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "trimestres_have_me1"
+			        },
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "historial_cambiosselect.fecha_hora_cambio.me"
+			            },
+			            "Object": {
+			              "Role": "historial_cambiosselect.fecha_hora_cambio.trimestre"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "me_have_trimestres1"
+			        },
+			        {
+			          "Preposition": {
+			            "Subject": {
+			              "Role": "historial_cambiosselect.fecha_hora_cambio.me"
+			            },
+			            "Prepositions": [
+			              {
+			                "in": {
+			                  "State": "Generated"
+			                }
+			              }
+			            ],
+			            "Object": {
+			              "Role": "historial_cambiosselect.fecha_hora_cambio.trimestre"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "me_are_in_trimestres2"
+			        }
+			      ]
+			    },
+			    "historial_cambiosselect_fecha_hora_cambio_año_has_historial_cambiosselect_fecha_hora_cambio_trimestre": {
+			      "Binding": {
+			        "ConceptualEntity": "historial_cambios?select=*"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "historial_cambiosselect.fecha_hora_cambio.año": {
+			          "Target": {
+			            "Entity": "historial_cambiosselect.fecha_hora_cambio.año"
+			          }
+			        },
+			        "historial_cambiosselect.fecha_hora_cambio.trimestre": {
+			          "Target": {
+			            "Entity": "historial_cambiosselect.fecha_hora_cambio.trimestre"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "historial_cambiosselect.fecha_hora_cambio.año"
+			            },
+			            "Object": {
+			              "Role": "historial_cambiosselect.fecha_hora_cambio.trimestre"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "años_have_trimestres1"
+			        },
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "historial_cambiosselect.fecha_hora_cambio.trimestre"
+			            },
+			            "Object": {
+			              "Role": "historial_cambiosselect.fecha_hora_cambio.año"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "trimestres_have_años1"
+			        },
+			        {
+			          "Preposition": {
+			            "Subject": {
+			              "Role": "historial_cambiosselect.fecha_hora_cambio.trimestre"
+			            },
+			            "Prepositions": [
+			              {
+			                "in": {
+			                  "State": "Generated"
+			                }
+			              }
+			            ],
+			            "Object": {
+			              "Role": "historial_cambiosselect.fecha_hora_cambio.año"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "trimestres_are_in_años2"
+			        }
+			      ]
+			    },
+			    "historial_cambiosselect_fecha_hora_cambio_jerarquía_de_fecha_has_historial_cambiosselect_fecha_hora_cambio_día": {
+			      "Binding": {
+			        "ConceptualEntity": "historial_cambios?select=*"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "historial_cambiosselect.fecha_hora_cambio.jerarquía_de_fecha": {
+			          "Target": {
+			            "Entity": "historial_cambiosselect.fecha_hora_cambio.jerarquía_de_fecha"
+			          }
+			        },
+			        "historial_cambiosselect.fecha_hora_cambio.día": {
+			          "Target": {
+			            "Entity": "historial_cambiosselect.fecha_hora_cambio.día"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "historial_cambiosselect.fecha_hora_cambio.jerarquía_de_fecha"
+			            },
+			            "Object": {
+			              "Role": "historial_cambiosselect.fecha_hora_cambio.día"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "jerarquía_de_fechas_have_días1"
+			        }
+			      ]
+			    },
+			    "historial_cambiosselect_fecha_hora_cambio_jerarquía_de_fecha_has_historial_cambiosselect_fecha_hora_cambio_me": {
+			      "Binding": {
+			        "ConceptualEntity": "historial_cambios?select=*"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "historial_cambiosselect.fecha_hora_cambio.jerarquía_de_fecha": {
+			          "Target": {
+			            "Entity": "historial_cambiosselect.fecha_hora_cambio.jerarquía_de_fecha"
+			          }
+			        },
+			        "historial_cambiosselect.fecha_hora_cambio.me": {
+			          "Target": {
+			            "Entity": "historial_cambiosselect.fecha_hora_cambio.me"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "historial_cambiosselect.fecha_hora_cambio.jerarquía_de_fecha"
+			            },
+			            "Object": {
+			              "Role": "historial_cambiosselect.fecha_hora_cambio.me"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "jerarquía_de_fechas_have_me1"
+			        }
+			      ]
+			    },
+			    "historial_cambiosselect_fecha_hora_cambio_jerarquía_de_fecha_has_historial_cambiosselect_fecha_hora_cambio_trimestre": {
+			      "Binding": {
+			        "ConceptualEntity": "historial_cambios?select=*"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "historial_cambiosselect.fecha_hora_cambio.jerarquía_de_fecha": {
+			          "Target": {
+			            "Entity": "historial_cambiosselect.fecha_hora_cambio.jerarquía_de_fecha"
+			          }
+			        },
+			        "historial_cambiosselect.fecha_hora_cambio.trimestre": {
+			          "Target": {
+			            "Entity": "historial_cambiosselect.fecha_hora_cambio.trimestre"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "historial_cambiosselect.fecha_hora_cambio.jerarquía_de_fecha"
+			            },
+			            "Object": {
+			              "Role": "historial_cambiosselect.fecha_hora_cambio.trimestre"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "jerarquía_de_fechas_have_trimestres1"
+			        }
+			      ]
+			    },
+			    "historial_cambiosselect_fecha_hora_cambio_jerarquía_de_fecha_has_historial_cambiosselect_fecha_hora_cambio_año": {
+			      "Binding": {
+			        "ConceptualEntity": "historial_cambios?select=*"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "historial_cambiosselect.fecha_hora_cambio.jerarquía_de_fecha": {
+			          "Target": {
+			            "Entity": "historial_cambiosselect.fecha_hora_cambio.jerarquía_de_fecha"
+			          }
+			        },
+			        "historial_cambiosselect.fecha_hora_cambio.año": {
+			          "Target": {
+			            "Entity": "historial_cambiosselect.fecha_hora_cambio.año"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "historial_cambiosselect.fecha_hora_cambio.jerarquía_de_fecha"
+			            },
+			            "Object": {
+			              "Role": "historial_cambiosselect.fecha_hora_cambio.año"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "jerarquía_de_fechas_have_años1"
+			        }
+			      ]
+			    },
+			    "historial_cambiosselect_fecha_hora_cambio_has_jerarquía_de_fecha": {
+			      "Binding": {
+			        "ConceptualEntity": "historial_cambios?select=*"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "historial_cambiosselect.fecha_hora_cambio": {
+			          "Target": {
+			            "Entity": "historial_cambiosselect.fecha_hora_cambio"
+			          }
+			        },
+			        "historial_cambiosselect.fecha_hora_cambio.jerarquía_de_fecha": {
+			          "Target": {
+			            "Entity": "historial_cambiosselect.fecha_hora_cambio.jerarquía_de_fecha"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "historial_cambiosselect.fecha_hora_cambio"
+			            },
+			            "Object": {
+			              "Role": "historial_cambiosselect.fecha_hora_cambio.jerarquía_de_fecha"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "fecha_hora_cambios_have_jerarquía_de_fechas"
+			        }
+			      ]
+			    },
+			    "asistencia_tutoria_fecha_registro_me_has_asistencia_tutoria_fecha_registro_día": {
+			      "Binding": {
+			        "ConceptualEntity": "asistencia_tutoria"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "asistencia_tutoria.fecha_registro.me": {
+			          "Target": {
+			            "Entity": "asistencia_tutoria.fecha_registro.me"
+			          }
+			        },
+			        "asistencia_tutoria.fecha_registro.día": {
+			          "Target": {
+			            "Entity": "asistencia_tutoria.fecha_registro.día"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "asistencia_tutoria.fecha_registro.me"
+			            },
+			            "Object": {
+			              "Role": "asistencia_tutoria.fecha_registro.día"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "me_have_días2"
+			        },
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "asistencia_tutoria.fecha_registro.día"
+			            },
+			            "Object": {
+			              "Role": "asistencia_tutoria.fecha_registro.me"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "días_have_me2"
+			        },
+			        {
+			          "Preposition": {
+			            "Subject": {
+			              "Role": "asistencia_tutoria.fecha_registro.día"
+			            },
+			            "Prepositions": [
+			              {
+			                "in": {
+			                  "State": "Generated"
+			                }
+			              }
+			            ],
+			            "Object": {
+			              "Role": "asistencia_tutoria.fecha_registro.me"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "días_are_in_me1"
+			        }
+			      ]
+			    },
+			    "asistencia_tutoria_fecha_registro_trimestre_has_asistencia_tutoria_fecha_registro_me": {
+			      "Binding": {
+			        "ConceptualEntity": "asistencia_tutoria"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "asistencia_tutoria.fecha_registro.trimestre": {
+			          "Target": {
+			            "Entity": "asistencia_tutoria.fecha_registro.trimestre"
+			          }
+			        },
+			        "asistencia_tutoria.fecha_registro.me": {
+			          "Target": {
+			            "Entity": "asistencia_tutoria.fecha_registro.me"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "asistencia_tutoria.fecha_registro.trimestre"
+			            },
+			            "Object": {
+			              "Role": "asistencia_tutoria.fecha_registro.me"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "trimestres_have_me2"
+			        },
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "asistencia_tutoria.fecha_registro.me"
+			            },
+			            "Object": {
+			              "Role": "asistencia_tutoria.fecha_registro.trimestre"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "me_have_trimestres2"
+			        },
+			        {
+			          "Preposition": {
+			            "Subject": {
+			              "Role": "asistencia_tutoria.fecha_registro.me"
+			            },
+			            "Prepositions": [
+			              {
+			                "in": {
+			                  "State": "Generated"
+			                }
+			              }
+			            ],
+			            "Object": {
+			              "Role": "asistencia_tutoria.fecha_registro.trimestre"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "me_are_in_trimestres1"
+			        }
+			      ]
+			    },
+			    "asistencia_tutoria_fecha_registro_año_has_asistencia_tutoria_fecha_registro_trimestre": {
+			      "Binding": {
+			        "ConceptualEntity": "asistencia_tutoria"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "asistencia_tutoria.fecha_registro.año": {
+			          "Target": {
+			            "Entity": "asistencia_tutoria.fecha_registro.año"
+			          }
+			        },
+			        "asistencia_tutoria.fecha_registro.trimestre": {
+			          "Target": {
+			            "Entity": "asistencia_tutoria.fecha_registro.trimestre"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "asistencia_tutoria.fecha_registro.año"
+			            },
+			            "Object": {
+			              "Role": "asistencia_tutoria.fecha_registro.trimestre"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "años_have_trimestres2"
+			        },
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "asistencia_tutoria.fecha_registro.trimestre"
+			            },
+			            "Object": {
+			              "Role": "asistencia_tutoria.fecha_registro.año"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "trimestres_have_años2"
+			        },
+			        {
+			          "Preposition": {
+			            "Subject": {
+			              "Role": "asistencia_tutoria.fecha_registro.trimestre"
+			            },
+			            "Prepositions": [
+			              {
+			                "in": {
+			                  "State": "Generated"
+			                }
+			              }
+			            ],
+			            "Object": {
+			              "Role": "asistencia_tutoria.fecha_registro.año"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "trimestres_are_in_años1"
+			        }
+			      ]
+			    },
+			    "asistencia_tutoria_fecha_registro_jerarquía_de_fecha_has_asistencia_tutoria_fecha_registro_día": {
+			      "Binding": {
+			        "ConceptualEntity": "asistencia_tutoria"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "asistencia_tutoria.fecha_registro.jerarquía_de_fecha": {
+			          "Target": {
+			            "Entity": "asistencia_tutoria.fecha_registro.jerarquía_de_fecha"
+			          }
+			        },
+			        "asistencia_tutoria.fecha_registro.día": {
+			          "Target": {
+			            "Entity": "asistencia_tutoria.fecha_registro.día"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "asistencia_tutoria.fecha_registro.jerarquía_de_fecha"
+			            },
+			            "Object": {
+			              "Role": "asistencia_tutoria.fecha_registro.día"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "jerarquía_de_fechas_have_días2"
+			        }
+			      ]
+			    },
+			    "asistencia_tutoria_fecha_registro_jerarquía_de_fecha_has_asistencia_tutoria_fecha_registro_me": {
+			      "Binding": {
+			        "ConceptualEntity": "asistencia_tutoria"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "asistencia_tutoria.fecha_registro.jerarquía_de_fecha": {
+			          "Target": {
+			            "Entity": "asistencia_tutoria.fecha_registro.jerarquía_de_fecha"
+			          }
+			        },
+			        "asistencia_tutoria.fecha_registro.me": {
+			          "Target": {
+			            "Entity": "asistencia_tutoria.fecha_registro.me"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "asistencia_tutoria.fecha_registro.jerarquía_de_fecha"
+			            },
+			            "Object": {
+			              "Role": "asistencia_tutoria.fecha_registro.me"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "jerarquía_de_fechas_have_me2"
+			        }
+			      ]
+			    },
+			    "asistencia_tutoria_fecha_registro_jerarquía_de_fecha_has_asistencia_tutoria_fecha_registro_trimestre": {
+			      "Binding": {
+			        "ConceptualEntity": "asistencia_tutoria"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "asistencia_tutoria.fecha_registro.jerarquía_de_fecha": {
+			          "Target": {
+			            "Entity": "asistencia_tutoria.fecha_registro.jerarquía_de_fecha"
+			          }
+			        },
+			        "asistencia_tutoria.fecha_registro.trimestre": {
+			          "Target": {
+			            "Entity": "asistencia_tutoria.fecha_registro.trimestre"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "asistencia_tutoria.fecha_registro.jerarquía_de_fecha"
+			            },
+			            "Object": {
+			              "Role": "asistencia_tutoria.fecha_registro.trimestre"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "jerarquía_de_fechas_have_trimestres2"
+			        }
+			      ]
+			    },
+			    "asistencia_tutoria_fecha_registro_jerarquía_de_fecha_has_asistencia_tutoria_fecha_registro_año": {
+			      "Binding": {
+			        "ConceptualEntity": "asistencia_tutoria"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "asistencia_tutoria.fecha_registro.jerarquía_de_fecha": {
+			          "Target": {
+			            "Entity": "asistencia_tutoria.fecha_registro.jerarquía_de_fecha"
+			          }
+			        },
+			        "asistencia_tutoria.fecha_registro.año": {
+			          "Target": {
+			            "Entity": "asistencia_tutoria.fecha_registro.año"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "asistencia_tutoria.fecha_registro.jerarquía_de_fecha"
+			            },
+			            "Object": {
+			              "Role": "asistencia_tutoria.fecha_registro.año"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "jerarquía_de_fechas_have_años2"
+			        }
+			      ]
+			    },
+			    "asistencia_tutoria_fecha_registro_has_jerarquía_de_fecha": {
+			      "Binding": {
+			        "ConceptualEntity": "asistencia_tutoria"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "asistencia_tutoria.fecha_registro": {
+			          "Target": {
+			            "Entity": "asistencia_tutoria.fecha_registro"
+			          }
+			        },
+			        "asistencia_tutoria.fecha_registro.jerarquía_de_fecha": {
+			          "Target": {
+			            "Entity": "asistencia_tutoria.fecha_registro.jerarquía_de_fecha"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "asistencia_tutoria.fecha_registro"
+			            },
+			            "Object": {
+			              "Role": "asistencia_tutoria.fecha_registro.jerarquía_de_fecha"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "fecha_registros_have_jerarquía_de_fechas"
+			        }
+			      ]
+			    },
+			    "tabla_usuario_fecha_nacimiento_me_has_tabla_usuario_fecha_nacimiento_día": {
+			      "Binding": {
+			        "ConceptualEntity": "Tabla Usuario"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "tabla_usuario.fecha_nacimiento.me": {
+			          "Target": {
+			            "Entity": "tabla_usuario.fecha_nacimiento.me"
+			          }
+			        },
+			        "tabla_usuario.fecha_nacimiento.día": {
+			          "Target": {
+			            "Entity": "tabla_usuario.fecha_nacimiento.día"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tabla_usuario.fecha_nacimiento.me"
+			            },
+			            "Object": {
+			              "Role": "tabla_usuario.fecha_nacimiento.día"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "me_have_días3"
+			        },
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tabla_usuario.fecha_nacimiento.día"
+			            },
+			            "Object": {
+			              "Role": "tabla_usuario.fecha_nacimiento.me"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "días_have_me3"
+			        },
+			        {
+			          "Preposition": {
+			            "Subject": {
+			              "Role": "tabla_usuario.fecha_nacimiento.día"
+			            },
+			            "Prepositions": [
+			              {
+			                "in": {
+			                  "State": "Generated"
+			                }
+			              }
+			            ],
+			            "Object": {
+			              "Role": "tabla_usuario.fecha_nacimiento.me"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "días_are_in_me"
+			        }
+			      ]
+			    },
+			    "tabla_usuario_fecha_nacimiento_trimestre_has_tabla_usuario_fecha_nacimiento_me": {
+			      "Binding": {
+			        "ConceptualEntity": "Tabla Usuario"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "tabla_usuario.fecha_nacimiento.trimestre": {
+			          "Target": {
+			            "Entity": "tabla_usuario.fecha_nacimiento.trimestre"
+			          }
+			        },
+			        "tabla_usuario.fecha_nacimiento.me": {
+			          "Target": {
+			            "Entity": "tabla_usuario.fecha_nacimiento.me"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tabla_usuario.fecha_nacimiento.trimestre"
+			            },
+			            "Object": {
+			              "Role": "tabla_usuario.fecha_nacimiento.me"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "trimestres_have_me3"
+			        },
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tabla_usuario.fecha_nacimiento.me"
+			            },
+			            "Object": {
+			              "Role": "tabla_usuario.fecha_nacimiento.trimestre"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "me_have_trimestres3"
+			        },
+			        {
+			          "Preposition": {
+			            "Subject": {
+			              "Role": "tabla_usuario.fecha_nacimiento.me"
+			            },
+			            "Prepositions": [
+			              {
+			                "in": {
+			                  "State": "Generated"
+			                }
+			              }
+			            ],
+			            "Object": {
+			              "Role": "tabla_usuario.fecha_nacimiento.trimestre"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "me_are_in_trimestres"
+			        }
+			      ]
+			    },
+			    "tabla_usuario_fecha_nacimiento_año_has_tabla_usuario_fecha_nacimiento_trimestre": {
+			      "Binding": {
+			        "ConceptualEntity": "Tabla Usuario"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "tabla_usuario.fecha_nacimiento.año": {
+			          "Target": {
+			            "Entity": "tabla_usuario.fecha_nacimiento.año"
+			          }
+			        },
+			        "tabla_usuario.fecha_nacimiento.trimestre": {
+			          "Target": {
+			            "Entity": "tabla_usuario.fecha_nacimiento.trimestre"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tabla_usuario.fecha_nacimiento.año"
+			            },
+			            "Object": {
+			              "Role": "tabla_usuario.fecha_nacimiento.trimestre"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "años_have_trimestres3"
+			        },
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tabla_usuario.fecha_nacimiento.trimestre"
+			            },
+			            "Object": {
+			              "Role": "tabla_usuario.fecha_nacimiento.año"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "trimestres_have_años3"
+			        },
+			        {
+			          "Preposition": {
+			            "Subject": {
+			              "Role": "tabla_usuario.fecha_nacimiento.trimestre"
+			            },
+			            "Prepositions": [
+			              {
+			                "in": {
+			                  "State": "Generated"
+			                }
+			              }
+			            ],
+			            "Object": {
+			              "Role": "tabla_usuario.fecha_nacimiento.año"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "trimestres_are_in_años"
+			        }
+			      ]
+			    },
+			    "tabla_usuario_fecha_nacimiento_jerarquía_de_fecha_has_tabla_usuario_fecha_nacimiento_día": {
+			      "Binding": {
+			        "ConceptualEntity": "Tabla Usuario"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "tabla_usuario.fecha_nacimiento.jerarquía_de_fecha": {
+			          "Target": {
+			            "Entity": "tabla_usuario.fecha_nacimiento.jerarquía_de_fecha"
+			          }
+			        },
+			        "tabla_usuario.fecha_nacimiento.día": {
+			          "Target": {
+			            "Entity": "tabla_usuario.fecha_nacimiento.día"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tabla_usuario.fecha_nacimiento.jerarquía_de_fecha"
+			            },
+			            "Object": {
+			              "Role": "tabla_usuario.fecha_nacimiento.día"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "jerarquía_de_fechas_have_días3"
+			        }
+			      ]
+			    },
+			    "tabla_usuario_fecha_nacimiento_jerarquía_de_fecha_has_tabla_usuario_fecha_nacimiento_me": {
+			      "Binding": {
+			        "ConceptualEntity": "Tabla Usuario"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "tabla_usuario.fecha_nacimiento.jerarquía_de_fecha": {
+			          "Target": {
+			            "Entity": "tabla_usuario.fecha_nacimiento.jerarquía_de_fecha"
+			          }
+			        },
+			        "tabla_usuario.fecha_nacimiento.me": {
+			          "Target": {
+			            "Entity": "tabla_usuario.fecha_nacimiento.me"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tabla_usuario.fecha_nacimiento.jerarquía_de_fecha"
+			            },
+			            "Object": {
+			              "Role": "tabla_usuario.fecha_nacimiento.me"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "jerarquía_de_fechas_have_me3"
+			        }
+			      ]
+			    },
+			    "tabla_usuario_fecha_nacimiento_jerarquía_de_fecha_has_tabla_usuario_fecha_nacimiento_trimestre": {
+			      "Binding": {
+			        "ConceptualEntity": "Tabla Usuario"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "tabla_usuario.fecha_nacimiento.jerarquía_de_fecha": {
+			          "Target": {
+			            "Entity": "tabla_usuario.fecha_nacimiento.jerarquía_de_fecha"
+			          }
+			        },
+			        "tabla_usuario.fecha_nacimiento.trimestre": {
+			          "Target": {
+			            "Entity": "tabla_usuario.fecha_nacimiento.trimestre"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tabla_usuario.fecha_nacimiento.jerarquía_de_fecha"
+			            },
+			            "Object": {
+			              "Role": "tabla_usuario.fecha_nacimiento.trimestre"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "jerarquía_de_fechas_have_trimestres3"
+			        }
+			      ]
+			    },
+			    "tabla_usuario_fecha_nacimiento_jerarquía_de_fecha_has_tabla_usuario_fecha_nacimiento_año": {
+			      "Binding": {
+			        "ConceptualEntity": "Tabla Usuario"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "tabla_usuario.fecha_nacimiento.jerarquía_de_fecha": {
+			          "Target": {
+			            "Entity": "tabla_usuario.fecha_nacimiento.jerarquía_de_fecha"
+			          }
+			        },
+			        "tabla_usuario.fecha_nacimiento.año": {
+			          "Target": {
+			            "Entity": "tabla_usuario.fecha_nacimiento.año"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tabla_usuario.fecha_nacimiento.jerarquía_de_fecha"
+			            },
+			            "Object": {
+			              "Role": "tabla_usuario.fecha_nacimiento.año"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "jerarquía_de_fechas_have_años3"
+			        }
+			      ]
+			    },
+			    "tabla_usuario_fecha_nacimiento_has_jerarquía_de_fecha": {
+			      "Binding": {
+			        "ConceptualEntity": "Tabla Usuario"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "tabla_usuario.fecha_nacimiento": {
+			          "Target": {
+			            "Entity": "tabla_usuario.fecha_nacimiento"
+			          }
+			        },
+			        "tabla_usuario.fecha_nacimiento.jerarquía_de_fecha": {
+			          "Target": {
+			            "Entity": "tabla_usuario.fecha_nacimiento.jerarquía_de_fecha"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tabla_usuario.fecha_nacimiento"
+			            },
+			            "Object": {
+			              "Role": "tabla_usuario.fecha_nacimiento.jerarquía_de_fecha"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "fecha_nacimientos_have_jerarquía_de_fechas"
+			        }
+			      ]
+			    },
+			    "tutoria_has_asistencia_tutoria": {
+			      "Binding": {
+			        "ConceptualEntity": "Tutoria"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "tutoria": {
+			          "Target": {
+			            "Entity": "tutoria"
+			          }
+			        },
+			        "asistencia_tutoria": {
+			          "Target": {
+			            "Entity": "asistencia_tutoria"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tutoria"
+			            },
+			            "Object": {
+			              "Role": "asistencia_tutoria"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "tutorias_have_asistencia_tutorias"
+			        }
+			      ]
+			    },
+			    "tutoria_has_tabla_usuario": {
+			      "Binding": {
+			        "ConceptualEntity": "Tutoria"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "tutoria": {
+			          "Target": {
+			            "Entity": "tutoria"
+			          }
+			        },
+			        "tabla_usuario": {
+			          "Target": {
+			            "Entity": "tabla_usuario"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tutoria"
+			            },
+			            "Object": {
+			              "Role": "tabla_usuario"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "tutorias_have_tabla_usuarios"
+			        },
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tabla_usuario"
+			            },
+			            "Object": {
+			              "Role": "tutoria"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "tabla_usuarios_have_tutorias"
+			        }
+			      ]
+			    },
+			    "tutoria_has_temaselect": {
+			      "Binding": {
+			        "ConceptualEntity": "Tutoria"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "tutoria": {
+			          "Target": {
+			            "Entity": "tutoria"
+			          }
+			        },
+			        "temaselect": {
+			          "Target": {
+			            "Entity": "temaselect"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tutoria"
+			            },
+			            "Object": {
+			              "Role": "temaselect"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "tutorias_have_temaselect"
+			        },
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "temaselect"
+			            },
+			            "Object": {
+			              "Role": "tutoria"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "temaselect_have_tutorias"
+			        }
+			      ]
+			    },
+			    "asistencia_tutoria_has_tutoria": {
+			      "Binding": {
+			        "ConceptualEntity": "asistencia_tutoria"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "asistencia_tutoria": {
+			          "Target": {
+			            "Entity": "asistencia_tutoria"
+			          }
+			        },
+			        "tutoria": {
+			          "Target": {
+			            "Entity": "tutoria"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "asistencia_tutoria"
+			            },
+			            "Object": {
+			              "Role": "tutoria"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "asistencia_tutorias_have_tutorias"
+			        }
+			      ]
+			    },
+			    "tabla_usuario_has_carreraselect": {
+			      "Binding": {
+			        "ConceptualEntity": "Tabla Usuario"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "tabla_usuario": {
+			          "Target": {
+			            "Entity": "tabla_usuario"
+			          }
+			        },
+			        "carreraselect": {
+			          "Target": {
+			            "Entity": "carreraselect"
+			          },
+			          "Nouns": [
+			            {
+			              "carrera": {
+			                "State": "Generated"
+			              }
+			            }
+			          ]
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tabla_usuario"
+			            },
+			            "Object": {
+			              "Role": "carreraselect"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "tabla_usuarios_have_carreraselect"
+			        },
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "carreraselect"
+			            },
+			            "Object": {
+			              "Role": "tabla_usuario"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "carreraselect_have_tabla_usuarios"
+			        }
+			      ]
+			    },
+			    "tutoria_has_firmada_estudiante": {
+			      "Binding": {
+			        "ConceptualEntity": "Tutoria"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "tutoria": {
+			          "Target": {
+			            "Entity": "tutoria"
+			          }
+			        },
+			        "tutoria.firmada_estudiante": {
+			          "Target": {
+			            "Entity": "tutoria.firmada_estudiante"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tutoria"
+			            },
+			            "Object": {
+			              "Role": "tutoria.firmada_estudiante"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "tutorias_have_firmada_estudiantes"
+			        }
+			      ]
+			    },
+			    "tutoria_has_firma_docente_habilitada": {
+			      "Binding": {
+			        "ConceptualEntity": "Tutoria"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "tutoria": {
+			          "Target": {
+			            "Entity": "tutoria"
+			          }
+			        },
+			        "tutoria.firma_docente_habilitada": {
+			          "Target": {
+			            "Entity": "tutoria.firma_docente_habilitada"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tutoria"
+			            },
+			            "Object": {
+			              "Role": "tutoria.firma_docente_habilitada"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "tutorias_have_firma_docente_habilitadas"
+			        }
+			      ]
+			    },
+			    "tutoria_has_hora_fin_real": {
+			      "Binding": {
+			        "ConceptualEntity": "Tutoria"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "tutoria": {
+			          "Target": {
+			            "Entity": "tutoria"
+			          }
+			        },
+			        "tutoria.hora_fin_real": {
+			          "Target": {
+			            "Entity": "tutoria.hora_fin_real"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tutoria"
+			            },
+			            "Object": {
+			              "Role": "tutoria.hora_fin_real"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "tutorias_have_hora_fin_reals"
+			        }
+			      ]
+			    },
+			    "tutoria_has_hora_inicio_real": {
+			      "Binding": {
+			        "ConceptualEntity": "Tutoria"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "tutoria": {
+			          "Target": {
+			            "Entity": "tutoria"
+			          }
+			        },
+			        "tutoria.hora_inicio_real": {
+			          "Target": {
+			            "Entity": "tutoria.hora_inicio_real"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tutoria"
+			            },
+			            "Object": {
+			              "Role": "tutoria.hora_inicio_real"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "tutorias_have_hora_inicio_reals"
+			        }
+			      ]
+			    },
+			    "tutoria_has_fecha_hora_agendada": {
+			      "Binding": {
+			        "ConceptualEntity": "Tutoria"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "tutoria": {
+			          "Target": {
+			            "Entity": "tutoria"
+			          }
+			        },
+			        "tutoria.fecha_hora_agendada": {
+			          "Target": {
+			            "Entity": "tutoria.fecha_hora_agendada"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tutoria"
+			            },
+			            "Object": {
+			              "Role": "tutoria.fecha_hora_agendada"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "tutorias_have_fecha_hora_agendadas"
+			        }
+			      ]
+			    },
+			    "tutoria_has_docente_id": {
+			      "Binding": {
+			        "ConceptualEntity": "Tutoria"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "tutoria": {
+			          "Target": {
+			            "Entity": "tutoria"
+			          }
+			        },
+			        "tutoria.docente_id": {
+			          "Target": {
+			            "Entity": "tutoria.docente_id"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tutoria"
+			            },
+			            "Object": {
+			              "Role": "tutoria.docente_id"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "tutorias_have_docente_ids"
+			        }
+			      ]
+			    },
+			    "tutoria_has_id": {
+			      "Binding": {
+			        "ConceptualEntity": "Tutoria"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "tutoria": {
+			          "Target": {
+			            "Entity": "tutoria"
+			          }
+			        },
+			        "tutoria.id": {
+			          "Target": {
+			            "Entity": "tutoria.id"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tutoria"
+			            },
+			            "Object": {
+			              "Role": "tutoria.id"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "tutorias_have_ids"
+			        },
+			        {
+			          "Name": {
+			            "Subject": {
+			              "Role": "tutoria"
+			            },
+			            "Name": {
+			              "Role": "tutoria.id"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "ids_are_names_IDs_of_tutorias"
+			        }
+			      ]
+			    },
+			    "temaselect_has_nombre_tema": {
+			      "Binding": {
+			        "ConceptualEntity": "tema?select=*"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "temaselect": {
+			          "Target": {
+			            "Entity": "temaselect"
+			          }
+			        },
+			        "temaselect.nombre_tema": {
+			          "Target": {
+			            "Entity": "temaselect.nombre_tema"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "temaselect"
+			            },
+			            "Object": {
+			              "Role": "temaselect.nombre_tema"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "temaselect_have_nombre_temas"
+			        }
+			      ]
+			    },
+			    "temaselect_has_id": {
+			      "Binding": {
+			        "ConceptualEntity": "tema?select=*"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "temaselect": {
+			          "Target": {
+			            "Entity": "temaselect"
+			          }
+			        },
+			        "temaselect.id": {
+			          "Target": {
+			            "Entity": "temaselect.id"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "temaselect"
+			            },
+			            "Object": {
+			              "Role": "temaselect.id"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "temaselect_have_ids"
+			        },
+			        {
+			          "Name": {
+			            "Subject": {
+			              "Role": "temaselect"
+			            },
+			            "Name": {
+			              "Role": "temaselect.id"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "ids_are_names_IDs_of_temaselect"
+			        }
+			      ]
+			    },
+			    "horarioselect_has_usuario_id": {
+			      "Binding": {
+			        "ConceptualEntity": "horario?select=*"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "horarioselect": {
+			          "Target": {
+			            "Entity": "horarioselect"
+			          }
+			        },
+			        "horarioselect.usuario_id": {
+			          "Target": {
+			            "Entity": "horarioselect.usuario_id"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "horarioselect"
+			            },
+			            "Object": {
+			              "Role": "horarioselect.usuario_id"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "horarioselect_have_usuario_ids"
+			        }
+			      ]
+			    },
+			    "horarioselect_has_salon": {
+			      "Binding": {
+			        "ConceptualEntity": "horario?select=*"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "horarioselect": {
+			          "Target": {
+			            "Entity": "horarioselect"
+			          }
+			        },
+			        "horarioselect.salon": {
+			          "Target": {
+			            "Entity": "horarioselect.salon"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "horarioselect"
+			            },
+			            "Object": {
+			              "Role": "horarioselect.salon"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "horarioselect_have_salons"
+			        }
+			      ]
+			    },
+			    "horarioselect_has_hora_fin": {
+			      "Binding": {
+			        "ConceptualEntity": "horario?select=*"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "horarioselect": {
+			          "Target": {
+			            "Entity": "horarioselect"
+			          }
+			        },
+			        "horarioselect.hora_fin": {
+			          "Target": {
+			            "Entity": "horarioselect.hora_fin"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "horarioselect"
+			            },
+			            "Object": {
+			              "Role": "horarioselect.hora_fin"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "horarioselect_have_hora_fins"
+			        }
+			      ]
+			    },
+			    "horarioselect_has_hora_inicio": {
+			      "Binding": {
+			        "ConceptualEntity": "horario?select=*"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "horarioselect": {
+			          "Target": {
+			            "Entity": "horarioselect"
+			          }
+			        },
+			        "horarioselect.hora_inicio": {
+			          "Target": {
+			            "Entity": "horarioselect.hora_inicio"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "horarioselect"
+			            },
+			            "Object": {
+			              "Role": "horarioselect.hora_inicio"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "horarioselect_have_hora_inicios"
+			        }
+			      ]
+			    },
+			    "horarioselect_has_dia_semana": {
+			      "Binding": {
+			        "ConceptualEntity": "horario?select=*"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "horarioselect": {
+			          "Target": {
+			            "Entity": "horarioselect"
+			          }
+			        },
+			        "horarioselect.dia_semana": {
+			          "Target": {
+			            "Entity": "horarioselect.dia_semana"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "horarioselect"
+			            },
+			            "Object": {
+			              "Role": "horarioselect.dia_semana"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "horarioselect_have_dia_semanas"
+			        }
+			      ]
+			    },
+			    "horarioselect_has_id": {
+			      "Binding": {
+			        "ConceptualEntity": "horario?select=*"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "horarioselect": {
+			          "Target": {
+			            "Entity": "horarioselect"
+			          }
+			        },
+			        "horarioselect.id": {
+			          "Target": {
+			            "Entity": "horarioselect.id"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "horarioselect"
+			            },
+			            "Object": {
+			              "Role": "horarioselect.id"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "horarioselect_have_ids"
+			        },
+			        {
+			          "Name": {
+			            "Subject": {
+			              "Role": "horarioselect"
+			            },
+			            "Name": {
+			              "Role": "horarioselect.id"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "ids_are_names_IDs_of_horarioselect"
+			        }
+			      ]
+			    },
+			    "historial_cambiosselect_has_valor_nuevo": {
+			      "Binding": {
+			        "ConceptualEntity": "historial_cambios?select=*"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "historial_cambiosselect": {
+			          "Target": {
+			            "Entity": "historial_cambiosselect"
+			          }
+			        },
+			        "historial_cambiosselect.valor_nuevo": {
+			          "Target": {
+			            "Entity": "historial_cambiosselect.valor_nuevo"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "historial_cambiosselect"
+			            },
+			            "Object": {
+			              "Role": "historial_cambiosselect.valor_nuevo"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "historial_cambiosselect_have_valor_nuevo"
+			        }
+			      ]
+			    },
+			    "historial_cambiosselect_has_valor_anterior": {
+			      "Binding": {
+			        "ConceptualEntity": "historial_cambios?select=*"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "historial_cambiosselect": {
+			          "Target": {
+			            "Entity": "historial_cambiosselect"
+			          }
+			        },
+			        "historial_cambiosselect.valor_anterior": {
+			          "Target": {
+			            "Entity": "historial_cambiosselect.valor_anterior"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "historial_cambiosselect"
+			            },
+			            "Object": {
+			              "Role": "historial_cambiosselect.valor_anterior"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "historial_cambiosselect_have_valor_anterior"
+			        }
+			      ]
+			    },
+			    "historial_cambiosselect_has_campo_modificado": {
+			      "Binding": {
+			        "ConceptualEntity": "historial_cambios?select=*"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "historial_cambiosselect": {
+			          "Target": {
+			            "Entity": "historial_cambiosselect"
+			          }
+			        },
+			        "historial_cambiosselect.campo_modificado": {
+			          "Target": {
+			            "Entity": "historial_cambiosselect.campo_modificado"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "historial_cambiosselect"
+			            },
+			            "Object": {
+			              "Role": "historial_cambiosselect.campo_modificado"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "historial_cambiosselect_have_campo_modificados"
+			        }
+			      ]
+			    },
+			    "historial_cambiosselect_has_fecha_hora_cambio": {
+			      "Binding": {
+			        "ConceptualEntity": "historial_cambios?select=*"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "historial_cambiosselect": {
+			          "Target": {
+			            "Entity": "historial_cambiosselect"
+			          }
+			        },
+			        "historial_cambiosselect.fecha_hora_cambio": {
+			          "Target": {
+			            "Entity": "historial_cambiosselect.fecha_hora_cambio"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "historial_cambiosselect"
+			            },
+			            "Object": {
+			              "Role": "historial_cambiosselect.fecha_hora_cambio"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "historial_cambiosselect_have_fecha_hora_cambios"
+			        }
+			      ]
+			    },
+			    "historial_cambiosselect_has_horario_id": {
+			      "Binding": {
+			        "ConceptualEntity": "historial_cambios?select=*"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "historial_cambiosselect": {
+			          "Target": {
+			            "Entity": "historial_cambiosselect"
+			          }
+			        },
+			        "historial_cambiosselect.horario_id": {
+			          "Target": {
+			            "Entity": "historial_cambiosselect.horario_id"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "historial_cambiosselect"
+			            },
+			            "Object": {
+			              "Role": "historial_cambiosselect.horario_id"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "historial_cambiosselect_have_horario_ids"
+			        }
+			      ]
+			    },
+			    "historial_cambiosselect_has_usuario_id": {
+			      "Binding": {
+			        "ConceptualEntity": "historial_cambios?select=*"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "historial_cambiosselect": {
+			          "Target": {
+			            "Entity": "historial_cambiosselect"
+			          }
+			        },
+			        "historial_cambiosselect.usuario_id": {
+			          "Target": {
+			            "Entity": "historial_cambiosselect.usuario_id"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "historial_cambiosselect"
+			            },
+			            "Object": {
+			              "Role": "historial_cambiosselect.usuario_id"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "historial_cambiosselect_have_usuario_ids"
+			        }
+			      ]
+			    },
+			    "historial_cambiosselect_has_id": {
+			      "Binding": {
+			        "ConceptualEntity": "historial_cambios?select=*"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "historial_cambiosselect": {
+			          "Target": {
+			            "Entity": "historial_cambiosselect"
+			          }
+			        },
+			        "historial_cambiosselect.id": {
+			          "Target": {
+			            "Entity": "historial_cambiosselect.id"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "historial_cambiosselect"
+			            },
+			            "Object": {
+			              "Role": "historial_cambiosselect.id"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "historial_cambiosselect_have_ids"
+			        },
+			        {
+			          "Name": {
+			            "Subject": {
+			              "Role": "historial_cambiosselect"
+			            },
+			            "Name": {
+			              "Role": "historial_cambiosselect.id"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "ids_are_names_IDs_of_historial_cambiosselect"
+			        }
+			      ]
+			    },
+			    "carreraselect_has_nombre_carrera": {
+			      "Binding": {
+			        "ConceptualEntity": "carrera?select=*"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "carreraselect": {
+			          "Target": {
+			            "Entity": "carreraselect"
+			          }
+			        },
+			        "carreraselect.nombre_carrera": {
+			          "Target": {
+			            "Entity": "carreraselect.nombre_carrera"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "carreraselect"
+			            },
+			            "Object": {
+			              "Role": "carreraselect.nombre_carrera"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "carreraselect_have_nombre_carrera"
+			        }
+			      ]
+			    },
+			    "carreraselect_has_id": {
+			      "Binding": {
+			        "ConceptualEntity": "carrera?select=*"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "carreraselect": {
+			          "Target": {
+			            "Entity": "carreraselect"
+			          }
+			        },
+			        "carreraselect.id": {
+			          "Target": {
+			            "Entity": "carreraselect.id"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "carreraselect"
+			            },
+			            "Object": {
+			              "Role": "carreraselect.id"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "carreraselect_have_ids"
+			        },
+			        {
+			          "Name": {
+			            "Subject": {
+			              "Role": "carreraselect"
+			            },
+			            "Name": {
+			              "Role": "carreraselect.id"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "ids_are_names_IDs_of_carreraselect"
+			        }
+			      ]
+			    },
+			    "asistencia_tutoria_has_fecha_registro": {
+			      "Binding": {
+			        "ConceptualEntity": "asistencia_tutoria"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "asistencia_tutoria": {
+			          "Target": {
+			            "Entity": "asistencia_tutoria"
+			          }
+			        },
+			        "asistencia_tutoria.fecha_registro": {
+			          "Target": {
+			            "Entity": "asistencia_tutoria.fecha_registro"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "asistencia_tutoria"
+			            },
+			            "Object": {
+			              "Role": "asistencia_tutoria.fecha_registro"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "asistencia_tutorias_have_fecha_registros"
+			        }
+			      ]
+			    },
+			    "asistencia_tutoria_has_observacione": {
+			      "Binding": {
+			        "ConceptualEntity": "asistencia_tutoria"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "asistencia_tutoria": {
+			          "Target": {
+			            "Entity": "asistencia_tutoria"
+			          }
+			        },
+			        "asistencia_tutoria.observacione": {
+			          "Target": {
+			            "Entity": "asistencia_tutoria.observacione"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "asistencia_tutoria"
+			            },
+			            "Object": {
+			              "Role": "asistencia_tutoria.observacione"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "asistencia_tutorias_have_observaciones"
+			        }
+			      ]
+			    },
+			    "asistencia_tutoria_has_estudiante_id": {
+			      "Binding": {
+			        "ConceptualEntity": "asistencia_tutoria"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "asistencia_tutoria": {
+			          "Target": {
+			            "Entity": "asistencia_tutoria"
+			          }
+			        },
+			        "asistencia_tutoria.estudiante_id": {
+			          "Target": {
+			            "Entity": "asistencia_tutoria.estudiante_id"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "asistencia_tutoria"
+			            },
+			            "Object": {
+			              "Role": "asistencia_tutoria.estudiante_id"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "asistencia_tutorias_have_estudiante_ids"
+			        }
+			      ]
+			    },
+			    "asistencia_tutoria_has_tutoria_id": {
+			      "Binding": {
+			        "ConceptualEntity": "asistencia_tutoria"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "asistencia_tutoria": {
+			          "Target": {
+			            "Entity": "asistencia_tutoria"
+			          }
+			        },
+			        "asistencia_tutoria.tutoria_id": {
+			          "Target": {
+			            "Entity": "asistencia_tutoria.tutoria_id"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "asistencia_tutoria"
+			            },
+			            "Object": {
+			              "Role": "asistencia_tutoria.tutoria_id"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "asistencia_tutorias_have_tutoria_ids"
+			        }
+			      ]
+			    },
+			    "asistencia_tutoria_has_id": {
+			      "Binding": {
+			        "ConceptualEntity": "asistencia_tutoria"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "asistencia_tutoria": {
+			          "Target": {
+			            "Entity": "asistencia_tutoria"
+			          }
+			        },
+			        "asistencia_tutoria.id": {
+			          "Target": {
+			            "Entity": "asistencia_tutoria.id"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "asistencia_tutoria"
+			            },
+			            "Object": {
+			              "Role": "asistencia_tutoria.id"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "asistencia_tutorias_have_ids"
+			        },
+			        {
+			          "Name": {
+			            "Subject": {
+			              "Role": "asistencia_tutoria"
+			            },
+			            "Name": {
+			              "Role": "asistencia_tutoria.id"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "ids_are_names_IDs_of_asistencia_tutorias"
+			        }
+			      ]
+			    },
+			    "tabla_usuario_has_contraseña": {
+			      "Binding": {
+			        "ConceptualEntity": "Tabla Usuario"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "tabla_usuario": {
+			          "Target": {
+			            "Entity": "tabla_usuario"
+			          }
+			        },
+			        "tabla_usuario.contraseña": {
+			          "Target": {
+			            "Entity": "tabla_usuario.contraseña"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tabla_usuario"
+			            },
+			            "Object": {
+			              "Role": "tabla_usuario.contraseña"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "tabla_usuarios_have_contraseñas"
+			        }
+			      ]
+			    },
+			    "tabla_usuario_has_correo_institucional": {
+			      "Binding": {
+			        "ConceptualEntity": "Tabla Usuario"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "tabla_usuario": {
+			          "Target": {
+			            "Entity": "tabla_usuario"
+			          }
+			        },
+			        "tabla_usuario.correo_institucional": {
+			          "Target": {
+			            "Entity": "tabla_usuario.correo_institucional"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tabla_usuario"
+			            },
+			            "Object": {
+			              "Role": "tabla_usuario.correo_institucional"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "tabla_usuarios_have_correo_institucionals"
+			        }
+			      ]
+			    },
+			    "tabla_usuario_has_fecha_nacimiento": {
+			      "Binding": {
+			        "ConceptualEntity": "Tabla Usuario"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "tabla_usuario": {
+			          "Target": {
+			            "Entity": "tabla_usuario"
+			          }
+			        },
+			        "tabla_usuario.fecha_nacimiento": {
+			          "Target": {
+			            "Entity": "tabla_usuario.fecha_nacimiento"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tabla_usuario"
+			            },
+			            "Object": {
+			              "Role": "tabla_usuario.fecha_nacimiento"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "tabla_usuarios_have_fecha_nacimientos"
+			        }
+			      ]
+			    },
+			    "tabla_usuario_has_apellido": {
+			      "Binding": {
+			        "ConceptualEntity": "Tabla Usuario"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "tabla_usuario": {
+			          "Target": {
+			            "Entity": "tabla_usuario"
+			          }
+			        },
+			        "tabla_usuario.apellido": {
+			          "Target": {
+			            "Entity": "tabla_usuario.apellido"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tabla_usuario"
+			            },
+			            "Object": {
+			              "Role": "tabla_usuario.apellido"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "tabla_usuarios_have_apellidos"
+			        }
+			      ]
+			    },
+			    "tabla_usuario_has_nombre": {
+			      "Binding": {
+			        "ConceptualEntity": "Tabla Usuario"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "tabla_usuario": {
+			          "Target": {
+			            "Entity": "tabla_usuario"
+			          }
+			        },
+			        "tabla_usuario.nombre": {
+			          "Target": {
+			            "Entity": "tabla_usuario.nombre"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tabla_usuario"
+			            },
+			            "Object": {
+			              "Role": "tabla_usuario.nombre"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "tabla_usuarios_have_nombres"
+			        }
+			      ]
+			    },
+			    "tabla_usuario_has_id": {
+			      "Binding": {
+			        "ConceptualEntity": "Tabla Usuario"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "tabla_usuario": {
+			          "Target": {
+			            "Entity": "tabla_usuario"
+			          }
+			        },
+			        "tabla_usuario.id": {
+			          "Target": {
+			            "Entity": "tabla_usuario.id"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tabla_usuario"
+			            },
+			            "Object": {
+			              "Role": "tabla_usuario.id"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "tabla_usuarios_have_ids"
+			        },
+			        {
+			          "Name": {
+			            "Subject": {
+			              "Role": "tabla_usuario"
+			            },
+			            "Name": {
+			              "Role": "tabla_usuario.id"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "ids_are_names_IDs_of_tabla_usuarios"
+			        }
+			      ]
+			    },
+			    "tutoria_hora_inicio_real_jerarquía_de_fecha_has_tutoria_hora_inicio_real_año": {
+			      "Binding": {
+			        "ConceptualEntity": "Tutoria"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "tutoria.hora_inicio_real.jerarquía_de_fecha": {
+			          "Target": {
+			            "Entity": "tutoria.hora_inicio_real.jerarquía_de_fecha"
+			          }
+			        },
+			        "tutoria.hora_inicio_real.año": {
+			          "Target": {
+			            "Entity": "tutoria.hora_inicio_real.año"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tutoria.hora_inicio_real.jerarquía_de_fecha"
+			            },
+			            "Object": {
+			              "Role": "tutoria.hora_inicio_real.año"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "jerarquía_de_fechas_have_años4"
+			        }
+			      ]
+			    },
+			    "tutoria_hora_inicio_real_jerarquía_de_fecha_has_tutoria_hora_inicio_real_trimestre": {
+			      "Binding": {
+			        "ConceptualEntity": "Tutoria"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "tutoria.hora_inicio_real.jerarquía_de_fecha": {
+			          "Target": {
+			            "Entity": "tutoria.hora_inicio_real.jerarquía_de_fecha"
+			          }
+			        },
+			        "tutoria.hora_inicio_real.trimestre": {
+			          "Target": {
+			            "Entity": "tutoria.hora_inicio_real.trimestre"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tutoria.hora_inicio_real.jerarquía_de_fecha"
+			            },
+			            "Object": {
+			              "Role": "tutoria.hora_inicio_real.trimestre"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "jerarquía_de_fechas_have_trimestres4"
+			        }
+			      ]
+			    },
+			    "tutoria_hora_inicio_real_jerarquía_de_fecha_has_tutoria_hora_inicio_real_me": {
+			      "Binding": {
+			        "ConceptualEntity": "Tutoria"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "tutoria.hora_inicio_real.jerarquía_de_fecha": {
+			          "Target": {
+			            "Entity": "tutoria.hora_inicio_real.jerarquía_de_fecha"
+			          }
+			        },
+			        "tutoria.hora_inicio_real.me": {
+			          "Target": {
+			            "Entity": "tutoria.hora_inicio_real.me"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tutoria.hora_inicio_real.jerarquía_de_fecha"
+			            },
+			            "Object": {
+			              "Role": "tutoria.hora_inicio_real.me"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "jerarquía_de_fechas_have_me4"
+			        }
+			      ]
+			    },
+			    "tutoria_hora_inicio_real_jerarquía_de_fecha_has_tutoria_hora_inicio_real_día": {
+			      "Binding": {
+			        "ConceptualEntity": "Tutoria"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "tutoria.hora_inicio_real.jerarquía_de_fecha": {
+			          "Target": {
+			            "Entity": "tutoria.hora_inicio_real.jerarquía_de_fecha"
+			          }
+			        },
+			        "tutoria.hora_inicio_real.día": {
+			          "Target": {
+			            "Entity": "tutoria.hora_inicio_real.día"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tutoria.hora_inicio_real.jerarquía_de_fecha"
+			            },
+			            "Object": {
+			              "Role": "tutoria.hora_inicio_real.día"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "jerarquía_de_fechas_have_días4"
+			        }
+			      ]
+			    },
+			    "tutoria_hora_inicio_real_año_has_tutoria_hora_inicio_real_trimestre": {
+			      "Binding": {
+			        "ConceptualEntity": "Tutoria"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "tutoria.hora_inicio_real.año": {
+			          "Target": {
+			            "Entity": "tutoria.hora_inicio_real.año"
+			          }
+			        },
+			        "tutoria.hora_inicio_real.trimestre": {
+			          "Target": {
+			            "Entity": "tutoria.hora_inicio_real.trimestre"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tutoria.hora_inicio_real.año"
+			            },
+			            "Object": {
+			              "Role": "tutoria.hora_inicio_real.trimestre"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "años_have_trimestres4"
+			        },
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tutoria.hora_inicio_real.trimestre"
+			            },
+			            "Object": {
+			              "Role": "tutoria.hora_inicio_real.año"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "trimestres_have_años4"
+			        },
+			        {
+			          "Preposition": {
+			            "Subject": {
+			              "Role": "tutoria.hora_inicio_real.trimestre"
+			            },
+			            "Prepositions": [
+			              {
+			                "in": {
+			                  "State": "Generated"
+			                }
+			              }
+			            ],
+			            "Object": {
+			              "Role": "tutoria.hora_inicio_real.año"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "trimestres_are_in_años4"
+			        }
+			      ]
+			    },
+			    "tutoria_hora_inicio_real_trimestre_has_tutoria_hora_inicio_real_me": {
+			      "Binding": {
+			        "ConceptualEntity": "Tutoria"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "tutoria.hora_inicio_real.trimestre": {
+			          "Target": {
+			            "Entity": "tutoria.hora_inicio_real.trimestre"
+			          }
+			        },
+			        "tutoria.hora_inicio_real.me": {
+			          "Target": {
+			            "Entity": "tutoria.hora_inicio_real.me"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tutoria.hora_inicio_real.trimestre"
+			            },
+			            "Object": {
+			              "Role": "tutoria.hora_inicio_real.me"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "trimestres_have_me4"
+			        },
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tutoria.hora_inicio_real.me"
+			            },
+			            "Object": {
+			              "Role": "tutoria.hora_inicio_real.trimestre"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "me_have_trimestres4"
+			        },
+			        {
+			          "Preposition": {
+			            "Subject": {
+			              "Role": "tutoria.hora_inicio_real.me"
+			            },
+			            "Prepositions": [
+			              {
+			                "in": {
+			                  "State": "Generated"
+			                }
+			              }
+			            ],
+			            "Object": {
+			              "Role": "tutoria.hora_inicio_real.trimestre"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "me_are_in_trimestres4"
+			        }
+			      ]
+			    },
+			    "tutoria_hora_inicio_real_me_has_tutoria_hora_inicio_real_día": {
+			      "Binding": {
+			        "ConceptualEntity": "Tutoria"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "tutoria.hora_inicio_real.me": {
+			          "Target": {
+			            "Entity": "tutoria.hora_inicio_real.me"
+			          }
+			        },
+			        "tutoria.hora_inicio_real.día": {
+			          "Target": {
+			            "Entity": "tutoria.hora_inicio_real.día"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tutoria.hora_inicio_real.me"
+			            },
+			            "Object": {
+			              "Role": "tutoria.hora_inicio_real.día"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "me_have_días4"
+			        },
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "tutoria.hora_inicio_real.día"
+			            },
+			            "Object": {
+			              "Role": "tutoria.hora_inicio_real.me"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "días_have_me4"
+			        },
+			        {
+			          "Preposition": {
+			            "Subject": {
+			              "Role": "tutoria.hora_inicio_real.día"
+			            },
+			            "Prepositions": [
+			              {
+			                "in": {
+			                  "State": "Generated"
+			                }
+			              }
+			            ],
+			            "Object": {
+			              "Role": "tutoria.hora_inicio_real.me"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "días_are_in_me4"
+			        }
+			      ]
+			    }
+			  },
+			  "Agents": {
+			    "Internal": {
+			      "Version": "1.0.0"
+			    }
+			  }
 			}
 		contentType: json
 
