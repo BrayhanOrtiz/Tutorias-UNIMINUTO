@@ -4,7 +4,7 @@ import {
 } from '@mui/material';
 import { Email, Lock, Visibility, VisibilityOff } from '@mui/icons-material';
 import logo from '../../assets/logo-uniminuto.png';
-import axios from 'axios';
+import api from '../../services/api';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const ResetPassword = () => {
@@ -41,7 +41,7 @@ const ResetPassword = () => {
       return;
     }
     try {
-      await axios.post(`/api/reset-password/${token}`, {
+      await api.post(`/login/reset-password/${token}`, {
         correo_institucional: correo,
         nueva_contraseña: password
       });

@@ -3,6 +3,14 @@ import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
 import crypto from 'crypto';
 import { addMinutes } from 'date-fns';
+import 'dotenv/config';
+
+// Verificar variables de entorno al inicio
+console.log('Verificando variables de entorno:', {
+    EMAIL_USER: process.env.EMAIL_USER,
+    EMAIL_PASS: process.env.EMAIL_PASS ? '****' : 'no definida',
+    FRONTEND_URL: process.env.FRONTEND_URL
+});
 
 const JWT_SECRET = process.env.JWT_SECRET || 'tu_secreto_jwt_temporal';
 
@@ -80,39 +88,104 @@ export const login = async (req, res) => {
 export const solicitarRecuperacion = async (req, res) => {
     const { correo_institucional } = req.body;
     try {
+        // Verificar que las variables de entorno estén definidas
+        if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+            throw new Error('Las variables de entorno EMAIL_USER y EMAIL_PASS son requeridas');
+        }
+
         // Buscar usuario
         const [usuario] = await sql`SELECT id, correo_institucional FROM usuario WHERE correo_institucional = ${correo_institucional}`;
         if (!usuario) {
-            // Siempre responder igual para no revelar si existe o no
             return res.status(200).json({ success: true, message: 'Si el correo existe, se ha enviado un enlace.' });
         }
+
         // Generar token seguro y expiración
         const token = crypto.randomBytes(32).toString('hex');
-        const expires = addMinutes(new Date(), 30); // 30 minutos
-        // Guardar token y expiración en la base de datos (puedes crear una tabla password_reset)
+        const expires = addMinutes(new Date(), 30);
+
+        // Guardar token y expiración en la base de datos
         await sql`
-            INSERT INTO password_reset (usuario_id, token, expires_at)
-            VALUES (${usuario.id}, ${token}, ${expires})
+            INSERT INTO password_reset (usuario_id, email, token, expires_at)
+            VALUES (${usuario.id}, ${usuario.correo_institucional}, ${token}, ${expires})
         `;
-        // Configurar transporte de correo (ajusta con tus credenciales reales)
+
+        // Configurar transporte de correo
         const transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
                 user: process.env.EMAIL_USER,
                 pass: process.env.EMAIL_PASS
+            },
+            debug: true,
+            logger: true
+        });
+
+        // Verificar la conexión
+        try {
+            console.log('Intentando conectar con:', {
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS ? '****' : 'no definida'
+            });
+            
+            await transporter.verify();
+            console.log('Conexión SMTP verificada correctamente');
+        } catch (error) {
+            console.error('Error al verificar la conexión SMTP:', error);
+            throw new Error(`Error al verificar la conexión SMTP: ${error.message}`);
+        }
+
+        const resetUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/reset-password/${token}`;
+        
+        // Enviar correo
+        const info = await transporter.sendMail({
+            from: {
+                name: 'Tutorias UNIMINUTO',
+                address: process.env.EMAIL_USER
+            },
+            to: correo_institucional,
+            subject: 'Recuperación de contraseña - Tutorias UNIMINUTO',
+            html: `
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 5px;">
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <h2 style="color: #2c3e50; margin: 0;">Recuperación de Contraseña</h2>
+                        <p style="color: #7f8c8d; margin: 10px 0;">Tutorias UNIMINUTO</p>
+                    </div>
+                    <div style="background-color: #f8f9fa; padding: 20px; border-radius: 5px; margin-bottom: 20px;">
+                        <p>Hola,</p>
+                        <p>Has solicitado restablecer tu contraseña. Haz clic en el siguiente enlace para continuar:</p>
+                        <p style="text-align: center; margin: 30px 0;">
+                            <a href="${resetUrl}" 
+                               style="background-color: #3498db; color: white; padding: 12px 25px; text-decoration: none; border-radius: 5px; display: inline-block; font-weight: bold;">
+                                Restablecer Contraseña
+                            </a>
+                        </p>
+                        <p>O copia y pega este enlace en tu navegador:</p>
+                        <p style="word-break: break-all; background-color: #fff; padding: 10px; border: 1px solid #ddd; border-radius: 3px;">${resetUrl}</p>
+                        <p><strong>Importante:</strong> Este enlace expirará en 30 minutos.</p>
+                    </div>
+                    <div style="text-align: center; color: #7f8c8d; font-size: 12px; margin-top: 20px; padding-top: 20px; border-top: 1px solid #eee;">
+                        <p>Si no solicitaste este cambio, puedes ignorar este correo.</p>
+                        <p>Este es un correo automático, por favor no respondas a este mensaje.</p>
+                        <p>© ${new Date().getFullYear()} Tutorias UNIMINUTO. Todos los derechos reservados.</p>
+                    </div>
+                </div>
+            `,
+            headers: {
+                'X-Priority': '1',
+                'X-MSMail-Priority': 'High',
+                'Importance': 'high'
             }
         });
-        const resetUrl = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/reset-password/${token}`;
-        await transporter.sendMail({
-            from: 'no-reply@uniminuto.edu.co',
-            to: correo_institucional,
-            subject: 'Recuperación de contraseña',
-            html: `<p>Haz clic en el siguiente enlace para restablecer tu contraseña:</p><a href="${resetUrl}">${resetUrl}</a><p>Este enlace expirará en 30 minutos.</p>`
-        });
+
+        console.log('Correo enviado:', info.messageId);
         return res.status(200).json({ success: true, message: 'Si el correo existe, se ha enviado un enlace.' });
     } catch (error) {
-        console.error('Error en solicitarRecuperacion:', error);
-        return res.status(500).json({ success: false, message: 'Error al solicitar recuperación.' });
+        console.error('Error detallado en solicitarRecuperacion:', error);
+        return res.status(500).json({ 
+            success: false, 
+            message: 'Error al solicitar recuperación.',
+            error: error.message 
+        });
     }
 };
 

@@ -15,7 +15,7 @@ import {
   Grid
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import api from '../../services/api';
 import { Email, Lock, CalendarMonth, Badge, Visibility, VisibilityOff, School } from '@mui/icons-material';
 import logo from '../../assets/logo-uniminuto.png';
 
@@ -42,7 +42,7 @@ const Register = () => {
     console.log('useEffect de carreras ejecutado');
     const fetchCarreras = async () => {
       try {
-        const res = await axios.get('http://localhost:3000/api/carreras');
+        const res = await api.get('/carreras');
         console.log('Carreras recibidas:', res.data.data);
         setCarreras(res.data.data || []);
       } catch (err) {
@@ -80,7 +80,7 @@ const Register = () => {
       return;
     }
     try {
-      await axios.post('http://localhost:3000/api/usuarios/estudiantes', {
+      await api.post('/usuarios/estudiantes', {
         id: form.id,
         nombre: form.nombres,
         apellido: form.apellidos,
