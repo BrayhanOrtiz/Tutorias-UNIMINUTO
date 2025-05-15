@@ -4,7 +4,7 @@ import {
 } from '@mui/material';
 import { Email } from '@mui/icons-material';
 import logo from '../../assets/logo-uniminuto.png';
-import axios from 'axios';
+import api from '../../services/api';
 import { useNavigate } from 'react-router-dom';
 
 const ForgotPassword = () => {
@@ -24,7 +24,7 @@ const ForgotPassword = () => {
     setShowSuccess(false);
     setShowError(false);
     try {
-      await axios.post('/api/recuperar-password', { correo_institucional: correo });
+      await api.post('/login/recuperar-password', { correo_institucional: correo });
       setSuccess('Si el correo existe, te hemos enviado un enlace para restablecer tu contraseña.');
       setShowSuccess(true);
     } catch (err) {

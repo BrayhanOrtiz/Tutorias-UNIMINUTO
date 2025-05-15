@@ -1,8 +1,8 @@
 import axios from 'axios';
-
+import config from '../config';
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000/api',
+  baseURL: config.API_URL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -15,16 +15,15 @@ api.interceptors.request.use((config) => {
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
+}, (error) => {
+  return Promise.reject(error);
 });
 
 // Interceptor para manejar errores
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    const token = localStorage.getItem('token');
-    const isOnLoginPage = window.location.pathname === '/login';
-    if (error.response?.status === 401 && token && !isOnLoginPage) {
-      // Solo redirige si hay token y no estamos en login
+    if (error.response?.status === 401) {
       localStorage.removeItem('token');
       window.location.href = '/login';
     }
