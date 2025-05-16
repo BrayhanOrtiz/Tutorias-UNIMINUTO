@@ -174,6 +174,12 @@ export const eliminarUsuario = async (req, res) => {
 // Obtener información del usuario actual
 export const obtenerUsuarioActual = async (req, res) => {
     try {
+        if (!req.user || !req.user.id) {
+            return res.status(401).json({
+                success: false,
+                message: 'No autorizado'
+            });
+        }
         const userId = req.user.id;
         
         const [usuario] = await sql`
@@ -209,5 +215,22 @@ export const obtenerUsuarioActual = async (req, res) => {
             success: false,
             message: 'Error al obtener la información del usuario'
         });
+    }
+};
+
+// Obtener usuarios filtrados por rol
+export const obtenerUsuariosPorRol = async (req, res) => {
+  const { rol_id } = req.params;
+  try {
+    const usuarios = await sql`
+      SELECT u.*, ur.rol_id, r.nombre_rol
+      FROM usuario u
+      JOIN usuario_rol ur ON u.id = ur.usuario_id
+      JOIN rol r ON ur.rol_id = r.id
+      WHERE ur.rol_id = ${rol_id}
+    `;
+    res.status(200).json({ success: true, data: usuarios });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
   }
 };

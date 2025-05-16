@@ -12,6 +12,7 @@ export const obtenerHorariosTutorias = async (req, res) => {
                 h.salon,
                 u.nombre as nombre_docente,
                 u.apellido as apellido_docente,
+                u.experticia as experticia,
                 c.nombre_carrera as nombre_carrera
             FROM horario h
             JOIN usuario u ON h.usuario_id = u.id
