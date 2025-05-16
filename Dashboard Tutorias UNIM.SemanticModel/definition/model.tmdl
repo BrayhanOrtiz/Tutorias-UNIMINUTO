@@ -1,0 +1,35 @@
+model Model
+	culture: es-MX
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: es-MX
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["Tabla Usuario","asistencia_tutoria","carrera?select=*","encuesta_satisfaccion?select=*","historial_cambios?select=*","horario?select=*","tema?select=*","Tutoria","usuario_rol?select=*","rol?select=*","encuesta_satisfaccion?select=* (2)","pregunta_encuesta?select=*"]
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBIDesktopVersion = 2.142.1277.0 (25.04)+014fde450f93691fc9537f0758d73d1c5df153ef
+
+annotation PBI_ProTooling = ["DevMode","DaxQueryView_Desktop"]
+
+ref table 'Tabla Usuario'
+ref table DateTableTemplate_8b878eee-81d4-45f4-8fd7-ee3eae61a130
+ref table LocalDateTable_cb54d724-0daa-4e80-a997-cf034bf67038
+ref table asistencia_tutoria
+ref table LocalDateTable_3e8faeab-3ba3-4ba1-82ce-4c8db9cf3013
+ref table 'carrera?select=*'
+ref table 'historial_cambios?select=*'
+ref table LocalDateTable_804d2ec3-3054-432b-b19e-29024e6b066f
+ref table 'horario?select=*'
+ref table 'tema?select=*'
+ref table Tutoria
+ref table LocalDateTable_4cc08878-3ef2-4ba5-8253-041a8d76fe47
+ref table LocalDateTable_d6b6e936-2da4-4194-88d8-dedb0891ae52
+ref table 'usuario_rol?select=*'
+ref table 'rol?select=*'
+ref table 'encuesta_satisfaccion?select=* (2)'
+
+ref cultureInfo es-MX
+

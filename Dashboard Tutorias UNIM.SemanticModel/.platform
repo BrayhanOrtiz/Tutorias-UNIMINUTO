@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "Dashboard Tutorias UNIM"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "5e7dace4-2c0a-4775-acfd-516f568f0117"
+  }
+}

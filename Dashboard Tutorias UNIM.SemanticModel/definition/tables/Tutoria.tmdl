@@ -1,0 +1,110 @@
+table Tutoria
+	lineageTag: ac22bc0d-53c0-426a-808f-ddd09a085e54
+
+	column id
+		dataType: int64
+		formatString: 0
+		lineageTag: 6ba6232d-e463-40fb-a944-84baae569331
+		summarizeBy: none
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	column estudiante_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 0137c6a2-3e77-46ec-85c2-70a44487cdcb
+		summarizeBy: none
+		sourceColumn: estudiante_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column docente_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 275f087a-4852-4014-8ea1-fb8d58ec086c
+		summarizeBy: sum
+		sourceColumn: docente_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column fecha_hora_agendada
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 29150d7c-b5e9-4e9c-a796-90ffbc8f5cef
+		summarizeBy: none
+		sourceColumn: fecha_hora_agendada
+
+		variation Variación
+			isDefault
+			relationship: 6da22b13-9238-4107-b4e1-1ce0e3a083e9
+			defaultHierarchy: LocalDateTable_4cc08878-3ef2-4ba5-8253-041a8d76fe47.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+	column tema_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 7f3214ea-1a5e-4824-b39e-a301dada7a77
+		summarizeBy: none
+		sourceColumn: tema_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column hora_inicio_real
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 0cb3d288-c56b-4e3d-8304-1cd3fa51ca5c
+		summarizeBy: none
+		sourceColumn: hora_inicio_real
+
+		variation Variación
+			isDefault
+			relationship: d1723bfb-3d65-45a3-92b0-a83c8b0c76d6
+			defaultHierarchy: LocalDateTable_d6b6e936-2da4-4194-88d8-dedb0891ae52.'Jerarquía de fechas'
+
+		annotation SummarizationSetBy = Automatic
+
+	column hora_fin_real
+		dataType: string
+		lineageTag: d2bebb09-4dd2-40dc-b0f8-910a47427bc6
+		summarizeBy: none
+		sourceColumn: hora_fin_real
+
+		annotation SummarizationSetBy = Automatic
+
+	column firma_docente_habilitada
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 084be80e-53c2-40d9-97a6-8210e9060603
+		summarizeBy: none
+		sourceColumn: firma_docente_habilitada
+
+		annotation SummarizationSetBy = Automatic
+
+	column firmada_estudiante
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: fb6824e7-e6e1-4c0f-8bc6-b554f27c7515
+		summarizeBy: none
+		sourceColumn: firmada_estudiante
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Tutoria = m
+		mode: import
+		source =
+				let
+				    Origen = Json.Document(Web.Contents("https://todqutcrfyuqdqckjhlt.supabase.co/rest/v1/tutoria?select=*", [Headers=[apikey="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvZHF1dGNyZnl1cWRxY2tqaGx0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU4ODczNzYsImV4cCI6MjA2MTQ2MzM3Nn0.HjZ6YxCYUKj2m5aaydriz-ZFQl93M7kyUGCxM1Hjwr4", Authorization="Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvZHF1dGNyZnl1cWRxY2tqaGx0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU4ODczNzYsImV4cCI6MjA2MTQ2MzM3Nn0.HjZ6YxCYUKj2m5aaydriz-ZFQl93M7kyUGCxM1Hjwr4", Accept="application/json"]])),
+				    #"Convertida en tabla" = Table.FromList(Origen, Splitter.SplitByNothing(), null, null, ExtraValues.Error),
+				    #"Se expandió Column1" = Table.ExpandRecordColumn(#"Convertida en tabla", "Column1", {"id", "estudiante_id", "docente_id", "fecha_hora_agendada", "tema_id", "hora_inicio_real", "hora_fin_real", "firma_docente_habilitada", "firmada_estudiante"}, {"id", "estudiante_id", "docente_id", "fecha_hora_agendada", "tema_id", "hora_inicio_real", "hora_fin_real", "firma_docente_habilitada", "firmada_estudiante"}),
+				    #"Tipo cambiado" = Table.TransformColumnTypes(#"Se expandió Column1",{{"id", Int64.Type}, {"estudiante_id", Int64.Type}, {"docente_id", Int64.Type}, {"fecha_hora_agendada", type datetime}, {"tema_id", Int64.Type}, {"hora_inicio_real", type datetime}, {"hora_fin_real", type any}, {"firma_docente_habilitada", type logical}, {"firmada_estudiante", type logical}})
+				in
+				    #"Tipo cambiado"
+
+	changedProperty = Name
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

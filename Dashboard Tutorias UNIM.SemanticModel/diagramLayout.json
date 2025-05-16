@@ -1,0 +1,151 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 682,
+        "y": 35
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 0,
+            "y": 0
+          },
+          "nodeIndex": "Tabla Usuario",
+          "nodeLineageTag": "76efa02e-9ae1-4f74-b013-8a6cd5164d96",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 4
+        },
+        {
+          "location": {
+            "x": 277,
+            "y": 0
+          },
+          "nodeIndex": "asistencia_tutoria",
+          "nodeLineageTag": "6758baea-3753-4b88-9394-af9ec50030a2",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 7
+        },
+        {
+          "location": {
+            "x": 0,
+            "y": 288
+          },
+          "nodeIndex": "carrera?select=*",
+          "nodeLineageTag": "5d16bfa9-66ea-44c5-a541-08cade3d2132",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 1
+        },
+        {
+          "location": {
+            "x": 529,
+            "y": 0
+          },
+          "nodeIndex": "historial_cambios?select=*",
+          "nodeLineageTag": "52871356-943b-473f-9e45-e9b95e19420a",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 2
+        },
+        {
+          "location": {
+            "x": 775,
+            "y": 0
+          },
+          "nodeIndex": "horario?select=*",
+          "nodeLineageTag": "773c3f19-4755-4460-afe3-75334c644308",
+          "size": {
+            "height": 224,
+            "width": 234
+          },
+          "zIndex": 3
+        },
+        {
+          "location": {
+            "x": 777,
+            "y": 239
+          },
+          "nodeIndex": "tema?select=*",
+          "nodeLineageTag": "2dd04b01-4381-4fd5-aec6-58a0ec5f61f2",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 5
+        },
+        {
+          "location": {
+            "x": 276,
+            "y": 216
+          },
+          "nodeIndex": "Tutoria",
+          "size": {
+            "height": 296,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1061,
+            "y": 192
+          },
+          "nodeIndex": "usuario_rol?select=*",
+          "nodeLineageTag": "67b72bda-4794-4490-9abf-45a704f0265d",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1345,
+            "y": 0
+          },
+          "nodeIndex": "rol?select=*",
+          "nodeLineageTag": "03f92a5e-2296-4eb7-98e0-2f57e3bdc9a2",
+          "size": {
+            "height": 128,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1629,
+            "y": 204
+          },
+          "nodeIndex": "encuesta_satisfaccion?select=* (2)",
+          "nodeLineageTag": "5ed0a389-0253-41d2-a982-8c776184bb48",
+          "size": {
+            "height": 104,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
+      "name": "Todas las tablas",
+      "zoomValue": 100,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "Todas las tablas",
+  "defaultDiagram": "Todas las tablas"
+}

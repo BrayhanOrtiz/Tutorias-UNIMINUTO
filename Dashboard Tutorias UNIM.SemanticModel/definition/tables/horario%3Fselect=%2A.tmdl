@@ -1,0 +1,74 @@
+table 'horario?select=*'
+	lineageTag: 773c3f19-4755-4460-afe3-75334c644308
+
+	column id
+		dataType: int64
+		formatString: 0
+		lineageTag: 0399787a-559d-4dc4-a7bc-921806a1ca9d
+		summarizeBy: sum
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	column dia_semana
+		dataType: string
+		lineageTag: 6159ec01-d716-4c24-89ac-f4c761581aeb
+		summarizeBy: none
+		sourceColumn: dia_semana
+
+		annotation SummarizationSetBy = Automatic
+
+	column hora_inicio
+		dataType: dateTime
+		formatString: Long Time
+		lineageTag: d9a3b6a7-9a26-42fa-986b-9af5340df651
+		summarizeBy: none
+		sourceColumn: hora_inicio
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Time
+
+	column hora_fin
+		dataType: dateTime
+		formatString: Long Time
+		lineageTag: ea2e9908-f05b-47d6-b2e0-751bce88e112
+		summarizeBy: none
+		sourceColumn: hora_fin
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Time
+
+	column salon
+		dataType: string
+		lineageTag: ff578beb-e2e6-458b-a2b4-e9550c26d3a6
+		summarizeBy: none
+		sourceColumn: salon
+
+		annotation SummarizationSetBy = Automatic
+
+	column usuario_id
+		dataType: int64
+		formatString: 0
+		lineageTag: 4001b15d-a12c-4dc4-be28-0c8a2e09be02
+		summarizeBy: none
+		sourceColumn: usuario_id
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'horario?select=*' = m
+		mode: import
+		source =
+				let
+				    Origen = Json.Document(Web.Contents("https://todqutcrfyuqdqckjhlt.supabase.co/rest/v1/horario?select=*", [Headers=[apikey="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvZHF1dGNyZnl1cWRxY2tqaGx0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU4ODczNzYsImV4cCI6MjA2MTQ2MzM3Nn0.HjZ6YxCYUKj2m5aaydriz-ZFQl93M7kyUGCxM1Hjwr4", Authorization="Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvZHF1dGNyZnl1cWRxY2tqaGx0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU4ODczNzYsImV4cCI6MjA2MTQ2MzM3Nn0.HjZ6YxCYUKj2m5aaydriz-ZFQl93M7kyUGCxM1Hjwr4", Accept="application/json"]])),
+				    #"Convertida en tabla" = Table.FromList(Origen, Splitter.SplitByNothing(), null, null, ExtraValues.Error),
+				    #"Se expandió Column1" = Table.ExpandRecordColumn(#"Convertida en tabla", "Column1", {"id", "dia_semana", "hora_inicio", "hora_fin", "salon", "usuario_id"}, {"id", "dia_semana", "hora_inicio", "hora_fin", "salon", "usuario_id"}),
+				    #"Tipo cambiado" = Table.TransformColumnTypes(#"Se expandió Column1",{{"id", Int64.Type}, {"dia_semana", type text}, {"hora_inicio", type time}, {"hora_fin", type time}, {"salon", type text}, {"usuario_id", Int64.Type}})
+				in
+				    #"Tipo cambiado"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+
