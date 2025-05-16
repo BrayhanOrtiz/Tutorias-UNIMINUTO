@@ -10,6 +10,7 @@ export const obtenerHorariosTutorias = async (req, res) => {
                 h.hora_inicio,
                 h.hora_fin,
                 h.salon,
+                u.id as usuario_id,
                 u.nombre as nombre_docente,
                 u.apellido as apellido_docente,
                 u.experticia as experticia,

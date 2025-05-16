@@ -5,6 +5,7 @@ import axios from 'axios';
 const DashboardEstudiante = () => {
   const [estudiante, setEstudiante] = useState(null);
   const [docentes, setDocentes] = useState([]);
+  const [tutorias, setTutorias] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [openForm, setOpenForm] = useState(false);
@@ -14,6 +15,7 @@ const DashboardEstudiante = () => {
     fecha_hora_agendada: '',
     tema_id: ''
   });
+  const [horariosDocentes, setHorariosDocentes] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,12 +35,44 @@ const DashboardEstudiante = () => {
         console.log('Respuesta docentes:', resDoc.data);
         setDocentes(Array.isArray(resDoc.data.data) ? resDoc.data.data : []);
         console.log('Docentes:', resDoc.data.data);
+
+        // Obtener tutorías del estudiante
+        if (resEst.data.data) {
+          const resTut = await axios.get(`/api/tutorias/estudiante/${resEst.data.data.id}`, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+          console.log('Respuesta tutorías:', resTut.data);
+          setTutorias(Array.isArray(resTut.data) ? resTut.data : []);
+        }
       } catch (e) {
         setError('Error al cargar la información');
       }
       setLoading(false);
     };
     fetchData();
+  }, []);
+
+  useEffect(() => {
+    const fetchHorarios = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const res = await axios.get('/api/horarios/tutorias', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        console.log('Respuesta horarios:', res.data);
+        // Agrupa por usuario_id (asegúrate de que ambos sean tipo número)
+        const agrupados = {};
+        res.data.data.forEach(h => {
+          const key = Number(h.usuario_id);
+          if (!agrupados[key]) agrupados[key] = [];
+          agrupados[key].push(h);
+        });
+        setHorariosDocentes(agrupados);
+      } catch {
+        setHorariosDocentes({});
+      }
+    };
+    fetchHorarios();
   }, []);
 
   // Cargar temas al abrir el formulario
@@ -106,29 +140,74 @@ const DashboardEstudiante = () => {
             Docentes disponibles
           </Typography>
           <Grid container spacing={3}>
-            {Array.isArray(docentes) && docentes.map((docente) => (
-              <Grid item xs={12} md={6} lg={4} key={docente.id}>
+            {Array.isArray(docentes) && docentes.map((docente) => {
+              const docenteId = Number(docente.id);
+              return (
+                <Grid item xs={12} md={6} lg={4} key={docente.id}>
+                  <Card>
+                    <CardContent>
+                      <Typography variant="h6">
+                        {docente.nombre} {docente.apellido}
+                      </Typography>
+                      <Typography variant="body2" color="textSecondary">
+                        Experticia: {docente.experticia || 'No especificada'}
+                      </Typography>
+                      <Box mt={2}>
+                        <Typography variant="subtitle2">Horarios:</Typography>
+                        {(horariosDocentes[docenteId] || []).map((h, i) => (
+                          <Typography key={i} variant="body2">
+                            {h.dia_semana} {h.hora_inicio} - {h.hora_fin} | Salón: {h.salon}
+                          </Typography>
+                        ))}
+                      </Box>
+                      <Box mt={2}>
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          onClick={() => handleOpenForm(docente)}
+                        >
+                          Agendar tutoría
+                        </Button>
+                      </Box>
+                    </CardContent>
+                  </Card>
+                </Grid>
+              );
+            })}
+          </Grid>
+
+          {/* Sección de Tutorías Agendadas */}
+          <Typography variant="h6" sx={{ mt: 4, mb: 2 }}>
+            Mis Tutorías Agendadas
+          </Typography>
+          <Grid container spacing={3}>
+            {Array.isArray(tutorias) && tutorias.map((tutoria) => (
+              <Grid item xs={12} md={6} lg={4} key={tutoria.id}>
                 <Card>
                   <CardContent>
-                    <Typography variant="h6">
-                      {docente.nombre} {docente.apellido}
+                    <Typography variant="h6" gutterBottom>
+                      {tutoria.nombre_tema}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary" gutterBottom>
+                      Docente: {tutoria.nombre_docente}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary" gutterBottom>
+                      Fecha y Hora: {new Date(tutoria.fecha_hora_agendada).toLocaleString()}
                     </Typography>
                     <Typography variant="body2" color="textSecondary">
-                      Experticia: {docente.experticia || 'No especificada'}
+                      Estado: {tutoria.firmada_estudiante ? 'Asistencia registrada' : 'Pendiente de asistencia'}
                     </Typography>
-                    <Box mt={2}>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={() => handleOpenForm(docente)}
-                      >
-                        Agendar tutoría
-                      </Button>
-                    </Box>
                   </CardContent>
                 </Card>
               </Grid>
             ))}
+            {Array.isArray(tutorias) && tutorias.length === 0 && (
+              <Grid item xs={12}>
+                <Alert severity="info">
+                  No tienes tutorías agendadas actualmente
+                </Alert>
+              </Grid>
+            )}
           </Grid>
 
           {/* Modal de formulario */}

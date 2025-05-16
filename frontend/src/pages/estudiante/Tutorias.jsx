@@ -1,75 +1,91 @@
 import { useState, useEffect } from 'react';
+import { useAuth } from '../../context/AuthContext';
 import {
   Box,
   Typography,
+  Grid,
   Card,
   CardContent,
-  Grid,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Chip,
   CircularProgress,
   Alert,
-  TextField,
-  InputAdornment,
+  Button,
+  Chip,
+  Snackbar
 } from '@mui/material';
-import {
-  Search as SearchIcon,
-  AccessTime as AccessTimeIcon,
-  School as SchoolIcon,
-  LocationOn as LocationIcon,
-} from '@mui/icons-material';
-import api from '../../services/api';
+import axios from 'axios';
 
 const Tutorias = () => {
-  const [horarios, setHorarios] = useState([]);
+  const { user } = useAuth();
+  const [tutorias, setTutorias] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
-
-  const diasSemana = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
-  const horasDia = ['08:00', '09:30', '11:00', '12:30', '14:00', '15:30', '17:00'];
+  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
 
   useEffect(() => {
-    const fetchHorarios = async () => {
+    const fetchTutorias = async () => {
       try {
-        const response = await api.get('/horarios/tutorias');
-        if (response.data.success) {
-          setHorarios(response.data.data);
-        } else {
-          setError('Error al cargar los horarios');
-        }
-      } catch (error) {
-        setError('Error al cargar los horarios: ' + (error.response?.data?.message || error.message));
+        const token = localStorage.getItem('token');
+        const res = await axios.get(`/api/tutorias/estudiante/${user.id}`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setTutorias(Array.isArray(res.data) ? res.data : []);
+      } catch (e) {
+        setError('Error al cargar las tutorías');
       } finally {
         setLoading(false);
       }
     };
 
-    fetchHorarios();
-    // Actualizar cada 5 minutos
-    const interval = setInterval(fetchHorarios, 5 * 60 * 1000);
-    return () => clearInterval(interval);
-  }, []);
+    if (user) {
+      fetchTutorias();
+    }
+  }, [user]);
 
-  const filteredHorarios = horarios.filter(horario => {
-    const searchLower = searchTerm.toLowerCase();
-    return (
-      horario.nombre_docente.toLowerCase().includes(searchLower) ||
-      horario.apellido_docente.toLowerCase().includes(searchLower) ||
-      horario.nombre_carrera.toLowerCase().includes(searchLower) ||
-      horario.salon.toLowerCase().includes(searchLower)
-    );
-  });
+  const handleFirmarAsistencia = async (tutoriaId) => {
+    try {
+      const token = localStorage.getItem('token');
+      await axios.post('/api/asistencia-tutoria', {
+        tutoria_id: tutoriaId,
+        estudiante_id: user.id
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      // Actualizar la lista de tutorías
+      const res = await axios.get(`/api/tutorias/estudiante/${user.id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setTutorias(Array.isArray(res.data) ? res.data : []);
+
+      setSnackbar({
+        open: true,
+        message: 'Asistencia registrada exitosamente',
+        severity: 'success'
+      });
+    } catch (error) {
+      setSnackbar({
+        open: true,
+        message: error.response?.data?.error || 'Error al registrar la asistencia',
+        severity: 'error'
+      });
+    }
+  };
+
+  const handleCloseSnackbar = () => {
+    setSnackbar({ ...snackbar, open: false });
+  };
+
+  const getEstadoColor = (firmada) => {
+    return firmada ? 'success' : 'warning';
+  };
+
+  const getEstadoText = (firmada) => {
+    return firmada ? 'Asistencia registrada' : 'Pendiente de asistencia';
+  };
 
   if (loading) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
+      <Box sx={{ display: 'flex', justifyContent: 'center', p: 3 }}>
         <CircularProgress />
       </Box>
     );
@@ -77,137 +93,71 @@ const Tutorias = () => {
 
   if (error) {
     return (
-      <Alert severity="error" sx={{ mb: 2 }}>
-        {error}
-      </Alert>
+      <Box sx={{ p: 3 }}>
+        <Alert severity="error">{error}</Alert>
+      </Box>
     );
   }
 
   return (
-    <Box>
+    <Box sx={{ p: 3 }}>
       <Typography variant="h4" gutterBottom>
-        Horarios de Tutorías
+        Mis Tutorías
       </Typography>
+      
+      {tutorias.length === 0 ? (
+        <Alert severity="info">
+          No tienes tutorías agendadas actualmente
+        </Alert>
+      ) : (
+        <Grid container spacing={3}>
+          {tutorias.map((tutoria) => (
+            <Grid item xs={12} md={6} lg={4} key={tutoria.id}>
+              <Card>
+                <CardContent>
+                  <Typography variant="h6" gutterBottom>
+                    {tutoria.nombre_tema}
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary" gutterBottom>
+                    Docente: {tutoria.nombre_docente}
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary" gutterBottom>
+                    Fecha y Hora: {new Date(tutoria.fecha_hora_agendada).toLocaleString()}
+                  </Typography>
+                  <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Chip 
+                      label={getEstadoText(tutoria.firmada_estudiante)}
+                      color={getEstadoColor(tutoria.firmada_estudiante)}
+                      size="small"
+                    />
+                    {!tutoria.firmada_estudiante && tutoria.firma_docente_habilitada && (
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        size="small"
+                        onClick={() => handleFirmarAsistencia(tutoria.id)}
+                      >
+                        Firmar Asistencia
+                      </Button>
+                    )}
+                  </Box>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      )}
 
-      {/* Barra de búsqueda */}
-      <Card sx={{ mb: 4 }}>
-        <CardContent>
-          <TextField
-            fullWidth
-            variant="outlined"
-            placeholder="Buscar por docente, carrera o salón..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
-        </CardContent>
-      </Card>
-
-      {/* Vista de lista */}
-      <Card sx={{ mb: 4 }}>
-        <CardContent>
-          <Typography variant="h6" gutterBottom>
-            Próximas Tutorías
-          </Typography>
-          <TableContainer component={Paper}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Día</TableCell>
-                  <TableCell>Horario</TableCell>
-                  <TableCell>Docente</TableCell>
-                  <TableCell>Carrera</TableCell>
-                  <TableCell>Salón</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {filteredHorarios.map((horario) => (
-                  <TableRow key={horario.id}>
-                    <TableCell>{horario.dia_semana}</TableCell>
-                    <TableCell>
-                      <Box display="flex" alignItems="center">
-                        <AccessTimeIcon sx={{ mr: 1, fontSize: 20 }} />
-                        {horario.hora_inicio} - {horario.hora_fin}
-                      </Box>
-                    </TableCell>
-                    <TableCell>
-                      {horario.nombre_docente} {horario.apellido_docente}
-                    </TableCell>
-                    <TableCell>
-                      <Box display="flex" alignItems="center">
-                        <SchoolIcon sx={{ mr: 1, fontSize: 20 }} />
-                        {horario.nombre_carrera}
-                      </Box>
-                    </TableCell>
-                    <TableCell>
-                      <Box display="flex" alignItems="center">
-                        <LocationIcon sx={{ mr: 1, fontSize: 20 }} />
-                        {horario.salon}
-                      </Box>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </CardContent>
-      </Card>
-
-      {/* Vista de calendario semanal */}
-      <Card>
-        <CardContent>
-          <Typography variant="h6" gutterBottom>
-            Calendario Semanal
-          </Typography>
-          <TableContainer component={Paper}>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Hora</TableCell>
-                  {diasSemana.map((dia) => (
-                    <TableCell key={dia}>{dia}</TableCell>
-                  ))}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {horasDia.map((hora) => (
-                  <TableRow key={hora}>
-                    <TableCell>{hora}</TableCell>
-                    {diasSemana.map((dia) => {
-                      const horariosDelDia = filteredHorarios.filter(
-                        (h) => h.dia_semana === dia && h.hora_inicio === hora
-                      );
-                      return (
-                        <TableCell key={`${dia}-${hora}`}>
-                          {horariosDelDia.map((horario) => (
-                            <Box key={horario.id} mb={1}>
-                              <Typography variant="subtitle2">
-                                Tutoría General
-                              </Typography>
-                              <Typography variant="caption" display="block">
-                                {horario.nombre_docente} {horario.apellido_docente}
-                              </Typography>
-                              <Typography variant="caption" display="block">
-                                {horario.salon}
-                              </Typography>
-                            </Box>
-                          ))}
-                        </TableCell>
-                      );
-                    })}
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </CardContent>
-      </Card>
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: '100%' }}>
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };

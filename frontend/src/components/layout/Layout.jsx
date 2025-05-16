@@ -33,7 +33,7 @@ const getMenuItems = (rol_id) => {
     case 1: // Estudiante
       return [
         { text: 'Inicio', icon: <DashboardIcon />, path: '/estudiante' },
-        { text: 'Tutorías', icon: <AssignmentIcon />, path: '/estudiante/tutorias' },
+        { text: 'Mis Tutorías', icon: <AssignmentIcon />, path: '/estudiante/tutorias' },
         { text: 'Mis Tareas', icon: <TaskIcon />, path: '/estudiante/tareas' },
         { text: 'Horarios', icon: <ScheduleIcon />, path: '/estudiante/horarios' },
       ];
