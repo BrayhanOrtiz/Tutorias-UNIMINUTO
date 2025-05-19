@@ -228,10 +228,17 @@ export const getTutoriasByDocente = async (req, res) => {
             WHERE t.docente_id = ${docenteId}
             ORDER BY t.fecha_hora_agendada DESC
         `;
-        res.json(result);
+        res.json({
+            success: true,
+            data: result
+        });
     } catch (error) {
         console.error('Error al obtener tutorías del docente:', error);
-        res.status(500).json({ error: 'Error al obtener las tutorías del docente' });
+        res.status(500).json({ 
+            success: false,
+            error: 'Error al obtener las tutorías del docente',
+            detalles: error.message
+        });
     }
 };
 

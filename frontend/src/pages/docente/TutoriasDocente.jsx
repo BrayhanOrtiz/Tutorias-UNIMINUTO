@@ -64,17 +64,29 @@ const TutoriasDocente = () => {
             }
 
             console.log('Intentando cargar tutorías para docente:', docenteId);
+            console.log('Token de autenticación:', localStorage.getItem('token'));
+            
             const response = await api.get(`/tutorias/docente/${docenteId}`);
             console.log('Respuesta del servidor:', response.data);
             
             if (response.data.success) {
                 setTutorias(response.data.data || []);
+                console.log('Tutorías cargadas:', response.data.data);
             } else {
-                showSnackbar('Error al cargar las tutorías', 'error');
+                console.error('Error en la respuesta del servidor:', response.data);
+                showSnackbar(response.data.error || 'Error al cargar las tutorías', 'error');
             }
         } catch (error) {
             console.error('Error al cargar tutorías:', error);
-            showSnackbar(error.response?.data?.error || 'Error al cargar las tutorías', 'error');
+            console.error('Detalles del error:', error.response?.data);
+            console.error('Estado del error:', error.response?.status);
+            console.error('Headers de la respuesta:', error.response?.headers);
+            showSnackbar(
+                error.response?.data?.error || 
+                error.response?.data?.message || 
+                'Error al cargar las tutorías', 
+                'error'
+            );
         }
     };
 

@@ -3,7 +3,10 @@ import { useAuth } from './context/AuthContext';
 import Login from './pages/auth/Login';
 import Layout from './components/layout/Layout';
 import DashboardEstudiante from './pages/estudiante/DashboardEstudiante';
-import DashboardDocente from './pages/docente/DashboardDocente';
+import DocenteDashboard from './pages/docente/DocenteDashboard';
+import HorariosDocente from './pages/docente/HorariosDocente';
+import TutoriasDocente from './pages/docente/TutoriasDocente';
+import ReportesDocente from './pages/docente/ReportesDocente';
 import DashboardAdmin from './pages/admin/DashboardAdmin';
 import Tareas from './pages/estudiante/Tareas';
 import Horarios from './pages/estudiante/Horarios';
@@ -109,11 +112,41 @@ const AppRoutes = () => {
 
       {/* Rutas de docente */}
       <Route
-        path="/docente/*"
+        path="/docente"
         element={
           <PrivateRoute allowedRoles={[2]}>
             <Layout>
-              <DashboardDocente />
+              <DocenteDashboard />
+            </Layout>
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/docente/horarios"
+        element={
+          <PrivateRoute allowedRoles={[2]}>
+            <Layout>
+              <HorariosDocente />
+            </Layout>
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/docente/tutorias"
+        element={
+          <PrivateRoute allowedRoles={[2]}>
+            <Layout>
+              <TutoriasDocente />
+            </Layout>
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/docente/reportes"
+        element={
+          <PrivateRoute allowedRoles={[2]}>
+            <Layout>
+              <ReportesDocente />
             </Layout>
           </PrivateRoute>
         }

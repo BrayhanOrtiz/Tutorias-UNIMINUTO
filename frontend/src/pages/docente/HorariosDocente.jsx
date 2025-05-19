@@ -90,11 +90,14 @@ const HorariosDocente = () => {
             }
 
             console.log('Intentando cargar horarios para docente:', docenteId);
-            const response = await api.get(`/horarios/docente/${docenteId}`);
+            console.log('Token de autenticación:', localStorage.getItem('token'));
+            
+            const response = await api.get(`/horarios/usuario/${docenteId}`);
             console.log('Respuesta del servidor:', response.data);
             
             if (response.data.success) {
                 setHorarios(response.data.data || []);
+                console.log('Horarios cargados:', response.data.data);
             } else {
                 console.error('Error en la respuesta del servidor:', response.data);
                 showSnackbar(response.data.error || 'Error al cargar los horarios', 'error');
@@ -102,6 +105,8 @@ const HorariosDocente = () => {
         } catch (error) {
             console.error('Error al cargar horarios:', error);
             console.error('Detalles del error:', error.response?.data);
+            console.error('Estado del error:', error.response?.status);
+            console.error('Headers de la respuesta:', error.response?.headers);
             showSnackbar(error.response?.data?.error || 'Error al cargar los horarios', 'error');
         }
     };

@@ -1,7 +1,45 @@
 import React from 'react';
-import { Box, Container, Typography, Grid, Card, CardContent } from '@mui/material';
+import { Box, Container, Typography, Grid, Card, CardContent, Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import SchoolIcon from '@mui/icons-material/School';
+import AssessmentIcon from '@mui/icons-material/Assessment';
+import AssignmentIcon from '@mui/icons-material/Assignment';
 
 const DocenteDashboard = () => {
+    const navigate = useNavigate();
+
+    const menuItems = [
+        {
+            title: 'Mis Horarios',
+            description: 'Gestiona tus horarios de tutoría y disponibilidad.',
+            icon: <CalendarMonthIcon sx={{ fontSize: 40 }} />,
+            path: '/docente/horarios',
+            color: '#1976d2'
+        },
+        {
+            title: 'Tutorías',
+            description: 'Revisa y gestiona tus próximas sesiones de tutoría.',
+            icon: <SchoolIcon sx={{ fontSize: 40 }} />,
+            path: '/docente/tutorias',
+            color: '#2e7d32'
+        },
+        {
+            title: 'Reportes',
+            description: 'Visualiza el rendimiento y la participación en tus tutorías.',
+            icon: <AssessmentIcon sx={{ fontSize: 40 }} />,
+            path: '/docente/reportes',
+            color: '#ed6c02'
+        },
+        {
+            title: 'Tareas',
+            description: 'Gestiona las tareas y actividades de tus tutorías.',
+            icon: <AssignmentIcon sx={{ fontSize: 40 }} />,
+            path: '/docente/tareas',
+            color: '#9c27b0'
+        }
+    ];
+
     return (
         <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Typography variant="h4" component="h1" gutterBottom>
@@ -9,42 +47,41 @@ const DocenteDashboard = () => {
             </Typography>
             
             <Grid container spacing={3}>
-                <Grid item xs={12} md={6}>
-                    <Card>
-                        <CardContent>
-                            <Typography variant="h6" gutterBottom>
-                                Mis Horarios
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                                Gestiona tus horarios de tutoría y disponibilidad.
-                            </Typography>
-                        </CardContent>
-                    </Card>
-                </Grid>
-                <Grid item xs={12} md={6}>
-                    <Card>
-                        <CardContent>
-                            <Typography variant="h6" gutterBottom>
-                                Próximas Tutorías
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                                Revisa y gestiona tus próximas sesiones de tutoría.
-                            </Typography>
-                        </CardContent>
-                    </Card>
-                </Grid>
-                <Grid item xs={12}>
-                    <Card>
-                        <CardContent>
-                            <Typography variant="h6" gutterBottom>
-                                Estadísticas
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                                Visualiza el rendimiento y la participación en tus tutorías.
-                            </Typography>
-                        </CardContent>
-                    </Card>
-                </Grid>
+                {menuItems.map((item, index) => (
+                    <Grid item xs={12} sm={6} md={3} key={index}>
+                        <Card 
+                            sx={{ 
+                                height: '100%',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                transition: 'transform 0.2s',
+                                '&:hover': {
+                                    transform: 'scale(1.02)',
+                                    cursor: 'pointer'
+                                }
+                            }}
+                            onClick={() => navigate(item.path)}
+                        >
+                            <CardContent sx={{ 
+                                flexGrow: 1,
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                textAlign: 'center'
+                            }}>
+                                <Box sx={{ color: item.color, mb: 2 }}>
+                                    {item.icon}
+                                </Box>
+                                <Typography variant="h6" gutterBottom>
+                                    {item.title}
+                                </Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                    {item.description}
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                ))}
             </Grid>
         </Container>
     );
