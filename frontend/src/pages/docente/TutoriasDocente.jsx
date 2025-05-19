@@ -1,0 +1,283 @@
+import React, { useState, useEffect } from 'react';
+import {
+    Box,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Typography,
+    Chip,
+    IconButton,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
+    Button,
+    TextField,
+    Snackbar,
+    Alert
+} from '@mui/material';
+import { Visibility as VisibilityIcon, Edit as EditIcon } from '@mui/icons-material';
+import api from '../../services/api';
+import { useAuth } from '../../context/AuthContext';
+
+const TutoriasDocente = () => {
+    const [tutorias, setTutorias] = useState([]);
+    const [selectedTutoria, setSelectedTutoria] = useState(null);
+    const [openDialog, setOpenDialog] = useState(false);
+    const [observaciones, setObservaciones] = useState('');
+    const [snackbar, setSnackbar] = useState({
+        open: false,
+        message: '',
+        severity: 'success'
+    });
+    const { user } = useAuth();
+    const docenteId = user?.id;
+
+    const showSnackbar = (message, severity = 'success') => {
+        setSnackbar({
+            open: true,
+            message,
+            severity
+        });
+    };
+
+    const handleCloseSnackbar = () => {
+        setSnackbar(prev => ({ ...prev, open: false }));
+    };
+
+    useEffect(() => {
+        if (docenteId) {
+            cargarTutorias();
+        }
+    }, [docenteId]);
+
+    const cargarTutorias = async () => {
+        try {
+            if (!docenteId) {
+                console.error('No hay ID de docente disponible');
+                showSnackbar('Error: No hay ID de docente disponible', 'error');
+                return;
+            }
+
+            console.log('Intentando cargar tutorías para docente:', docenteId);
+            const response = await api.get(`/tutorias/docente/${docenteId}`);
+            console.log('Respuesta del servidor:', response.data);
+            
+            if (response.data.success) {
+                setTutorias(response.data.data || []);
+            } else {
+                showSnackbar('Error al cargar las tutorías', 'error');
+            }
+        } catch (error) {
+            console.error('Error al cargar tutorías:', error);
+            showSnackbar(error.response?.data?.error || 'Error al cargar las tutorías', 'error');
+        }
+    };
+
+    const handleOpenDialog = (tutoria) => {
+        setSelectedTutoria(tutoria);
+        setObservaciones('');
+        setOpenDialog(true);
+    };
+
+    const handleCloseDialog = () => {
+        setOpenDialog(false);
+        setSelectedTutoria(null);
+        setObservaciones('');
+    };
+
+    const handleRegistrarAsistencia = async () => {
+        if (!selectedTutoria) return;
+
+        try {
+            await api.post('/asistencia-tutoria', {
+                tutoria_id: selectedTutoria.id,
+                estudiante_id: selectedTutoria.estudiante_id,
+                observaciones: observaciones
+            });
+            handleCloseDialog();
+            cargarTutorias();
+            showSnackbar('Asistencia registrada correctamente');
+        } catch (error) {
+            console.error('Error al registrar asistencia:', error);
+            showSnackbar('Error al registrar la asistencia', 'error');
+        }
+    };
+
+    const getEstadoChip = (tutoria) => {
+        switch (tutoria.estado) {
+            case 'PENDIENTE':
+                return <Chip label="Pendiente" color="warning" />;
+            case 'COMPLETADA':
+                return <Chip label="Completada" color="success" />;
+            case 'CANCELADA':
+                return <Chip label="Cancelada" color="error" />;
+            default:
+                return <Chip label={tutoria.estado} color="default" />;
+        }
+    };
+
+    const getEstadoVariant = (estado) => {
+        switch (estado) {
+            case 'PENDIENTE':
+                return 'warning';
+            case 'COMPLETADA':
+                return 'success';
+            case 'CANCELADA':
+                return 'destructive';
+            default:
+                return 'default';
+        }
+    };
+
+    const handleHabilitarFirma = async (tutoriaId) => {
+        try {
+            const response = await api.put(`/tutorias/${tutoriaId}/habilitar-firma`, {
+                docente_id: docenteId
+            });
+            if (response.data.success) {
+                cargarTutorias();
+                showSnackbar('Firma habilitada correctamente');
+            }
+        } catch (error) {
+            console.error('Error al habilitar firma:', error);
+            showSnackbar(error.response?.data?.error || 'Error al habilitar la firma', 'error');
+        }
+    };
+
+    const handleHabilitarFirmaEstudiante = async (tutoriaId) => {
+        try {
+            const response = await api.put(`/tutorias/${tutoriaId}/habilitar-firma-estudiante`, {
+                estudiante_id: selectedTutoria.estudiante_id
+            });
+            if (response.data.success) {
+                cargarTutorias();
+                showSnackbar('Firma del estudiante habilitada correctamente');
+            }
+        } catch (error) {
+            console.error('Error al habilitar firma del estudiante:', error);
+            showSnackbar(error.response?.data?.error || 'Error al habilitar la firma del estudiante', 'error');
+        }
+    };
+
+    return (
+        <Box>
+            <Typography variant="h5" gutterBottom>
+                Tutorías
+            </Typography>
+
+            <TableContainer component={Paper}>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Fecha</TableCell>
+                            <TableCell>Hora</TableCell>
+                            <TableCell>Estudiante</TableCell>
+                            <TableCell>Tema</TableCell>
+                            <TableCell>Estado</TableCell>
+                            <TableCell>Acciones</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {tutorias.map((tutoria) => (
+                            <TableRow key={tutoria.id}>
+                                <TableCell>
+                                    {new Date(tutoria.fecha_hora_agendada).toLocaleDateString()}
+                                </TableCell>
+                                <TableCell>
+                                    {new Date(tutoria.fecha_hora_agendada).toLocaleTimeString()}
+                                </TableCell>
+                                <TableCell>{tutoria.nombre_estudiante}</TableCell>
+                                <TableCell>{tutoria.nombre_tema}</TableCell>
+                                <TableCell>
+                                    {getEstadoChip(tutoria)}
+                                </TableCell>
+                                <TableCell>
+                                    <div className="flex gap-2">
+                                        <IconButton
+                                            onClick={() => handleOpenDialog(tutoria)}
+                                            color="primary"
+                                        >
+                                            <VisibilityIcon />
+                                        </IconButton>
+                                        {tutoria.estado === 'COMPLETADA' && !tutoria.firma_estudiante_habilitada && (
+                                            <IconButton
+                                                onClick={() => handleHabilitarFirmaEstudiante(tutoria.id)}
+                                                color="primary"
+                                                title="Habilitar Firma Estudiante"
+                                            >
+                                                <EditIcon />
+                                            </IconButton>
+                                        )}
+                                    </div>
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+
+            <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="sm" fullWidth>
+                <DialogTitle>Detalles de la Tutoría</DialogTitle>
+                <DialogContent>
+                    {selectedTutoria && (
+                        <Box sx={{ mt: 2 }}>
+                            <Typography variant="subtitle1" gutterBottom>
+                                Estudiante: {selectedTutoria.nombre_estudiante}
+                            </Typography>
+                            <Typography variant="subtitle1" gutterBottom>
+                                Tema: {selectedTutoria.nombre_tema}
+                            </Typography>
+                            <Typography variant="subtitle1" gutterBottom>
+                                Fecha: {new Date(selectedTutoria.fecha_hora_agendada).toLocaleDateString()}
+                            </Typography>
+                            <Typography variant="subtitle1" gutterBottom>
+                                Hora: {new Date(selectedTutoria.fecha_hora_agendada).toLocaleTimeString()}
+                            </Typography>
+                            <TextField
+                                fullWidth
+                                multiline
+                                rows={4}
+                                label="Observaciones"
+                                value={observaciones}
+                                onChange={(e) => setObservaciones(e.target.value)}
+                                margin="normal"
+                            />
+                        </Box>
+                    )}
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseDialog}>Cancelar</Button>
+                    <Button
+                        onClick={handleRegistrarAsistencia}
+                        variant="contained"
+                        color="primary"
+                    >
+                        Registrar Asistencia
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
+            <Snackbar
+                open={snackbar.open}
+                autoHideDuration={6000}
+                onClose={handleCloseSnackbar}
+                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+            >
+                <Alert
+                    onClose={handleCloseSnackbar}
+                    severity={snackbar.severity}
+                    sx={{ width: '100%' }}
+                >
+                    {snackbar.message}
+                </Alert>
+            </Snackbar>
+        </Box>
+    );
+};
+
+export default TutoriasDocente; 
