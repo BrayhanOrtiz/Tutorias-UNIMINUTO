@@ -46,7 +46,8 @@ const Tutorias = () => {
       const token = localStorage.getItem('token');
       await axios.post('/api/asistencia-tutoria', {
         tutoria_id: tutoriaId,
-        estudiante_id: user.id
+        estudiante_id: user.id,
+        observaciones: 'Asistencia registrada por el estudiante'
       }, {
         headers: { Authorization: `Bearer ${token}` }
       });

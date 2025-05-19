@@ -30,13 +30,6 @@ const DocenteDashboard = () => {
             icon: <AssessmentIcon sx={{ fontSize: 40 }} />,
             path: '/docente/reportes',
             color: '#ed6c02'
-        },
-        {
-            title: 'Tareas',
-            description: 'Gestiona las tareas y actividades de tus tutorías.',
-            icon: <AssignmentIcon sx={{ fontSize: 40 }} />,
-            path: '/docente/tareas',
-            color: '#9c27b0'
         }
     ];
 

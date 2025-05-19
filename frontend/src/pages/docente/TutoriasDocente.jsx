@@ -148,16 +148,23 @@ const TutoriasDocente = () => {
 
     const handleHabilitarFirma = async (tutoriaId) => {
         try {
-            const response = await api.put(`/tutorias/${tutoriaId}/habilitar-firma`, {
+            const response = await api.post(`/tutorias/${tutoriaId}/habilitar-firma`, {
                 docente_id: docenteId
             });
+            
             if (response.data.success) {
-                cargarTutorias();
-                showSnackbar('Firma habilitada correctamente');
+                showSnackbar('Firma habilitada exitosamente');
+                await cargarTutorias(); // Recargar la lista de tutorías
+            } else {
+                showSnackbar(response.data.error || 'Error al habilitar la firma', 'error');
             }
         } catch (error) {
             console.error('Error al habilitar firma:', error);
-            showSnackbar(error.response?.data?.error || 'Error al habilitar la firma', 'error');
+            showSnackbar(
+                error.response?.data?.error || 
+                'Error al habilitar la firma. Por favor, intente nuevamente.',
+                'error'
+            );
         }
     };
 
@@ -176,6 +183,19 @@ const TutoriasDocente = () => {
         }
     };
 
+    const getEstadoColor = (estado) => {
+        switch (estado) {
+            case 'COMPLETADA':
+                return 'success';
+            case 'CANCELADA':
+                return 'error';
+            case 'EN_PROGRESO':
+                return 'warning';
+            default:
+                return 'default';
+        }
+    };
+
     return (
         <Box>
             <Typography variant="h5" gutterBottom>
@@ -186,27 +206,46 @@ const TutoriasDocente = () => {
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell>Fecha</TableCell>
-                            <TableCell>Hora</TableCell>
                             <TableCell>Estudiante</TableCell>
                             <TableCell>Tema</TableCell>
+                            <TableCell>Fecha y Hora</TableCell>
                             <TableCell>Estado</TableCell>
+                            <TableCell>Firma</TableCell>
                             <TableCell>Acciones</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {tutorias.map((tutoria) => (
                             <TableRow key={tutoria.id}>
-                                <TableCell>
-                                    {new Date(tutoria.fecha_hora_agendada).toLocaleDateString()}
-                                </TableCell>
-                                <TableCell>
-                                    {new Date(tutoria.fecha_hora_agendada).toLocaleTimeString()}
-                                </TableCell>
                                 <TableCell>{tutoria.nombre_estudiante}</TableCell>
                                 <TableCell>{tutoria.nombre_tema}</TableCell>
                                 <TableCell>
-                                    {getEstadoChip(tutoria)}
+                                    {new Date(tutoria.fecha_hora_agendada).toLocaleString()}
+                                </TableCell>
+                                <TableCell>
+                                    <Chip
+                                        label={tutoria.estado || 'PENDIENTE'}
+                                        color={getEstadoVariant(tutoria.estado)}
+                                        size="small"
+                                    />
+                                </TableCell>
+                                <TableCell>
+                                    {tutoria.firma_docente_habilitada ? (
+                                        <Chip
+                                            label="Firma Habilitada"
+                                            color="success"
+                                            size="small"
+                                        />
+                                    ) : (
+                                        <Button
+                                            variant="outlined"
+                                            size="small"
+                                            color="primary"
+                                            onClick={() => handleHabilitarFirma(tutoria.id)}
+                                        >
+                                            Habilitar Firma
+                                        </Button>
+                                    )}
                                 </TableCell>
                                 <TableCell>
                                     <div className="flex gap-2">
@@ -216,15 +255,6 @@ const TutoriasDocente = () => {
                                         >
                                             <VisibilityIcon />
                                         </IconButton>
-                                        {tutoria.estado === 'COMPLETADA' && !tutoria.firma_estudiante_habilitada && (
-                                            <IconButton
-                                                onClick={() => handleHabilitarFirmaEstudiante(tutoria.id)}
-                                                color="primary"
-                                                title="Habilitar Firma Estudiante"
-                                            >
-                                                <EditIcon />
-                                            </IconButton>
-                                        )}
                                     </div>
                                 </TableCell>
                             </TableRow>

@@ -186,7 +186,8 @@ const HorariosDocente = () => {
                 dia_semana: formData.dia,
                 hora_inicio: horaInicio,
                 hora_fin: horaFin,
-                salon: formData.salon
+                salon: formData.salon,
+                usuario_id: docenteId
             };
 
             console.log('Enviando datos del horario:', horarioData);
@@ -198,10 +199,7 @@ const HorariosDocente = () => {
                     horarioData
                 );
             } else {
-                response = await api.post('/horarios', {
-                    ...horarioData,
-                    usuario_id: docenteId
-                });
+                response = await api.post('/horarios', horarioData);
             }
             
             console.log('Respuesta del servidor:', response.data);

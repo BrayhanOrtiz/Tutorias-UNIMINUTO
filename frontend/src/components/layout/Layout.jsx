@@ -1,187 +1,250 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
+import React, { useState } from 'react';
 import {
-  AppBar,
-  Box,
-  CssBaseline,
-  Drawer,
-  IconButton,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Toolbar,
-  Typography,
-  Divider,
+    AppBar,
+    Box,
+    CssBaseline,
+    Drawer,
+    IconButton,
+    List,
+    ListItem,
+    ListItemIcon,
+    ListItemText,
+    Toolbar,
+    Typography,
+    Avatar,
+    Menu,
+    MenuItem,
+    Divider,
+    useTheme,
+    useMediaQuery
 } from '@mui/material';
 import {
-  Menu as MenuIcon,
-  Dashboard as DashboardIcon,
-  People as PeopleIcon,
-  Assignment as AssignmentIcon,
-  Assessment as AssessmentIcon,
-  ExitToApp as LogoutIcon,
-  Schedule as ScheduleIcon,
-  Task as TaskIcon,
+    Menu as MenuIcon,
+    Dashboard as DashboardIcon,
+    Schedule as ScheduleIcon,
+    School as SchoolIcon,
+    Assessment as AssessmentIcon,
+    ExitToApp as LogoutIcon,
+    Person as PersonIcon
 } from '@mui/icons-material';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 const drawerWidth = 240;
 
-const getMenuItems = (rol_id) => {
-  switch (rol_id) {
-    case 1: // Estudiante
-      return [
-        { text: 'Inicio', icon: <DashboardIcon />, path: '/estudiante' },
-        { text: 'Mis Tutorías', icon: <AssignmentIcon />, path: '/estudiante/tutorias' },
-        { text: 'Mis Tareas', icon: <TaskIcon />, path: '/estudiante/tareas' },
-        { text: 'Horarios', icon: <ScheduleIcon />, path: '/estudiante/horarios' },
-      ];
-    case 2: // Docente
-      return [
-        { text: 'Dashboard', icon: <DashboardIcon />, path: '/docente' },
-        { text: 'Tutorías', icon: <AssignmentIcon />, path: '/docente/tutorias' },
-        { text: 'Horarios', icon: <ScheduleIcon />, path: '/docente/horarios' },
-        { text: 'Reportes', icon: <AssessmentIcon />, path: '/docente/reportes' },
-      ];
-    case 3: // Administrador
-      return [
-        { text: 'Dashboard', icon: <DashboardIcon />, path: '/admin' },
-        { text: 'Tutorías', icon: <AssignmentIcon />, path: '/admin/tutorias' },
-        { text: 'Usuarios', icon: <PeopleIcon />, path: '/admin/usuarios' },
-        { text: 'Reportes', icon: <AssessmentIcon />, path: '/admin/reportes' },
-      ];
-    default:
-      return [];
-  }
-};
-
 const Layout = ({ children }) => {
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const { logout, user } = useAuth();
-  const navigate = useNavigate();
+    const [mobileOpen, setMobileOpen] = useState(false);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const { user, logout } = useAuth();
+    const navigate = useNavigate();
+    const location = useLocation();
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
+    const handleDrawerToggle = () => {
+        setMobileOpen(!mobileOpen);
+    };
 
-  const handleNavigation = (path) => {
-    navigate(path);
-    setMobileOpen(false);
-  };
+    const handleMenuOpen = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
 
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
-  };
+    const handleMenuClose = () => {
+        setAnchorEl(null);
+    };
 
-  const menuItems = getMenuItems(user?.rol_id);
+    const handleLogout = () => {
+        handleMenuClose();
+        logout();
+        navigate('/login');
+    };
 
-  const drawer = (
-    <div>
-      <Toolbar>
-        <Typography variant="h6" noWrap component="div">
-          Tutorías UNIMINUTO
-        </Typography>
-      </Toolbar>
-      <Divider />
-      <List>
-        {menuItems.map((item) => (
-          <ListItem
-            button
-            key={item.text}
-            onClick={() => handleNavigation(item.path)}
-          >
-            <ListItemIcon>{item.icon}</ListItemIcon>
-            <ListItemText primary={item.text} />
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        <ListItem button onClick={handleLogout}>
-          <ListItemIcon>
-            <LogoutIcon />
-          </ListItemIcon>
-          <ListItemText primary="Cerrar Sesión" />
-        </ListItem>
-      </List>
-    </div>
-  );
+    const getPageTitle = () => {
+        const path = location.pathname;
+        if (path.includes('/docente')) {
+            if (path.includes('/horarios')) return 'Horarios';
+            if (path.includes('/tutorias')) return 'Tutorías';
+            if (path.includes('/reportes')) return 'Reportes';
+            return 'Dashboard';
+        }
+        if (path.includes('/estudiante')) {
+            if (path.includes('/tutorias')) return 'Tutorías';
+            if (path.includes('/tareas')) return 'Tareas';
+            if (path.includes('/horarios')) return 'Horarios';
+            return 'Dashboard';
+        }
+        if (path.includes('/admin')) return 'Panel de Administración';
+        return 'Dashboard';
+    };
 
-  return (
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      <AppBar
-        position="fixed"
-        sx={{
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          ml: { sm: `${drawerWidth}px` },
-        }}
-      >
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            {user?.nombre || 'Usuario'} - {user?.nombre_rol || 'Rol'}
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <Box
-        component="nav"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-      >
-        <Drawer
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true,
-          }}
-          sx={{
-            display: { xs: 'block', sm: 'none' },
-            '& .MuiDrawer-paper': {
-              boxSizing: 'border-box',
-              width: drawerWidth,
-            },
-          }}
-        >
-          {drawer}
-        </Drawer>
-        <Drawer
-          variant="permanent"
-          sx={{
-            display: { xs: 'none', sm: 'block' },
-            '& .MuiDrawer-paper': {
-              boxSizing: 'border-box',
-              width: drawerWidth,
-            },
-          }}
-          open
-        >
-          {drawer}
-        </Drawer>
-      </Box>
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          p: 3,
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-        }}
-      >
-        <Toolbar />
-        {children}
-      </Box>
-    </Box>
-  );
+    const getMenuItems = () => {
+        if (user?.rol_id === 2) { // Docente
+            return [
+                { text: 'Dashboard', icon: <DashboardIcon />, path: '/docente' },
+                { text: 'Horarios', icon: <ScheduleIcon />, path: '/docente/horarios' },
+                { text: 'Tutorías', icon: <SchoolIcon />, path: '/docente/tutorias' },
+                { text: 'Reportes', icon: <AssessmentIcon />, path: '/docente/reportes' }
+            ];
+        } else if (user?.rol_id === 1) { // Estudiante
+            return [
+                { text: 'Dashboard', icon: <DashboardIcon />, path: '/estudiante' },
+                { text: 'Tutorías', icon: <SchoolIcon />, path: '/estudiante/tutorias' },
+                { text: 'Tareas', icon: <AssessmentIcon />, path: '/estudiante/tareas' },
+                { text: 'Horarios', icon: <ScheduleIcon />, path: '/estudiante/horarios' }
+            ];
+        }
+        return [];
+    };
+
+    const drawer = (
+        <div>
+            <Toolbar>
+                <Typography variant="h6" noWrap component="div">
+                    UNIMINUTO
+                </Typography>
+            </Toolbar>
+            <Divider />
+            <List>
+                {getMenuItems().map((item) => (
+                    <ListItem
+                        button
+                        key={item.text}
+                        onClick={() => {
+                            navigate(item.path);
+                            if (isMobile) setMobileOpen(false);
+                        }}
+                        selected={location.pathname === item.path}
+                    >
+                        <ListItemIcon>{item.icon}</ListItemIcon>
+                        <ListItemText primary={item.text} />
+                    </ListItem>
+                ))}
+            </List>
+        </div>
+    );
+
+    return (
+        <Box sx={{ display: 'flex' }}>
+            <CssBaseline />
+            <AppBar
+                position="fixed"
+                sx={{
+                    width: { sm: `calc(100% - ${drawerWidth}px)` },
+                    ml: { sm: `${drawerWidth}px` },
+                    bgcolor: 'white',
+                    color: 'text.primary',
+                    boxShadow: 1
+                }}
+            >
+                <Toolbar>
+                    <IconButton
+                        color="inherit"
+                        aria-label="open drawer"
+                        edge="start"
+                        onClick={handleDrawerToggle}
+                        sx={{ mr: 2, display: { sm: 'none' } }}
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                    
+                    {/* Título de la página actual */}
+                    <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1, textAlign: 'center' }}>
+                        {getPageTitle()}
+                    </Typography>
+
+                    {/* Información del usuario */}
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <Typography variant="body1" sx={{ display: { xs: 'none', sm: 'block' } }}>
+                            {user?.nombre?.charAt(0)?.toUpperCase() + user?.nombre?.slice(1)} {user?.apellido?.charAt(0)?.toUpperCase() + user?.apellido?.slice(1)}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary" sx={{ display: { xs: 'none', sm: 'block' } }}>
+                            {user?.rol_id === 1 ? 'Estudiante' : user?.rol_id === 2 ? 'Docente' : 'Administrador'}
+                        </Typography>
+                        <IconButton
+                            onClick={handleMenuOpen}
+                            size="small"
+                            sx={{ ml: 2 }}
+                        >
+                            <Avatar sx={{ width: 32, height: 32, bgcolor: 'primary.main' }}>
+                                {user?.nombre?.charAt(0)?.toUpperCase()}
+                            </Avatar>
+                        </IconButton>
+                    </Box>
+                </Toolbar>
+            </AppBar>
+
+            <Box
+                component="nav"
+                sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+            >
+                <Drawer
+                    variant="temporary"
+                    open={mobileOpen}
+                    onClose={handleDrawerToggle}
+                    ModalProps={{
+                        keepMounted: true,
+                    }}
+                    sx={{
+                        display: { xs: 'block', sm: 'none' },
+                        '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+                    }}
+                >
+                    {drawer}
+                </Drawer>
+                <Drawer
+                    variant="permanent"
+                    sx={{
+                        display: { xs: 'none', sm: 'block' },
+                        '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+                    }}
+                    open
+                >
+                    {drawer}
+                </Drawer>
+            </Box>
+
+            <Menu
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleMenuClose}
+                PaperProps={{
+                    elevation: 0,
+                    sx: {
+                        overflow: 'visible',
+                        filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                        mt: 1.5,
+                        '& .MuiAvatar-root': {
+                            width: 32,
+                            height: 32,
+                            ml: -0.5,
+                            mr: 1,
+                        },
+                    },
+                }}
+                transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+            >
+                <MenuItem onClick={handleLogout}>
+                    <ListItemIcon>
+                        <LogoutIcon fontSize="small" />
+                    </ListItemIcon>
+                    Cerrar Sesión
+                </MenuItem>
+            </Menu>
+
+            <Box
+                component="main"
+                sx={{
+                    flexGrow: 1,
+                    p: 3,
+                    width: { sm: `calc(100% - ${drawerWidth}px)` },
+                    mt: '64px'
+                }}
+            >
+                {children}
+            </Box>
+        </Box>
+    );
 };
 
 export default Layout; 
