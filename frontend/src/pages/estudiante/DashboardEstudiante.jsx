@@ -103,10 +103,26 @@ const DashboardEstudiante = () => {
   const handleSubmit = async () => {
     try {
       const token = localStorage.getItem('token');
+      
+      // Obtener la fecha y hora seleccionada
+      const fechaSeleccionada = new Date(form.fecha_hora_agendada);
+      
+      // Crear una fecha en UTC manteniendo la hora local
+      const fechaHoraLocal = new Date(Date.UTC(
+        fechaSeleccionada.getFullYear(),
+        fechaSeleccionada.getMonth(),
+        fechaSeleccionada.getDate(),
+        fechaSeleccionada.getHours(),
+        fechaSeleccionada.getMinutes()
+      ));
+      
+      console.log('Hora seleccionada:', fechaSeleccionada.toLocaleString());
+      console.log('Hora a enviar:', fechaHoraLocal.toISOString());
+      
       await axios.post('/api/tutorias', {
         estudiante_id: estudiante.id,
         docente_id: selectedDocente.id,
-        fecha_hora_agendada: form.fecha_hora_agendada,
+        fecha_hora_agendada: fechaHoraLocal.toISOString(),
         tema_id: form.tema_id
       }, {
         headers: { Authorization: `Bearer ${token}` }
@@ -114,6 +130,7 @@ const DashboardEstudiante = () => {
       alert('¡Tutoría agendada con éxito!');
       handleCloseForm();
     } catch (e) {
+      console.error('Error al agendar la tutoría:', e);
       alert('Error al agendar la tutoría');
     }
   };
@@ -192,7 +209,15 @@ const DashboardEstudiante = () => {
                       Docente: {tutoria.nombre_docente}
                     </Typography>
                     <Typography variant="body2" color="textSecondary" gutterBottom>
-                      Fecha y Hora: {new Date(tutoria.fecha_hora_agendada).toLocaleString()}
+                      Fecha y Hora: {new Date(tutoria.fecha_hora_agendada).toLocaleString('es-ES', {
+                        timeZone: 'America/Bogota',
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: false
+                      })}
                     </Typography>
                     <Typography variant="body2" color="textSecondary">
                       Estado: {tutoria.firmada_estudiante ? 'Asistencia registrada' : 'Pendiente de asistencia'}

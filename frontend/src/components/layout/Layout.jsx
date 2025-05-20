@@ -16,7 +16,12 @@ import {
     MenuItem,
     Divider,
     useTheme,
-    useMediaQuery
+    useMediaQuery,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
+    Button
 } from '@mui/material';
 import {
     Menu as MenuIcon,
@@ -37,6 +42,7 @@ const drawerWidth = 240;
 const Layout = ({ children }) => {
     const [mobileOpen, setMobileOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
+    const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
     const { user, logout } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
@@ -55,10 +61,19 @@ const Layout = ({ children }) => {
         setAnchorEl(null);
     };
 
-    const handleLogout = () => {
+    const handleLogoutClick = () => {
         handleMenuClose();
+        setLogoutDialogOpen(true);
+    };
+
+    const handleLogoutConfirm = () => {
+        setLogoutDialogOpen(false);
         logout();
         navigate('/login');
+    };
+
+    const handleLogoutCancel = () => {
+        setLogoutDialogOpen(false);
     };
 
     const getPageTitle = () => {
@@ -243,13 +258,34 @@ const Layout = ({ children }) => {
                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
             >
-                <MenuItem onClick={handleLogout}>
+                <MenuItem onClick={handleLogoutClick}>
                     <ListItemIcon>
                         <LogoutIcon fontSize="small" />
                     </ListItemIcon>
                     Cerrar Sesión
                 </MenuItem>
             </Menu>
+
+            <Dialog
+                open={logoutDialogOpen}
+                onClose={handleLogoutCancel}
+                aria-labelledby="logout-dialog-title"
+            >
+                <DialogTitle id="logout-dialog-title">
+                    Confirmar cierre de sesión
+                </DialogTitle>
+                <DialogContent>
+                    ¿Está seguro que desea cerrar sesión?
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleLogoutCancel} color="primary">
+                        Cancelar
+                    </Button>
+                    <Button onClick={handleLogoutConfirm} color="primary" variant="contained">
+                        Confirmar
+                    </Button>
+                </DialogActions>
+            </Dialog>
 
             <Box
                 component="main"

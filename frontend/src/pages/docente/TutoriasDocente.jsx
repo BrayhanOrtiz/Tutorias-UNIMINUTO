@@ -152,19 +152,24 @@ const TutoriasDocente = () => {
                 docente_id: docenteId
             });
             
-            if (response.data.success) {
+            if (response.data) {
                 showSnackbar('Firma habilitada exitosamente');
-                await cargarTutorias(); // Recargar la lista de tutorías
+                await cargarTutorias();
             } else {
                 showSnackbar(response.data.error || 'Error al habilitar la firma', 'error');
             }
         } catch (error) {
             console.error('Error al habilitar firma:', error);
-            showSnackbar(
-                error.response?.data?.error || 
-                'Error al habilitar la firma. Por favor, intente nuevamente.',
-                'error'
-            );
+            if (error.response?.status === 200) {
+                showSnackbar('Firma habilitada exitosamente');
+                await cargarTutorias();
+            } else {
+                showSnackbar(
+                    error.response?.data?.error || 
+                    'Error al habilitar la firma. Por favor, intente nuevamente.',
+                    'error'
+                );
+            }
         }
     };
 
@@ -220,7 +225,20 @@ const TutoriasDocente = () => {
                                 <TableCell>{tutoria.nombre_estudiante}</TableCell>
                                 <TableCell>{tutoria.nombre_tema}</TableCell>
                                 <TableCell>
-                                    {new Date(tutoria.fecha_hora_agendada).toLocaleString()}
+                                    {(() => {
+                                        const fecha = new Date(tutoria.fecha_hora_agendada);
+                                        console.log('Fecha recibida:', tutoria.fecha_hora_agendada);
+                                        console.log('Fecha parseada:', fecha.toLocaleString());
+                                        return fecha.toLocaleString('es-ES', {
+                                            timeZone: 'America/Bogota',
+                                            year: 'numeric',
+                                            month: '2-digit',
+                                            day: '2-digit',
+                                            hour: '2-digit',
+                                            minute: '2-digit',
+                                            hour12: false
+                                        });
+                                    })()}
                                 </TableCell>
                                 <TableCell>
                                     <Chip
