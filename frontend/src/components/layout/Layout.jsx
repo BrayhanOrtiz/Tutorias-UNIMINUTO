@@ -25,7 +25,9 @@ import {
     School as SchoolIcon,
     Assessment as AssessmentIcon,
     ExitToApp as LogoutIcon,
-    Person as PersonIcon
+    Person as PersonIcon,
+    Assignment as AssignmentIcon,
+    SupervisorAccount as SupervisorAccountIcon
 } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
@@ -61,36 +63,53 @@ const Layout = ({ children }) => {
 
     const getPageTitle = () => {
         const path = location.pathname;
-        if (path.includes('/docente')) {
+        if (path.startsWith('/docente')) {
+            if (path === '/docente') return 'Dashboard Docente';
             if (path.includes('/horarios')) return 'Horarios';
             if (path.includes('/tutorias')) return 'Tutorías';
             if (path.includes('/reportes')) return 'Reportes';
-            return 'Dashboard';
+            return 'Docente';
         }
-        if (path.includes('/estudiante')) {
+        if (path.startsWith('/estudiante')) {
+            if (path === '/estudiante') return 'Dashboard Estudiante';
             if (path.includes('/tutorias')) return 'Tutorías';
             if (path.includes('/tareas')) return 'Tareas';
             if (path.includes('/horarios')) return 'Horarios';
-            return 'Dashboard';
+            return 'Estudiante';
         }
-        if (path.includes('/admin')) return 'Panel de Administración';
+        if (path.startsWith('/admin')) {
+            if (path === '/admin') return 'Panel de Administración';
+            if (path.includes('/admin/gestion-docentes')) return 'Gestión de Docentes';
+            if (path.includes('/admin/reportes-tutorias')) return 'Reportes de Tutorías';
+            if (path.includes('/admin/gestion-encuestas')) return 'Gestión de Preguntas';
+            if (path.includes('/admin/listado-encuestas')) return 'Listado de Encuestas';
+            return 'Administración';
+        }
         return 'Dashboard';
     };
 
     const getMenuItems = () => {
-        if (user?.rol_id === 2) { // Docente
+        if (user?.rol_id === 2) {
             return [
                 { text: 'Dashboard', icon: <DashboardIcon />, path: '/docente' },
                 { text: 'Horarios', icon: <ScheduleIcon />, path: '/docente/horarios' },
                 { text: 'Tutorías', icon: <SchoolIcon />, path: '/docente/tutorias' },
                 { text: 'Reportes', icon: <AssessmentIcon />, path: '/docente/reportes' }
             ];
-        } else if (user?.rol_id === 1) { // Estudiante
+        } else if (user?.rol_id === 1) {
             return [
                 { text: 'Dashboard', icon: <DashboardIcon />, path: '/estudiante' },
                 { text: 'Tutorías', icon: <SchoolIcon />, path: '/estudiante/tutorias' },
-                { text: 'Tareas', icon: <AssessmentIcon />, path: '/estudiante/tareas' },
+                { text: 'Tareas', icon: <AssignmentIcon />, path: '/estudiante/tareas' },
                 { text: 'Horarios', icon: <ScheduleIcon />, path: '/estudiante/horarios' }
+            ];
+        } else if (user?.rol_id === 3) {
+            return [
+                { text: 'Panel Admin', icon: <DashboardIcon />, path: '/admin' },
+                { text: 'Gestión Docentes', icon: <SupervisorAccountIcon />, path: '/admin/gestion-docentes' },
+                { text: 'Reportes Tutorías', icon: <AssessmentIcon />, path: '/admin/reportes-tutorias' },
+                { text: 'Gestión Preguntas', icon: <AssignmentIcon />, path: '/admin/gestion-encuestas' },
+                { text: 'Listado Encuestas', icon: <AssessmentIcon />, path: '/admin/listado-encuestas' },
             ];
         }
         return [];

@@ -265,20 +265,48 @@ const HorariosDocente = () => {
 
     const handleGuardarExperticia = async () => {
         try {
+            if (!docenteId) {
+                showSnackbar('Error: No hay ID de docente disponible', 'error');
+                return;
+            }
+
+            if (!experticia.trim()) {
+                showSnackbar('La experticia no puede estar vacía', 'error');
+                return;
+            }
+
             setLoadingExperticia(true);
-            const response = await api.put(`/usuarios/${docenteId}`, {
-                experticia: experticia
+            console.log('Enviando actualización de experticia:', {
+                docenteId,
+                experticia
             });
+
+            console.log('Cuerpo de la solicitud PUT:', { experticia: experticia.trim() });
+
+            const response = await api.put(`/usuarios/${docenteId}`, {
+                experticia: experticia.trim()
+            });
+            
+            console.log('Respuesta del servidor:', response.data);
             
             if (response.data.success) {
                 handleCloseExperticia();
+                showSnackbar('Experticia actualizada exitosamente');
                 setError('');
             } else {
-                setError(response.data.message || 'Error al actualizar la experticia');
+                const errorMessage = response.data.message || 'Error al actualizar la experticia';
+                setError(errorMessage);
+                showSnackbar(errorMessage, 'error');
             }
         } catch (error) {
             console.error('Error al actualizar experticia:', error);
-            setError('Error al actualizar la experticia. Por favor, intente nuevamente.');
+            console.error('Detalles del error:', error.response?.data);
+            console.error('Estado del error:', error.response?.status);
+            
+            const errorMessage = error.response?.data?.message || 
+                'Error al actualizar la experticia. Por favor, intente nuevamente.';
+            setError(errorMessage);
+            showSnackbar(errorMessage, 'error');
         } finally {
             setLoadingExperticia(false);
         }
