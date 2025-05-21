@@ -10,7 +10,7 @@ import ReportesDocente from './pages/docente/ReportesDocente';
 import DashboardAdmin from './pages/admin/DashboardAdmin';
 import Tareas from './pages/estudiante/Tareas';
 import Horarios from './pages/estudiante/Horarios';
-import Tutorias from './pages/estudiante/Tutorias';
+import TutoriasEstudiante from './pages/estudiante/TutoriasEstudiante';
 import Register from './pages/auth/Register';
 import ForgotPassword from './pages/auth/ForgotPassword';
 import ResetPassword from './pages/auth/ResetPassword';
@@ -84,7 +84,7 @@ const AppRoutes = () => {
         element={
           <PrivateRoute allowedRoles={[1]}>
             <Layout>
-              <Tutorias />
+              <TutoriasEstudiante />
             </Layout>
           </PrivateRoute>
         }

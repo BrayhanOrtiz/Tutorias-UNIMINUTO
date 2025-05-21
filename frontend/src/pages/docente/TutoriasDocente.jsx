@@ -38,6 +38,7 @@ const TutoriasDocente = () => {
     });
     const { user } = useAuth();
     const docenteId = user?.id;
+    const isEstudiante = user?.role === 'estudiante';
 
     const showSnackbar = (message, severity = 'success') => {
         setSnackbar({
@@ -197,7 +198,20 @@ const TutoriasDocente = () => {
         }
     };
 
+    const canDeleteTutoria = (tutoria) => {
+        if (isEstudiante) {
+            // El estudiante solo puede eliminar si no está firmada ni habilitada para firma
+            return !tutoria.firma_docente_habilitada && !tutoria.firmada_estudiante;
+        }
+        // El docente puede eliminar en cualquier momento
+        return true;
+    };
+
     const handleOpenDeleteDialog = (tutoria) => {
+        if (!canDeleteTutoria(tutoria)) {
+            showSnackbar('No se puede eliminar esta tutoría porque ya ha sido firmada o habilitada para firma', 'warning');
+            return;
+        }
         setTutoriaToDelete(tutoria);
         setOpenDeleteDialog(true);
     };
@@ -307,12 +321,14 @@ const TutoriasDocente = () => {
                                         >
                                             <VisibilityIcon />
                                         </IconButton>
-                                        <IconButton
-                                            onClick={() => handleOpenDeleteDialog(tutoria)}
-                                            color="error"
-                                        >
-                                            <DeleteIcon />
-                                        </IconButton>
+                                        {canDeleteTutoria(tutoria) && (
+                                            <IconButton
+                                                onClick={() => handleOpenDeleteDialog(tutoria)}
+                                                color="error"
+                                            >
+                                                <DeleteIcon />
+                                            </IconButton>
+                                        )}
                                     </div>
                                 </TableCell>
                             </TableRow>
