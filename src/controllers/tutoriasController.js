@@ -275,7 +275,7 @@ export const habilitarFirmaTutoria = async (req, res) => {
     try {
         // Verificar si la tutoría existe y pertenece al docente
         const tutoria = await sql`
-            SELECT id, docente_id, fecha_hora_agendada, hora_inicio_real, firma_docente_habilitada
+            SELECT id, docente_id, fecha_hora_agendada, hora_inicio_real
             FROM tutoria 
             WHERE id = ${id}
         `;
@@ -288,24 +288,12 @@ export const habilitarFirmaTutoria = async (req, res) => {
             return res.status(403).json({ error: 'No tienes permiso para habilitar la firma de esta tutoría' });
         }
 
-        if (tutoria[0].firma_docente_habilitada) {
-            return res.status(400).json({ error: 'La firma ya está habilitada para esta tutoría' });
-        }
-
         // Verificar que la tutoría no haya comenzado aún
         const ahora = new Date();
         const fechaTutoria = new Date(tutoria[0].fecha_hora_agendada);
         
-        // Obtener la diferencia en minutos entre la fecha de la tutoría y ahora
-        const diferenciaMinutos = Math.floor((fechaTutoria - ahora) / (1000 * 60));
-        
-        console.log('Fecha tutoría:', fechaTutoria);
-        console.log('Ahora:', ahora);
-        console.log('Diferencia en minutos:', diferenciaMinutos);
-        
-        // Permitir habilitar la firma hasta 30 minutos después de la hora programada
-        if (diferenciaMinutos < -30) {
-            return res.status(400).json({ error: 'No se puede habilitar la firma para una tutoría que ya pasó hace más de 30 minutos' });
+        if (ahora > fechaTutoria) {
+            return res.status(400).json({ error: 'No se puede habilitar la firma para una tutoría que ya pasó' });
         }
 
         // Habilitar la firma
@@ -315,6 +303,9 @@ export const habilitarFirmaTutoria = async (req, res) => {
             WHERE id = ${id}
             RETURNING *
         `;
+
+        // Aquí podríamos agregar la lógica para enviar notificación al estudiante
+        // TODO: Implementar sistema de notificaciones
 
         res.json({
             message: 'Firma habilitada exitosamente',
