@@ -28,6 +28,8 @@ const TutoriasDocente = () => {
     const [tutorias, setTutorias] = useState([]);
     const [selectedTutoria, setSelectedTutoria] = useState(null);
     const [openDialog, setOpenDialog] = useState(false);
+    const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+    const [tutoriaToDelete, setTutoriaToDelete] = useState(null);
     const [observaciones, setObservaciones] = useState('');
     const [snackbar, setSnackbar] = useState({
         open: false,
@@ -195,18 +197,43 @@ const TutoriasDocente = () => {
         }
     };
 
-    const handleEliminarTutoria = async (tutoriaId) => {
+    const handleOpenDeleteDialog = (tutoria) => {
+        setTutoriaToDelete(tutoria);
+        setOpenDeleteDialog(true);
+    };
+
+    const handleCloseDeleteDialog = () => {
+        setOpenDeleteDialog(false);
+        setTutoriaToDelete(null);
+    };
+
+    const handleEliminarTutoria = async () => {
+        if (!tutoriaToDelete) return;
+
         try {
-            const response = await api.delete(`/tutorias/${tutoriaId}`);
-            if (response.data.success) {
+            const response = await api.delete(`/tutorias/${tutoriaToDelete.id}`);
+            
+            if (response.status === 200 || response.status === 204) {
                 showSnackbar('Tutoría eliminada exitosamente');
+                handleCloseDeleteDialog();
                 await cargarTutorias();
             } else {
-                showSnackbar(response.data.error || 'Error al eliminar la tutoría', 'error');
+                showSnackbar('Error al eliminar la tutoría', 'error');
             }
         } catch (error) {
             console.error('Error al eliminar tutoría:', error);
-            showSnackbar('Error al eliminar la tutoría', 'error');
+            
+            if (error.response?.status === 200 || error.response?.status === 204) {
+                showSnackbar('Tutoría eliminada exitosamente');
+                handleCloseDeleteDialog();
+                await cargarTutorias();
+            } else {
+                showSnackbar(
+                    error.response?.data?.message || 
+                    'Error al eliminar la tutoría. Por favor, intente nuevamente.',
+                    'error'
+                );
+            }
         }
     };
 
@@ -281,7 +308,7 @@ const TutoriasDocente = () => {
                                             <VisibilityIcon />
                                         </IconButton>
                                         <IconButton
-                                            onClick={() => handleEliminarTutoria(tutoria.id)}
+                                            onClick={() => handleOpenDeleteDialog(tutoria)}
                                             color="error"
                                         >
                                             <DeleteIcon />
@@ -331,6 +358,29 @@ const TutoriasDocente = () => {
                         color="primary"
                     >
                         Registrar Asistencia
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
+            <Dialog
+                open={openDeleteDialog}
+                onClose={handleCloseDeleteDialog}
+                maxWidth="xs"
+                fullWidth
+            >
+                <DialogTitle>Confirmar Eliminación</DialogTitle>
+                <DialogContent>
+                    <Typography>
+                        ¿Está seguro que desea eliminar la tutoría con el estudiante {tutoriaToDelete?.nombre_estudiante}?
+                        Esta acción no se puede deshacer.
+                    </Typography>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseDeleteDialog} color="primary">
+                        Cancelar
+                    </Button>
+                    <Button onClick={handleEliminarTutoria} color="error" variant="contained">
+                        Eliminar
                     </Button>
                 </DialogActions>
             </Dialog>
