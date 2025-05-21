@@ -288,12 +288,13 @@ export const habilitarFirmaTutoria = async (req, res) => {
             return res.status(403).json({ error: 'No tienes permiso para habilitar la firma de esta tutoría' });
         }
 
-        // Verificar que la tutoría no haya comenzado aún
+        // Verificar que la tutoría no haya pasado más de 1 hora
         const ahora = new Date();
         const fechaTutoria = new Date(tutoria[0].fecha_hora_agendada);
+        const unaHoraDespues = new Date(fechaTutoria.getTime() + 60 * 60 * 1000);
         
-        if (ahora > fechaTutoria) {
-            return res.status(400).json({ error: 'No se puede habilitar la firma para una tutoría que ya pasó' });
+        if (ahora > unaHoraDespues) {
+            return res.status(400).json({ error: 'No se puede habilitar la firma para una tutoría que ya pasó más de 1 hora' });
         }
 
         // Habilitar la firma

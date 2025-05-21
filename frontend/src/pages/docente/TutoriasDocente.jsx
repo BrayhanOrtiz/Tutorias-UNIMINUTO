@@ -20,7 +20,7 @@ import {
     Snackbar,
     Alert
 } from '@mui/material';
-import { Visibility as VisibilityIcon, Edit as EditIcon } from '@mui/icons-material';
+import { Visibility as VisibilityIcon, Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import api from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 
@@ -121,28 +121,22 @@ const TutoriasDocente = () => {
     };
 
     const getEstadoChip = (tutoria) => {
-        switch (tutoria.estado) {
-            case 'PENDIENTE':
-                return <Chip label="Pendiente" color="warning" />;
-            case 'COMPLETADA':
-                return <Chip label="Completada" color="success" />;
-            case 'CANCELADA':
-                return <Chip label="Cancelada" color="error" />;
-            default:
-                return <Chip label={tutoria.estado} color="default" />;
+        if (tutoria.firma_docente_habilitada && tutoria.firmada_estudiante) {
+            return <Chip label="Completada" color="success" />;
+        } else if (tutoria.firma_docente_habilitada) {
+            return <Chip label="Pendiente de firma del estudiante" color="warning" />;
+        } else {
+            return <Chip label="Pendiente" color="default" />;
         }
     };
 
     const getEstadoVariant = (estado) => {
-        switch (estado) {
-            case 'PENDIENTE':
-                return 'warning';
-            case 'COMPLETADA':
-                return 'success';
-            case 'CANCELADA':
-                return 'destructive';
-            default:
-                return 'default';
+        if (estado.firma_docente_habilitada && estado.firmada_estudiante) {
+            return 'success';
+        } else if (estado.firma_docente_habilitada) {
+            return 'warning';
+        } else {
+            return 'default';
         }
     };
 
@@ -201,6 +195,21 @@ const TutoriasDocente = () => {
         }
     };
 
+    const handleEliminarTutoria = async (tutoriaId) => {
+        try {
+            const response = await api.delete(`/tutorias/${tutoriaId}`);
+            if (response.data.success) {
+                showSnackbar('Tutoría eliminada exitosamente');
+                await cargarTutorias();
+            } else {
+                showSnackbar(response.data.error || 'Error al eliminar la tutoría', 'error');
+            }
+        } catch (error) {
+            console.error('Error al eliminar tutoría:', error);
+            showSnackbar('Error al eliminar la tutoría', 'error');
+        }
+    };
+
     return (
         <Box>
             <Typography variant="h5" gutterBottom>
@@ -227,8 +236,6 @@ const TutoriasDocente = () => {
                                 <TableCell>
                                     {(() => {
                                         const fecha = new Date(tutoria.fecha_hora_agendada);
-                                        console.log('Fecha recibida:', tutoria.fecha_hora_agendada);
-                                        console.log('Fecha parseada:', fecha.toLocaleString());
                                         return fecha.toLocaleString('es-ES', {
                                             timeZone: 'America/Bogota',
                                             year: 'numeric',
@@ -241,19 +248,19 @@ const TutoriasDocente = () => {
                                     })()}
                                 </TableCell>
                                 <TableCell>
-                                    <Chip
-                                        label={tutoria.estado || 'PENDIENTE'}
-                                        color={getEstadoVariant(tutoria.estado)}
-                                        size="small"
-                                    />
+                                    {tutoria.firma_docente_habilitada && tutoria.firmada_estudiante ? (
+                                        <Chip label="OK" color="success" size="small" />
+                                    ) : (
+                                        <Chip
+                                            label={tutoria.estado || 'PENDIENTE'}
+                                            color={getEstadoVariant(tutoria)}
+                                            size="small"
+                                        />
+                                    )}
                                 </TableCell>
                                 <TableCell>
                                     {tutoria.firma_docente_habilitada ? (
-                                        <Chip
-                                            label="Firma Habilitada"
-                                            color="success"
-                                            size="small"
-                                        />
+                                        <Chip label="Firma Habilitada" color="success" size="small" />
                                     ) : (
                                         <Button
                                             variant="outlined"
@@ -272,6 +279,12 @@ const TutoriasDocente = () => {
                                             color="primary"
                                         >
                                             <VisibilityIcon />
+                                        </IconButton>
+                                        <IconButton
+                                            onClick={() => handleEliminarTutoria(tutoria.id)}
+                                            color="error"
+                                        >
+                                            <DeleteIcon />
                                         </IconButton>
                                     </div>
                                 </TableCell>
