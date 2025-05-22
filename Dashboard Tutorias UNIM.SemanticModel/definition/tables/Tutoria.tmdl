@@ -102,8 +102,6 @@ table Tutoria
 				in
 				    #"Tipo cambiado"
 
-	changedProperty = Name
-
 	annotation PBI_NavigationStepName = Navegación
 
 	annotation PBI_ResultType = Table

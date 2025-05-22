@@ -14,7 +14,7 @@ table 'usuario_rol?select=*'
 		dataType: int64
 		formatString: 0
 		lineageTag: 75698a1c-2fc5-4ffd-82f4-298fe51e78bc
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: rol_id
 
 		annotation SummarizationSetBy = Automatic

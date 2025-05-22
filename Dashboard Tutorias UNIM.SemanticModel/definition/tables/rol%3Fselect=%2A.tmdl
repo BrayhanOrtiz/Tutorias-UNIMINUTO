@@ -5,7 +5,7 @@ table 'rol?select=*'
 		dataType: int64
 		formatString: 0
 		lineageTag: 8e445b62-871d-4626-9015-b6475506748c
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: id
 
 		annotation SummarizationSetBy = Automatic

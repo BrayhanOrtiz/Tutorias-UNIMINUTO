@@ -50,7 +50,7 @@ const DashboardAdmin = () => {
       <Grid item xs={12} sx={{ mb: 4 }}>
         <Card>
           <CardContent>
-            <PowerBIDashboard />
+            <iframe title="Dashboard Tutorias UNIM" width="1140" height="541.25" src="https://app.powerbi.com/reportEmbed?reportId=e3ec05e5-beef-4f55-803b-3c887c405db6&autoAuth=true&ctid=b1ba85eb-a253-4467-9ee8-d4f8ed4df300" frameborder="0" allowFullScreen="true"></iframe>
           </CardContent>
         </Card>
       </Grid>
