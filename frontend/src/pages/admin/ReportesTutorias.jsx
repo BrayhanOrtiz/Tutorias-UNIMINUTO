@@ -109,7 +109,7 @@ const ReportesTutorias = () => {
 
     const estadisticas = calcularEstadisticas();
 
-    return (
+  return (
         <Box sx={{ p: 3 }}>
             <Typography variant="h4" gutterBottom>
                 Reportes de Tutorías
@@ -181,7 +181,7 @@ const ReportesTutorias = () => {
                                     </Typography>
                                     <Typography variant="h4">
                                         {estadisticas.porcentajeAsistencia.toFixed(1)}%
-                                    </Typography>
+      </Typography>
                                 </CardContent>
                             </Card>
                         </Grid>
@@ -224,8 +224,8 @@ const ReportesTutorias = () => {
                     No hay reportes disponibles para este docente
                 </Alert>
             ) : null}
-        </Box>
-    );
+    </Box>
+  );
 };
 
 export default ReportesTutorias; 

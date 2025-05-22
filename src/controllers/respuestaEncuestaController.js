@@ -213,4 +213,48 @@ export const getRespuestasByPregunta = async (req, res) => {
         console.error('Error al obtener respuestas de la pregunta:', error);
         res.status(500).json({ error: 'Error al obtener las respuestas de la pregunta' });
     }
+};
+
+// Crear múltiples respuestas
+export const createRespuestasBatch = async (req, res) => {
+    try {
+        const respuestas = req.body;
+
+        if (!Array.isArray(respuestas)) {
+            return res.status(400).json({ error: 'Se esperaba un array de respuestas' });
+        }
+
+        // Validar que todas las respuestas tengan los campos requeridos
+        for (const respuesta of respuestas) {
+            if (!respuesta.encuesta_satisfaccion_id || !respuesta.pregunta_encuesta_id || respuesta.respuesta === undefined) {
+                return res.status(400).json({ 
+                    error: 'Cada respuesta debe tener encuesta_satisfaccion_id, pregunta_encuesta_id y respuesta' 
+                });
+            }
+        }
+
+        // Insertar todas las respuestas una por una
+        const respuestasInsertadas = [];
+        for (const respuesta of respuestas) {
+            const [nuevaRespuesta] = await sql`
+                INSERT INTO respuesta_encuesta (
+                    encuesta_satisfaccion_id,
+                    pregunta_encuesta_id,
+                    respuesta
+                )
+                VALUES (
+                    ${respuesta.encuesta_satisfaccion_id},
+                    ${respuesta.pregunta_encuesta_id},
+                    ${respuesta.respuesta}
+                )
+                RETURNING *
+            `;
+            respuestasInsertadas.push(nuevaRespuesta);
+        }
+
+        res.status(201).json(respuestasInsertadas);
+    } catch (error) {
+        console.error('Error al crear respuestas:', error);
+        res.status(500).json({ error: 'Error al crear las respuestas' });
+    }
 }; 

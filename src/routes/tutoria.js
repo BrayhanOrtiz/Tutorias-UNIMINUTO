@@ -11,6 +11,7 @@ import {
     habilitarFirmaTutoria,
     obtenerReportesPorDocente
 } from '../controllers/tutoriasController.js';
+import { createAsistencia } from '../controllers/asistenciaTutoriaController.js';
 import { verifyToken } from '../middleware/auth.js';
 
 const router = express.Router();
@@ -446,5 +447,62 @@ router.post('/:id/habilitar-firma', habilitarFirmaTutoria);
  *         description: Error al obtener los reportes
  */
 router.get('/reportes/:docenteId', verifyToken, obtenerReportesPorDocente);
+
+/**
+ * @swagger
+ * /api/tutorias/{id}/firma:
+ *   post:
+ *     summary: Registrar la firma del estudiante
+ *     tags: [Tutorías]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID de la tutoría
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - estudiante_id
+ *               - observaciones
+ *             properties:
+ *               estudiante_id:
+ *                 type: integer
+ *                 description: ID del estudiante
+ *               observaciones:
+ *                 type: string
+ *                 description: Observaciones sobre la asistencia
+ *     responses:
+ *       201:
+ *         description: Firma registrada exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Tutoria'
+ *       400:
+ *         description: Datos inválidos
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       404:
+ *         description: Tutoría no encontrada
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Error del servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
+router.post('/:id/firma', createAsistencia);
 
 export default router; 

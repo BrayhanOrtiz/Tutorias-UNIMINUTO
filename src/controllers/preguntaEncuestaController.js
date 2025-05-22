@@ -37,15 +37,25 @@ export const getPreguntaById = async (req, res) => {
 // Crear una nueva pregunta
 export const createPregunta = async (req, res) => {
     try {
-        const { texto_pregunta } = req.body;
+        const { texto_pregunta, tipo_pregunta } = req.body;
 
         if (!texto_pregunta || texto_pregunta.trim() === '') {
             return res.status(400).json({ error: 'El texto de la pregunta es requerido' });
         }
 
+        if (!tipo_pregunta || !['binaria', 'likert'].includes(tipo_pregunta)) {
+            return res.status(400).json({ error: 'El tipo de pregunta debe ser binaria o likert' });
+        }
+
+        // Obtener el siguiente ID disponible
+        const [maxId] = await sql`
+            SELECT COALESCE(MAX(id), 0) + 1 as next_id 
+            FROM pregunta_encuesta
+        `;
+
         const [nuevaPregunta] = await sql`
-            INSERT INTO pregunta_encuesta (texto_pregunta)
-            VALUES (${texto_pregunta})
+            INSERT INTO pregunta_encuesta (id, texto_pregunta, tipo_pregunta)
+            VALUES (${maxId.next_id}, ${texto_pregunta}, ${tipo_pregunta})
             RETURNING *
         `;
 
@@ -60,10 +70,14 @@ export const createPregunta = async (req, res) => {
 export const updatePregunta = async (req, res) => {
     try {
         const { id } = req.params;
-        const { texto_pregunta } = req.body;
+        const { texto_pregunta, tipo_pregunta } = req.body;
 
         if (!texto_pregunta || texto_pregunta.trim() === '') {
             return res.status(400).json({ error: 'El texto de la pregunta es requerido' });
+        }
+
+        if (!tipo_pregunta || !['binaria', 'likert'].includes(tipo_pregunta)) {
+            return res.status(400).json({ error: 'El tipo de pregunta debe ser binaria o likert' });
         }
 
         // Verificar que la pregunta existe
@@ -74,7 +88,8 @@ export const updatePregunta = async (req, res) => {
 
         const [preguntaActualizada] = await sql`
             UPDATE pregunta_encuesta
-            SET texto_pregunta = ${texto_pregunta}
+            SET texto_pregunta = ${texto_pregunta},
+                tipo_pregunta = ${tipo_pregunta}
             WHERE id = ${id}
             RETURNING *
         `;
@@ -97,10 +112,10 @@ export const deletePregunta = async (req, res) => {
             return res.status(404).json({ error: 'Pregunta no encontrada' });
         }
 
-        // Primero eliminar las respuestas asociadas
+        // Eliminar las respuestas asociadas
         await sql`DELETE FROM respuesta_encuesta WHERE pregunta_encuesta_id = ${id}`;
         
-        // Luego eliminar la pregunta
+        // Eliminar la pregunta
         await sql`DELETE FROM pregunta_encuesta WHERE id = ${id}`;
         
         res.json({ message: 'Pregunta eliminada exitosamente' });

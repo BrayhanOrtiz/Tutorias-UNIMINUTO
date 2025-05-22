@@ -21,8 +21,13 @@ import temasRoutes from './src/routes/temas.js';
 
 const app = express();
 
-// Middleware
-app.use(cors());
+// Configuración de CORS
+app.use(cors({
+    origin: 'http://localhost:5173', // URL del frontend
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(express.json());
 
 // Configuración de Swagger

@@ -9,249 +9,500 @@ import {
     TableContainer,
     TableHead,
     TableRow,
+    IconButton,
     Button,
     Dialog,
     DialogTitle,
     DialogContent,
     DialogActions,
     TextField,
-    IconButton,
-    Snackbar,
-    Alert,
-    CircularProgress
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem,
+    Chip,
+    Grid,
+    Divider
 } from '@mui/material';
+import { useSnackbar } from 'notistack';
 import { Edit as EditIcon, Delete as DeleteIcon, Add as AddIcon } from '@mui/icons-material';
-import api from '../../services/api';
+import axios from 'axios';
+
+// Configurar axios para usar la URL base
+axios.defaults.baseURL = 'http://localhost:3000';
 
 const GestionPreguntasEncuesta = () => {
     const [preguntas, setPreguntas] = useState([]);
+    const [respuestas, setRespuestas] = useState([]);
     const [openDialog, setOpenDialog] = useState(false);
+    const [openRespuestasDialog, setOpenRespuestasDialog] = useState(false);
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-    const [selectedPregunta, setSelectedPregunta] = useState(null);
     const [preguntaToDelete, setPreguntaToDelete] = useState(null);
     const [formData, setFormData] = useState({
-        texto_pregunta: ''
+        id: null,
+        texto_pregunta: '',
+        tipo_pregunta: 'binaria',
+        opciones_respuesta: []
     });
-    const [loading, setLoading] = useState(true);
-    const [snackbar, setSnackbar] = useState({
-        open: false,
-        message: '',
-        severity: 'success'
-    });
+    const [nuevaOpcion, setNuevaOpcion] = useState('');
+    const { enqueueSnackbar } = useSnackbar();
 
     const cargarPreguntas = async () => {
         try {
-            setLoading(true);
-            const response = await api.get('/pregunta-encuesta');
+            const response = await axios.get('/api/pregunta-encuesta');
             setPreguntas(response.data);
         } catch (error) {
             console.error('Error al cargar preguntas:', error);
-            showSnackbar('Error al cargar las preguntas', 'error');
-        } finally {
-            setLoading(false);
+            enqueueSnackbar('Error al cargar las preguntas', { variant: 'error' });
+        }
+    };
+
+    const cargarRespuestas = async () => {
+        try {
+            const response = await axios.get('/api/respuesta-encuesta');
+            setRespuestas(response.data);
+        } catch (error) {
+            console.error('Error al cargar respuestas:', error);
+            enqueueSnackbar('Error al cargar las respuestas', { variant: 'error' });
         }
     };
 
     useEffect(() => {
         cargarPreguntas();
+        cargarRespuestas();
     }, []);
-
-    const showSnackbar = (message, severity = 'success') => {
-        setSnackbar({
-            open: true,
-            message,
-            severity
-        });
-    };
-
-    const handleCloseSnackbar = () => {
-        setSnackbar(prev => ({ ...prev, open: false }));
-    };
 
     const handleOpenDialog = (pregunta = null) => {
         if (pregunta) {
-            setSelectedPregunta(pregunta);
-            setFormData({ texto_pregunta: pregunta.texto_pregunta });
+            setFormData({
+                id: pregunta.id,
+                texto_pregunta: pregunta.texto_pregunta,
+                tipo_pregunta: pregunta.tipo_pregunta,
+                opciones_respuesta: pregunta.opciones_respuesta || []
+            });
         } else {
-            setSelectedPregunta(null);
-            setFormData({ texto_pregunta: '' });
+            setFormData({
+                id: null,
+                texto_pregunta: '',
+                tipo_pregunta: 'binaria',
+                opciones_respuesta: []
+            });
         }
         setOpenDialog(true);
     };
 
     const handleCloseDialog = () => {
         setOpenDialog(false);
-        setSelectedPregunta(null);
-        setFormData({ texto_pregunta: '' });
+        setFormData({
+            id: null,
+            texto_pregunta: '',
+            tipo_pregunta: 'binaria',
+            opciones_respuesta: []
+        });
+        setNuevaOpcion('');
     };
 
-    const handleOpenDeleteDialog = (pregunta) => {
-        setPreguntaToDelete(pregunta);
-        setOpenDeleteDialog(true);
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
     };
 
-    const handleCloseDeleteDialog = () => {
-        setOpenDeleteDialog(false);
-        setPreguntaToDelete(null);
+    const handleAddOpcion = () => {
+        if (nuevaOpcion.trim()) {
+            setFormData(prev => ({
+                ...prev,
+                opciones_respuesta: [...prev.opciones_respuesta, nuevaOpcion.trim()]
+            }));
+            setNuevaOpcion('');
+        }
     };
 
-    const handleSubmit = async () => {
+    const handleRemoveOpcion = (index) => {
+        setFormData(prev => ({
+            ...prev,
+            opciones_respuesta: prev.opciones_respuesta.filter((_, i) => i !== index)
+        }));
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
         try {
-            if (!formData.texto_pregunta.trim()) {
-                showSnackbar('El texto de la pregunta es requerido', 'error');
+            if (formData.tipo_pregunta === 'likert' && formData.opciones_respuesta.length === 0) {
+                enqueueSnackbar('Las preguntas tipo Likert deben tener al menos una opción de respuesta', { variant: 'error' });
                 return;
             }
 
-            if (selectedPregunta) {
-                await api.put(`/pregunta-encuesta/${selectedPregunta.id}`, formData);
-                showSnackbar('Pregunta actualizada exitosamente');
+            if (formData.id) {
+                await axios.put(`/api/pregunta-encuesta/${formData.id}`, formData);
+                enqueueSnackbar('Pregunta actualizada exitosamente', { variant: 'success' });
             } else {
-                await api.post('/pregunta-encuesta', formData);
-                showSnackbar('Pregunta creada exitosamente');
+                await axios.post('/api/pregunta-encuesta', formData);
+                enqueueSnackbar('Pregunta creada exitosamente', { variant: 'success' });
             }
-
             handleCloseDialog();
             cargarPreguntas();
         } catch (error) {
             console.error('Error al guardar pregunta:', error);
-            showSnackbar('Error al guardar la pregunta', 'error');
+            enqueueSnackbar(error.response?.data?.error || 'Error al guardar la pregunta', { variant: 'error' });
         }
     };
 
-    const handleDelete = async () => {
+    const handleDeleteClick = (pregunta) => {
+        setPreguntaToDelete(pregunta);
+        setOpenDeleteDialog(true);
+    };
+
+    const handleDeleteConfirm = async () => {
         try {
-            await api.delete(`/pregunta-encuesta/${preguntaToDelete.id}`);
-            showSnackbar('Pregunta eliminada exitosamente');
-            handleCloseDeleteDialog();
+            await axios.delete(`/api/pregunta-encuesta/${preguntaToDelete.id}`);
+            enqueueSnackbar('Pregunta eliminada exitosamente', { variant: 'success' });
+            setOpenDeleteDialog(false);
             cargarPreguntas();
         } catch (error) {
             console.error('Error al eliminar pregunta:', error);
-            showSnackbar('Error al eliminar la pregunta', 'error');
+            enqueueSnackbar('Error al eliminar la pregunta', { variant: 'error' });
         }
     };
 
-    if (loading) {
-        return (
-            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-                <CircularProgress />
-            </Box>
-        );
-    }
+    const handleOpenRespuestasDialog = (pregunta) => {
+        setFormData({
+            id: pregunta.id,
+            texto_pregunta: pregunta.texto_pregunta,
+            tipo_pregunta: pregunta.tipo_pregunta,
+            opciones_respuesta: pregunta.opciones_respuesta || []
+        });
+        setOpenRespuestasDialog(true);
+    };
 
-    return (
+    const handleCloseRespuestasDialog = () => {
+        setOpenRespuestasDialog(false);
+        setFormData({
+            id: null,
+            texto_pregunta: '',
+            tipo_pregunta: 'binaria',
+            opciones_respuesta: []
+        });
+        setNuevaOpcion('');
+    };
+
+    const handleSubmitRespuestas = async (e) => {
+        e.preventDefault();
+        try {
+            if (formData.tipo_pregunta === 'likert' && formData.opciones_respuesta.length === 0) {
+                enqueueSnackbar('Las preguntas tipo Likert deben tener al menos una opción de respuesta', { variant: 'error' });
+                return;
+            }
+
+            await axios.put(`/api/pregunta-encuesta/${formData.id}`, formData);
+            enqueueSnackbar('Respuestas actualizadas exitosamente', { variant: 'success' });
+            handleCloseRespuestasDialog();
+            cargarPreguntas();
+        } catch (error) {
+            console.error('Error al actualizar respuestas:', error);
+            enqueueSnackbar(error.response?.data?.error || 'Error al actualizar las respuestas', { variant: 'error' });
+        }
+    };
+
+  return (
         <Box sx={{ p: 3 }}>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-                <Typography variant="h5" gutterBottom>
-                    Gestión de Preguntas de Encuesta
-                </Typography>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    startIcon={<AddIcon />}
-                    onClick={() => handleOpenDialog()}
-                >
-                    Nueva Pregunta
-                </Button>
-            </Box>
+            <Typography variant="h4" component="h1" sx={{ mb: 3 }}>
+                Gestión de Preguntas y Respuestas
+            </Typography>
 
-            <TableContainer component={Paper}>
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>ID</TableCell>
-                            <TableCell>Pregunta</TableCell>
-                            <TableCell>Acciones</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {preguntas.map((pregunta) => (
-                            <TableRow key={pregunta.id}>
-                                <TableCell>{pregunta.id}</TableCell>
-                                <TableCell>{pregunta.texto_pregunta}</TableCell>
-                                <TableCell>
-                                    <IconButton
-                                        color="primary"
-                                        onClick={() => handleOpenDialog(pregunta)}
-                                    >
-                                        <EditIcon />
-                                    </IconButton>
-                                    <IconButton
-                                        color="error"
-                                        onClick={() => handleOpenDeleteDialog(pregunta)}
-                                    >
-                                        <DeleteIcon />
-                                    </IconButton>
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+            <Grid container spacing={3}>
+                {/* Tabla de Preguntas */}
+                <Grid item xs={12} md={6}>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                        <Typography variant="h6">Preguntas</Typography>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            onClick={() => handleOpenDialog()}
+                            startIcon={<AddIcon />}
+                        >
+                            Nueva Pregunta
+                        </Button>
+                    </Box>
+                    <TableContainer component={Paper}>
+                        <Table>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>ID</TableCell>
+                                    <TableCell>Pregunta</TableCell>
+                                    <TableCell>Tipo</TableCell>
+                                    <TableCell>Acciones</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {preguntas.map((pregunta) => (
+                                    <TableRow key={pregunta.id}>
+                                        <TableCell>{pregunta.id}</TableCell>
+                                        <TableCell>{pregunta.texto_pregunta}</TableCell>
+                                        <TableCell>
+                                            {pregunta.tipo_pregunta === 'binaria' ? 'Sí/No' : 'Likert'}
+                                        </TableCell>
+                                        <TableCell>
+                                            <IconButton
+                                                color="primary"
+                                                onClick={() => handleOpenDialog(pregunta)}
+                                            >
+                                                <EditIcon />
+                                            </IconButton>
+                                            <IconButton
+                                                color="error"
+                                                onClick={() => handleDeleteClick(pregunta)}
+                                            >
+                                                <DeleteIcon />
+                                            </IconButton>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </Grid>
+
+                {/* Tabla de Respuestas */}
+                <Grid item xs={12} md={6}>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                        <Typography variant="h6">Respuestas Posibles</Typography>
+                        <Button
+                            variant="contained"
+                            color="secondary"
+                            onClick={() => handleOpenRespuestasDialog(preguntas[0])}
+                            startIcon={<EditIcon />}
+                        >
+                            Modificar Respuestas
+                        </Button>
+                    </Box>
+                    <TableContainer component={Paper}>
+                        <Table>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>ID Pregunta</TableCell>
+                                    <TableCell>Pregunta</TableCell>
+                                    <TableCell>Tipo</TableCell>
+                                    <TableCell>Respuestas Posibles</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {preguntas.map((pregunta) => (
+                                    <TableRow key={pregunta.id}>
+                                        <TableCell>{pregunta.id}</TableCell>
+                                        <TableCell>{pregunta.texto_pregunta}</TableCell>
+                                        <TableCell>
+                                            {pregunta.tipo_pregunta === 'binaria' ? 'Sí/No' : 'Likert'}
+                                        </TableCell>
+                                        <TableCell>
+                                            {pregunta.tipo_pregunta === 'binaria' ? (
+                                                <Box sx={{ display: 'flex', gap: 1 }}>
+                                                    <Chip label="Sí" color="primary" />
+                                                    <Chip label="No" color="secondary" />
+                                                </Box>
+                                            ) : (
+                                                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                                                    <Chip 
+                                                        label="1 - Totalmente en desacuerdo" 
+                                                        color="error" 
+                                                        sx={{ width: 'fit-content' }}
+                                                    />
+                                                    <Chip 
+                                                        label="2 - En desacuerdo" 
+                                                        color="warning" 
+                                                        sx={{ width: 'fit-content' }}
+                                                    />
+                                                    <Chip 
+                                                        label="3 - Neutral" 
+                                                        color="info" 
+                                                        sx={{ width: 'fit-content' }}
+                                                    />
+                                                    <Chip 
+                                                        label="4 - De acuerdo" 
+                                                        color="success" 
+                                                        sx={{ width: 'fit-content' }}
+                                                    />
+                                                    <Chip 
+                                                        label="5 - Totalmente de acuerdo" 
+                                                        color="primary" 
+                                                        sx={{ width: 'fit-content' }}
+                                                    />
+                                                </Box>
+                                            )}
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </Grid>
+            </Grid>
 
             {/* Diálogo para crear/editar pregunta */}
-            <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="sm" fullWidth>
+            <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="md" fullWidth>
                 <DialogTitle>
-                    {selectedPregunta ? 'Editar Pregunta' : 'Nueva Pregunta'}
+                    {formData.id ? 'Editar Pregunta' : 'Nueva Pregunta'}
                 </DialogTitle>
-                <DialogContent>
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        label="Texto de la Pregunta"
-                        type="text"
-                        fullWidth
-                        multiline
-                        rows={3}
-                        value={formData.texto_pregunta}
-                        onChange={(e) => setFormData({ ...formData, texto_pregunta: e.target.value })}
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleCloseDialog}>Cancelar</Button>
-                    <Button onClick={handleSubmit} variant="contained" color="primary">
-                        {selectedPregunta ? 'Actualizar' : 'Crear'}
-                    </Button>
-                </DialogActions>
+                <form onSubmit={handleSubmit}>
+                    <DialogContent>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12}>
+                                <TextField
+                                    fullWidth
+                                    label="Texto de la Pregunta"
+                                    name="texto_pregunta"
+                                    value={formData.texto_pregunta}
+                                    onChange={handleInputChange}
+                                    required
+                                    multiline
+                                    rows={3}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <FormControl fullWidth>
+                                    <InputLabel>Tipo de Pregunta</InputLabel>
+                                    <Select
+                                        name="tipo_pregunta"
+                                        value={formData.tipo_pregunta}
+                                        onChange={handleInputChange}
+                                        label="Tipo de Pregunta"
+                                    >
+                                        <MenuItem value="binaria">Sí/No</MenuItem>
+                                        <MenuItem value="likert">Likert</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </Grid>
+                            {formData.tipo_pregunta === 'likert' && (
+                                <>
+                                    <Grid item xs={12}>
+                                        <Divider sx={{ my: 2 }} />
+                                        <Typography variant="subtitle1" gutterBottom>
+                                            Opciones de Respuesta
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
+                                            <TextField
+                                                fullWidth
+                                                label="Nueva Opción"
+                                                value={nuevaOpcion}
+                                                onChange={(e) => setNuevaOpcion(e.target.value)}
+                                                onKeyPress={(e) => {
+                                                    if (e.key === 'Enter') {
+                                                        e.preventDefault();
+                                                        handleAddOpcion();
+                                                    }
+                                                }}
+                                            />
+                                            <Button
+                                                variant="contained"
+                                                onClick={handleAddOpcion}
+                                                disabled={!nuevaOpcion.trim()}
+                                                startIcon={<AddIcon />}
+                                            >
+                                                Agregar
+                                            </Button>
+                                        </Box>
+                                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+                                            {formData.opciones_respuesta.map((opcion, index) => (
+                                                <Chip
+                                                    key={index}
+                                                    label={opcion}
+                                                    onDelete={() => handleRemoveOpcion(index)}
+                                                />
+                                            ))}
+                                        </Box>
+                                    </Grid>
+                                </>
+                            )}
+                        </Grid>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleCloseDialog}>Cancelar</Button>
+                        <Button type="submit" variant="contained" color="primary">
+                            {formData.id ? 'Actualizar' : 'Crear'}
+                        </Button>
+                    </DialogActions>
+                </form>
+            </Dialog>
+
+            {/* Diálogo para modificar respuestas */}
+            <Dialog open={openRespuestasDialog} onClose={handleCloseRespuestasDialog} maxWidth="md" fullWidth>
+                <DialogTitle>
+                    Modificar Respuestas - {formData.texto_pregunta}
+                </DialogTitle>
+                <form onSubmit={handleSubmitRespuestas}>
+                    <DialogContent>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12}>
+                                <Typography variant="subtitle1" gutterBottom>
+                                    Opciones de Respuesta
+                                </Typography>
+                                <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
+                                    <TextField
+                                        fullWidth
+                                        label="Nueva Opción"
+                                        value={nuevaOpcion}
+                                        onChange={(e) => setNuevaOpcion(e.target.value)}
+                                        onKeyPress={(e) => {
+                                            if (e.key === 'Enter') {
+                                                e.preventDefault();
+                                                handleAddOpcion();
+                                            }
+                                        }}
+                                    />
+                                    <Button
+                                        variant="contained"
+                                        onClick={handleAddOpcion}
+                                        disabled={!nuevaOpcion.trim()}
+                                        startIcon={<AddIcon />}
+                                    >
+                                        Agregar
+                                    </Button>
+                                </Box>
+                                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+                                    {formData.opciones_respuesta.map((opcion, index) => (
+                                        <Chip
+                                            key={index}
+                                            label={opcion}
+                                            onDelete={() => handleRemoveOpcion(index)}
+                                        />
+                                    ))}
+                                </Box>
+                            </Grid>
+                        </Grid>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleCloseRespuestasDialog}>Cancelar</Button>
+                        <Button type="submit" variant="contained" color="primary">
+                            Guardar Cambios
+                        </Button>
+                    </DialogActions>
+                </form>
             </Dialog>
 
             {/* Diálogo de confirmación para eliminar */}
             <Dialog
                 open={openDeleteDialog}
-                onClose={handleCloseDeleteDialog}
-                maxWidth="xs"
-                fullWidth
+                onClose={() => setOpenDeleteDialog(false)}
             >
                 <DialogTitle>Confirmar Eliminación</DialogTitle>
                 <DialogContent>
                     <Typography>
-                        ¿Está seguro que desea eliminar esta pregunta? Esta acción no se puede deshacer.
-                    </Typography>
+                        ¿Está seguro que desea eliminar la pregunta "{preguntaToDelete?.texto_pregunta}"?
+      </Typography>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleCloseDeleteDialog}>Cancelar</Button>
-                    <Button onClick={handleDelete} color="error" variant="contained">
+                    <Button onClick={() => setOpenDeleteDialog(false)}>Cancelar</Button>
+                    <Button onClick={handleDeleteConfirm} color="error" variant="contained">
                         Eliminar
                     </Button>
                 </DialogActions>
             </Dialog>
-
-            {/* Snackbar para notificaciones */}
-            <Snackbar
-                open={snackbar.open}
-                autoHideDuration={6000}
-                onClose={handleCloseSnackbar}
-                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-            >
-                <Alert
-                    onClose={handleCloseSnackbar}
-                    severity={snackbar.severity}
-                    sx={{ width: '100%' }}
-                >
-                    {snackbar.message}
-                </Alert>
-            </Snackbar>
-        </Box>
-    );
+    </Box>
+  );
 };
 
 export default GestionPreguntasEncuesta; 

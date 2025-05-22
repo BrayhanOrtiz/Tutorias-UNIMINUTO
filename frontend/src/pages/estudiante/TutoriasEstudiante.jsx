@@ -19,7 +19,12 @@ import {
     TextField,
     Snackbar,
     Alert,
-    CircularProgress
+    CircularProgress,
+    FormControl,
+    FormControlLabel,
+    Radio,
+    RadioGroup,
+    Rating
 } from '@mui/material';
 import { Visibility as VisibilityIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import api from '../../services/api';
@@ -30,9 +35,12 @@ const TutoriasEstudiante = () => {
     const [selectedTutoria, setSelectedTutoria] = useState(null);
     const [openDialog, setOpenDialog] = useState(false);
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+    const [openEncuestaDialog, setOpenEncuestaDialog] = useState(false);
     const [tutoriaToDelete, setTutoriaToDelete] = useState(null);
     const [observaciones, setObservaciones] = useState('');
     const [loading, setLoading] = useState(true);
+    const [preguntas, setPreguntas] = useState([]);
+    const [respuestas, setRespuestas] = useState({});
     const [snackbar, setSnackbar] = useState({
         open: false,
         message: '',
@@ -166,6 +174,76 @@ const TutoriasEstudiante = () => {
         }
     };
 
+    const cargarPreguntas = async () => {
+        try {
+            const response = await api.get('/pregunta-encuesta');
+            setPreguntas(response.data);
+            // Inicializar respuestas vacías
+            const respuestasIniciales = {};
+            response.data.forEach(pregunta => {
+                respuestasIniciales[pregunta.id] = pregunta.tipo_pregunta === 'binaria' ? '' : 0;
+            });
+            setRespuestas(respuestasIniciales);
+        } catch (error) {
+            console.error('Error al cargar preguntas:', error);
+            showSnackbar('Error al cargar las preguntas de la encuesta', 'error');
+        }
+    };
+
+    const handleRespuestaChange = (preguntaId, valor) => {
+        setRespuestas(prev => ({
+            ...prev,
+            [preguntaId]: valor
+        }));
+    };
+
+    const handleEncuestaSubmit = async () => {
+        // Validar que todas las preguntas tengan respuesta
+        const preguntasSinRespuesta = preguntas.filter(pregunta => {
+            const respuesta = respuestas[pregunta.id];
+            return pregunta.tipo_pregunta === 'binaria' ? !respuesta : respuesta === 0;
+        });
+
+        if (preguntasSinRespuesta.length > 0) {
+            showSnackbar('Por favor, responda todas las preguntas', 'error');
+            return;
+        }
+
+        setLoading(true);
+        try {
+            // Registrar la asistencia
+            await api.post('/asistencia-tutoria', {
+                tutoria_id: selectedTutoria.id,
+                estudiante_id: estudianteId,
+                observaciones: 'Asistencia registrada con encuesta de satisfacción'
+            });
+
+            // Crear la encuesta
+            const encuestaResponse = await api.post('/encuesta-satisfaccion', {
+                tutoria_id: selectedTutoria.id
+            });
+            const encuesta = encuestaResponse.data;
+
+            // Guardar las respuestas
+            const respuestasArray = Object.entries(respuestas).map(([preguntaId, valor]) => ({
+                encuesta_satisfaccion_id: encuesta.id,
+                pregunta_encuesta_id: preguntaId,
+                respuesta: valor
+            }));
+
+            await api.post('/respuesta-encuesta/batch', respuestasArray);
+            
+            showSnackbar('Encuesta y firma registradas exitosamente', 'success');
+            setOpenEncuestaDialog(false);
+            await cargarTutorias();
+        } catch (error) {
+            console.error('Error al enviar encuesta:', error);
+            showSnackbar('Error al registrar la encuesta y firma', 'error');
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const handleFirmarTutoria = async (tutoriaId) => {
         try {
             // Verificar que la tutoría existe y está habilitada para firma
@@ -180,46 +258,11 @@ const TutoriasEstudiante = () => {
                 throw new Error('Ya has firmado esta tutoría');
             }
 
-            console.log('Intentando firmar tutoría:', {
-                tutoria_id: tutoriaId,
-                estudiante_id: estudianteId,
-                observaciones: observaciones || 'Asistencia registrada por el estudiante'
-            });
-
-            const response = await api.post('/asistencia-tutoria', {
-                tutoria_id: tutoriaId,
-                estudiante_id: estudianteId,
-                observaciones: observaciones || 'Asistencia registrada por el estudiante'
-            });
-
-            console.log('Respuesta del servidor:', response.data);
-
-            // Verificar si la respuesta es exitosa
-            if (response.status === 200 || response.status === 201) {
-                showSnackbar('Asistencia registrada exitosamente');
-                await cargarTutorias();
-            } else if (response.data && response.data.success === false) {
-                throw new Error(response.data.error || 'Error al registrar la asistencia');
-            } else {
-                // Si la respuesta no tiene el formato esperado pero fue exitosa
-                showSnackbar('Asistencia registrada exitosamente');
-                await cargarTutorias();
-            }
+            setSelectedTutoria(tutoria);
+            await cargarPreguntas();
+            setOpenEncuestaDialog(true);
         } catch (error) {
-            console.error('Error al firmar tutoría:', error);
-            console.error('Detalles del error:', error.response?.data);
-
-            let errorMessage = 'Error al registrar la asistencia';
-            
-            if (error.response?.data?.error) {
-                errorMessage = error.response.data.error;
-            } else if (error.response?.data?.message) {
-                errorMessage = error.response.data.message;
-            } else if (error.message) {
-                errorMessage = error.message;
-            }
-
-            showSnackbar(errorMessage, 'error');
+            showSnackbar(error.message, 'error');
         }
     };
 
@@ -338,7 +381,7 @@ const TutoriasEstudiante = () => {
             )}
 
             <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="sm" fullWidth>
-                <DialogTitle>Detalles de la Tutoría</DialogTitle>
+                <DialogTitle>Registrar Asistencia</DialogTitle>
                 <DialogContent>
                     {selectedTutoria && (
                         <Box sx={{ mt: 2 }}>
@@ -367,7 +410,15 @@ const TutoriasEstudiante = () => {
                     )}
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleCloseDialog}>Cerrar</Button>
+                    <Button onClick={handleCloseDialog}>Cancelar</Button>
+                    <Button 
+                        onClick={handleEncuestaSubmit} 
+                        variant="contained" 
+                        color="primary"
+                        disabled={loading}
+                    >
+                        {loading ? <CircularProgress size={24} /> : 'Confirmar Asistencia y Enviar Encuesta'}
+                    </Button>
                 </DialogActions>
             </Dialog>
 
@@ -389,6 +440,67 @@ const TutoriasEstudiante = () => {
                     </Button>
                     <Button onClick={handleEliminarTutoria} color="error" variant="contained">
                         Eliminar
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
+            <Dialog 
+                open={openEncuestaDialog} 
+                onClose={() => setOpenEncuestaDialog(false)}
+                maxWidth="md"
+                fullWidth
+            >
+                <DialogTitle>Encuesta de Satisfacción</DialogTitle>
+                <DialogContent>
+                    <Box sx={{ mt: 2 }}>
+                        <Alert severity="info" sx={{ mb: 2 }}>
+                            Por favor, responda las siguientes preguntas para confirmar su asistencia y ayudarnos a mejorar nuestro servicio.
+                        </Alert>
+                        {preguntas.map((pregunta) => (
+                            <Box key={pregunta.id} sx={{ mb: 3 }}>
+                                <Typography variant="subtitle1" gutterBottom>
+                                    {pregunta.texto_pregunta}
+                                </Typography>
+                                {pregunta.tipo_pregunta === 'binaria' ? (
+                                    <FormControl component="fieldset">
+                                        <RadioGroup
+                                            value={respuestas[pregunta.id]}
+                                            onChange={(e) => handleRespuestaChange(pregunta.id, e.target.value)}
+                                        >
+                                            <FormControlLabel value="si" control={<Radio />} label="Sí" />
+                                            <FormControlLabel value="no" control={<Radio />} label="No" />
+                                        </RadioGroup>
+                                    </FormControl>
+                                ) : (
+                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                                        <Rating
+                                            value={respuestas[pregunta.id]}
+                                            onChange={(_, newValue) => handleRespuestaChange(pregunta.id, newValue)}
+                                            max={5}
+                                        />
+                                        <Typography variant="body2" color="text.secondary">
+                                            {respuestas[pregunta.id] === 0 ? 'Sin calificar' :
+                                             respuestas[pregunta.id] === 1 ? 'Totalmente en desacuerdo' :
+                                             respuestas[pregunta.id] === 2 ? 'En desacuerdo' :
+                                             respuestas[pregunta.id] === 3 ? 'Neutral' :
+                                             respuestas[pregunta.id] === 4 ? 'De acuerdo' :
+                                             'Totalmente de acuerdo'}
+                                        </Typography>
+                                    </Box>
+                                )}
+                            </Box>
+                        ))}
+                    </Box>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setOpenEncuestaDialog(false)}>Cancelar</Button>
+                    <Button 
+                        onClick={handleEncuestaSubmit} 
+                        variant="contained" 
+                        color="primary"
+                        disabled={loading}
+                    >
+                        {loading ? <CircularProgress size={24} /> : 'Confirmar Asistencia y Enviar Encuesta'}
                     </Button>
                 </DialogActions>
             </Dialog>

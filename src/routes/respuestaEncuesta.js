@@ -6,7 +6,8 @@ import {
     updateRespuesta,
     deleteRespuesta,
     getRespuestasByEncuesta,
-    getRespuestasByPregunta
+    getRespuestasByPregunta,
+    createRespuestasBatch
 } from '../controllers/respuestaEncuestaController.js';
 
 const router = express.Router();
@@ -191,5 +192,38 @@ router.get('/encuesta/:encuestaId', getRespuestasByEncuesta);
  *         description: Lista de respuestas de la pregunta
  */
 router.get('/pregunta/:preguntaId', getRespuestasByPregunta);
+
+/**
+ * @swagger
+ * /api/respuesta-encuesta/batch:
+ *   post:
+ *     summary: Crear múltiples respuestas
+ *     tags: [Respuestas]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: array
+ *             items:
+ *               type: object
+ *               required:
+ *                 - encuesta_satisfaccion_id
+ *                 - pregunta_encuesta_id
+ *                 - respuesta
+ *               properties:
+ *                 encuesta_satisfaccion_id:
+ *                   type: integer
+ *                 pregunta_encuesta_id:
+ *                   type: integer
+ *                 respuesta:
+ *                   type: string
+ *     responses:
+ *       201:
+ *         description: Respuestas creadas
+ *       400:
+ *         description: Datos inválidos
+ */
+router.post('/batch', createRespuestasBatch);
 
 export default router; 

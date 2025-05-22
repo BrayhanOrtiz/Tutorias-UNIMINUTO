@@ -125,7 +125,7 @@ const TutoriasDocente = () => {
 
     const getEstadoChip = (tutoria) => {
         if (tutoria.firma_docente_habilitada && tutoria.firmada_estudiante) {
-            return <Chip label="Completada" color="success" />;
+                return <Chip label="Completada" color="success" />;
         } else if (tutoria.firma_docente_habilitada) {
             return <Chip label="Pendiente de firma del estudiante" color="warning" />;
         } else {
@@ -137,9 +137,9 @@ const TutoriasDocente = () => {
         if (estado.firma_docente_habilitada && estado.firmada_estudiante) {
             return 'success';
         } else if (estado.firma_docente_habilitada) {
-            return 'warning';
+                return 'warning';
         } else {
-            return 'default';
+                return 'default';
         }
     };
 
@@ -292,11 +292,11 @@ const TutoriasDocente = () => {
                                     {tutoria.firma_docente_habilitada && tutoria.firmada_estudiante ? (
                                         <Chip label="OK" color="success" size="small" />
                                     ) : (
-                                        <Chip
-                                            label={tutoria.estado || 'PENDIENTE'}
+                                    <Chip
+                                        label={tutoria.estado || 'PENDIENTE'}
                                             color={getEstadoVariant(tutoria)}
-                                            size="small"
-                                        />
+                                        size="small"
+                                    />
                                     )}
                                 </TableCell>
                                 <TableCell>
