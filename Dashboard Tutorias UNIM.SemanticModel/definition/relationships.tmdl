@@ -46,13 +46,6 @@ relationship 3ec6bd59-9147-8400-2019-d8fd68b5fdc5
 	fromColumn: asistencia_tutoria.tutoria_id
 	toColumn: Tutoria.id
 
-relationship b017380a-b776-dbe6-4e0a-0ddceef91c51
-	isActive: false
-	crossFilteringBehavior: bothDirections
-	fromCardinality: one
-	fromColumn: asistencia_tutoria.estudiante_id
-	toColumn: 'Tabla Usuario'.id
-
 relationship AutoDetected_0243f46e-9f29-45be-80f0-ccfe8b9ef0c9
 	fromColumn: 'historial_cambios?select=*'.usuario_id
 	toColumn: 'usuario_rol?select=*'.usuario_id
@@ -60,4 +53,19 @@ relationship AutoDetected_0243f46e-9f29-45be-80f0-ccfe8b9ef0c9
 relationship AutoDetected_3bc8c91e-4f85-4247-b4a5-0e9d2f6b6b1b
 	fromColumn: 'horario?select=*'.usuario_id
 	toColumn: 'usuario_rol?select=*'.usuario_id
+
+relationship 261bbf83-98af-baaf-8f5a-0b4a2fc34682
+	isActive: false
+	fromColumn: asistencia_tutoria.estudiante_id
+	toColumn: 'Tabla Usuario'.id
+
+relationship a7256d0b-15a0-6c97-f8dd-81db470bf0f3
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: 'Tabla Usuario'.id
+	toColumn: 'usuario_rol?select=*'.usuario_id
+
+relationship bfea1acd-b37c-80f8-de22-3a60e8b3755d
+	fromColumn: 'usuario_rol?select=*'.rol_id
+	toColumn: 'rol?select=*'.id
 
