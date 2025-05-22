@@ -88,8 +88,8 @@ const Layout = ({ children }) => {
         if (path.startsWith('/estudiante')) {
             if (path === '/estudiante') return 'Dashboard Estudiante';
             if (path.includes('/tutorias')) return 'Tutorías';
-            if (path.includes('/tareas')) return 'Tareas';
-            if (path.includes('/horarios')) return 'Horarios';
+            if (path.includes('/tareas')) return 'Tareas BETA';
+            if (path.includes('/horarios')) return 'Horarios BETA';
             return 'Estudiante';
         }
         if (path.startsWith('/admin')) {
@@ -115,8 +115,8 @@ const Layout = ({ children }) => {
             return [
                 { text: 'Dashboard', icon: <DashboardIcon />, path: '/estudiante' },
                 { text: 'Tutorías', icon: <SchoolIcon />, path: '/estudiante/tutorias' },
-                { text: 'Tareas', icon: <AssignmentIcon />, path: '/estudiante/tareas' },
-                { text: 'Horarios', icon: <ScheduleIcon />, path: '/estudiante/horarios' }
+                { text: 'Tareas BETA', icon: <AssignmentIcon />, path: '/estudiante/tareas' },
+                { text: 'Horarios BETA', icon: <ScheduleIcon />, path: '/estudiante/horarios' }
             ];
         } else if (user?.rol_id === 3) {
             return [
