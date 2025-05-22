@@ -7,13 +7,11 @@ export const getEncuestas = async (req, res) => {
             SELECT es.*, 
                    t.fecha_hora_agendada,
                    e.nombre as nombre_estudiante, e.apellido as apellido_estudiante,
-                   d.nombre as nombre_docente, d.apellido as apellido_docente,
-                   tm.nombre_tema
+                   d.nombre as nombre_docente, d.apellido as apellido_docente
             FROM encuesta_satisfaccion es
             JOIN tutoria t ON es.tutoria_id = t.id
             JOIN usuario e ON t.estudiante_id = e.id
             JOIN usuario d ON t.docente_id = d.id
-            JOIN tema tm ON t.tema_id = tm.id
             ORDER BY es.fecha_respuesta DESC
         `;
         res.json(encuestas);
