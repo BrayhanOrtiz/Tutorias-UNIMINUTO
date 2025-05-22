@@ -8,8 +8,10 @@ import {
     getTutoriasByEstudiante,
     getTutoriasByDocente,
     getTutoriasByTema,
-    habilitarFirmaTutoria
+    habilitarFirmaTutoria,
+    obtenerReportesPorDocente
 } from '../controllers/tutoriasController.js';
+import { verifyToken } from '../middleware/auth.js';
 
 const router = express.Router();
 
@@ -386,5 +388,63 @@ router.get('/tema/:temaId', getTutoriasByTema);
  *               $ref: '#/components/schemas/Error'
  */
 router.post('/:id/habilitar-firma', habilitarFirmaTutoria);
+
+/**
+ * @swagger
+ * /api/tutorias/reportes/{docenteId}:
+ *   get:
+ *     summary: Obtiene los reportes de tutorías de un docente específico
+ *     tags: [Tutorías]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: docenteId
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID del docente
+ *     responses:
+ *       200:
+ *         description: Lista de reportes de tutorías
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                       fecha:
+ *                         type: string
+ *                         format: date
+ *                       hora_inicio:
+ *                         type: string
+ *                       hora_fin:
+ *                         type: string
+ *                       observaciones:
+ *                         type: string
+ *                       estado:
+ *                         type: string
+ *                       estudiante_nombre:
+ *                         type: string
+ *                       estudiante_apellido:
+ *                         type: string
+ *                       tema:
+ *                         type: string
+ *                       asistio:
+ *                         type: boolean
+ *                       observaciones_asistencia:
+ *                         type: string
+ *       500:
+ *         description: Error al obtener los reportes
+ */
+router.get('/reportes/:docenteId', verifyToken, obtenerReportesPorDocente);
 
 export default router; 

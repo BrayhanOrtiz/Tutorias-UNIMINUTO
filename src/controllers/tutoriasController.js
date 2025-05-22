@@ -316,4 +316,52 @@ export const habilitarFirmaTutoria = async (req, res) => {
         console.error('Error al habilitar firma:', error);
         res.status(500).json({ error: 'Error al habilitar la firma de la tutoría' });
     }
+};
+
+// Obtener reportes de tutorías por docente
+export const obtenerReportesPorDocente = async (req, res) => {
+    const { docenteId } = req.params;
+
+    try {
+        console.log('Obteniendo reportes para el docente:', docenteId);
+        
+        const reportes = await sql`
+            SELECT 
+                t.id,
+                t.fecha_hora_agendada as fecha,
+                t.hora_inicio_real as hora_inicio,
+                t.hora_fin_real as hora_fin,
+                at.observaciones,
+                CASE 
+                    WHEN at.id IS NULL THEN 'Pendiente'
+                    WHEN t.firmada_estudiante = true THEN 'Asistió'
+                    ELSE 'No asistió'
+                END as estado,
+                u.nombre as estudiante_nombre,
+                u.apellido as estudiante_apellido,
+                tm.nombre_tema as tema,
+                t.firmada_estudiante as asistio,
+                at.observaciones as observaciones_asistencia
+            FROM tutoria t
+            LEFT JOIN usuario u ON t.estudiante_id = u.id
+            LEFT JOIN tema tm ON t.tema_id = tm.id
+            LEFT JOIN asistencia_tutoria at ON t.id = at.tutoria_id
+            WHERE t.docente_id = ${docenteId}
+            ORDER BY t.fecha_hora_agendada DESC, t.hora_inicio_real DESC;
+        `;
+
+        console.log('Reportes encontrados:', reportes.length);
+
+        res.status(200).json({
+            success: true,
+            data: reportes
+        });
+    } catch (error) {
+        console.error('Error al obtener reportes:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Error al obtener los reportes de tutorías',
+            error: error.message
+        });
+    }
 }; 

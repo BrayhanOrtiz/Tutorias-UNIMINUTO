@@ -8,6 +8,10 @@ import HorariosDocente from './pages/docente/HorariosDocente';
 import TutoriasDocente from './pages/docente/TutoriasDocente';
 import ReportesDocente from './pages/docente/ReportesDocente';
 import DashboardAdmin from './pages/admin/DashboardAdmin';
+import GestionPreguntasEncuesta from './pages/admin/GestionPreguntasEncuesta';
+import ListadoEncuestas from './pages/admin/ListadoEncuestas';
+import GestionDocentes from './pages/admin/GestionDocentes';
+import ReportesTutorias from './pages/admin/ReportesTutorias';
 import Tareas from './pages/estudiante/Tareas';
 import Horarios from './pages/estudiante/Horarios';
 import TutoriasEstudiante from './pages/estudiante/TutoriasEstudiante';
@@ -154,11 +158,51 @@ const AppRoutes = () => {
 
       {/* Rutas de administrador */}
       <Route
-        path="/admin/*"
+        path="/admin"
         element={
           <PrivateRoute allowedRoles={[3]}>
             <Layout>
               <DashboardAdmin />
+            </Layout>
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/admin/gestion-docentes"
+        element={
+          <PrivateRoute allowedRoles={[3]}>
+            <Layout>
+              <GestionDocentes />
+            </Layout>
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/admin/reportes-tutorias"
+        element={
+          <PrivateRoute allowedRoles={[3]}>
+            <Layout>
+              <ReportesTutorias />
+            </Layout>
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/admin/gestion-encuestas"
+        element={
+          <PrivateRoute allowedRoles={[3]}>
+            <Layout>
+              <GestionPreguntasEncuesta />
+            </Layout>
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/admin/listado-encuestas"
+        element={
+          <PrivateRoute allowedRoles={[3]}>
+            <Layout>
+              <ListadoEncuestas />
             </Layout>
           </PrivateRoute>
         }

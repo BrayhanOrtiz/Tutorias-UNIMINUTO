@@ -1,94 +1,97 @@
-import { Box, Typography, Grid, Card, CardContent } from '@mui/material';
+import { Box, Typography, Grid, Card, CardContent, Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import PowerBIDashboard from './PowerBIDashboard';
-import GestionDocentes from './GestionDocentes';
-import ReportesTutorias from './ReportesTutorias';
-import GestionPreguntasEncuesta from './GestionPreguntasEncuesta';
-import ListadoEncuestas from './ListadoEncuestas';
+import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
+import AssessmentIcon from '@mui/icons-material/Assessment';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import ListAltIcon from '@mui/icons-material/ListAlt';
 
 const DashboardAdmin = () => {
+  const navigate = useNavigate();
+
+  const menuItems = [
+    {
+      title: 'Gestión de Docentes',
+      description: 'Administra los docentes del sistema',
+      icon: <SupervisorAccountIcon sx={{ fontSize: 40 }} />,
+      path: '/admin/gestion-docentes',
+      color: '#1976d2'
+    },
+    {
+      title: 'Reportes de Tutorías',
+      description: 'Visualiza reportes y estadísticas de tutorías',
+      icon: <AssessmentIcon sx={{ fontSize: 40 }} />,
+      path: '/admin/reportes-tutorias',
+      color: '#2e7d32'
+    },
+    {
+      title: 'Gestión de Preguntas',
+      description: 'Administra las preguntas de las encuestas',
+      icon: <AssignmentIcon sx={{ fontSize: 40 }} />,
+      path: '/admin/gestion-encuestas',
+      color: '#ed6c02'
+    },
+    {
+      title: 'Listado de Encuestas',
+      description: 'Visualiza las encuestas realizadas',
+      icon: <ListAltIcon sx={{ fontSize: 40 }} />,
+      path: '/admin/listado-encuestas',
+      color: '#9c27b0'
+    }
+  ];
+
   return (
     <Box sx={{ p: 3 }}>
       <Typography variant="h4" gutterBottom>
         Panel de Administración
       </Typography>
+
+      {/* Dashboard de Power BI */}
+      <Grid item xs={12} sx={{ mb: 4 }}>
+        <Card>
+          <CardContent>
+            <PowerBIDashboard />
+          </CardContent>
+        </Card>
+      </Grid>
+
+      {/* Menú de navegación */}
       <Grid container spacing={3}>
-        {/* Sección 1: Dashboard de Power BI */}
-        <Grid item xs={12}>
-          <Card>
-            <CardContent>
-              <PowerBIDashboard />
-            </CardContent>
-          </Card>
-        </Grid>
-
-        {/* Sección 2: Gestión de Docentes (CRUD) */}
-        <Grid item xs={12} md={6}>
-          <Card>
-            <CardContent>
-              <GestionDocentes />
-            </CardContent>
-          </Card>
-        </Grid>
-
-        {/* Sección 3: Reportes de Tutorías */}
-        <Grid item xs={12} md={6}>
-          <Card>
-            <CardContent>
-              <ReportesTutorias />
-            </CardContent>
-          </Card>
-        </Grid>
-
-        {/* Sección 4: Gestión de Preguntas de Encuesta */}
-        <Grid item xs={12} md={6}>
-          <Card>
-            <CardContent>
-              <GestionPreguntasEncuesta />
-            </CardContent>
-          </Card>
-        </Grid>
-
-        {/* Sección 5: Listado de Encuestas de Satisfacción */}
-        <Grid item xs={12} md={6}>
-          <Card>
-            <CardContent>
-              <ListadoEncuestas />
-            </CardContent>
-          </Card>
-        </Grid>
-
-        {/* Conservamos las secciones existentes si aún son relevantes */}
-        {/* Puedes decidir si estas son necesarias o si las nuevas secciones las reemplazan */}
-        {/*
-        <Grid item xs={12} md={4}>
-          <Card>
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                Gestión de Usuarios
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-         <Grid item xs={12} md={4}>
-          <Card>
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                Gestión de Carreras
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid item xs={12} md={4}>
-          <Card>
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                Estadísticas Generales
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-        */}
-
+        {menuItems.map((item, index) => (
+          <Grid item xs={12} sm={6} md={3} key={index}>
+            <Card 
+              sx={{ 
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                transition: 'transform 0.2s',
+                '&:hover': {
+                  transform: 'scale(1.02)',
+                  cursor: 'pointer'
+                }
+              }}
+              onClick={() => navigate(item.path)}
+            >
+              <CardContent sx={{ 
+                flexGrow: 1,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                textAlign: 'center'
+              }}>
+                <Box sx={{ color: item.color, mb: 2 }}>
+                  {item.icon}
+                </Box>
+                <Typography variant="h6" gutterBottom>
+                  {item.title}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {item.description}
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
       </Grid>
     </Box>
   );

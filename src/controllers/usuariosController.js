@@ -279,3 +279,95 @@ export const obtenerUsuariosPorRol = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+// Obtener todos los docentes
+export const obtenerDocentes = async (req, res) => {
+  try {
+    console.log('Iniciando consulta de docentes...');
+    
+    // Primero verificamos la conexión con una consulta simple
+    try {
+      const testConnection = await sql`SELECT 1 as test`;
+      console.log('Conexión a la base de datos exitosa:', testConnection);
+    } catch (connError) {
+      console.error('Error de conexión a la base de datos:', connError);
+      throw new Error('Error de conexión a la base de datos');
+    }
+
+    // Verificamos las tablas necesarias
+    const tables = ['usuario', 'usuario_rol', 'rol'];
+    for (const table of tables) {
+      const exists = await sql`
+        SELECT EXISTS (
+          SELECT FROM information_schema.tables 
+          WHERE table_schema = 'public' 
+          AND table_name = ${table}
+        );
+      `;
+      console.log(`Tabla ${table} existe:`, exists[0].exists);
+      if (!exists[0].exists) {
+        throw new Error(`La tabla ${table} no existe en la base de datos`);
+      }
+    }
+
+    // Consulta simplificada paso a paso
+    console.log('Obteniendo usuarios...');
+    const usuarios = await sql`
+      SELECT * FROM usuario;
+    `;
+    console.log('Usuarios encontrados:', usuarios.length);
+
+    console.log('Obteniendo roles...');
+    const roles = await sql`
+      SELECT * FROM rol;
+    `;
+    console.log('Roles encontrados:', roles.length);
+
+    console.log('Obteniendo usuario_rol...');
+    const usuarioRoles = await sql`
+      SELECT * FROM usuario_rol;
+    `;
+    console.log('Relaciones usuario-rol encontradas:', usuarioRoles.length);
+
+    // Consulta final
+    console.log('Ejecutando consulta final...');
+    const docentes = await sql`
+      SELECT 
+        u.id,
+        u.nombre,
+        u.apellido,
+        u.correo_institucional,
+        ur.rol_id,
+        r.nombre_rol
+      FROM usuario u
+      INNER JOIN usuario_rol ur ON u.id = ur.usuario_id
+      INNER JOIN rol r ON ur.rol_id = r.id
+      WHERE ur.rol_id = 2
+      ORDER BY u.nombre, u.apellido;
+    `;
+    
+    console.log('Docentes encontrados:', docentes.length);
+
+    res.status(200).json({ 
+      success: true, 
+      data: docentes 
+    });
+  } catch (error) {
+    console.error('Error detallado al obtener docentes:', {
+      message: error.message,
+      stack: error.stack,
+      code: error.code,
+      detail: error.detail
+    });
+    
+    res.status(500).json({ 
+      success: false, 
+      message: 'Error al obtener la lista de docentes',
+      error: {
+        message: error.message,
+        code: error.code,
+        detail: error.detail || 'No hay detalles adicionales disponibles'
+      }
+    });
+  }
+};

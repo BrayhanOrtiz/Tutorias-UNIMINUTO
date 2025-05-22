@@ -124,7 +124,7 @@ const Layout = ({ children }) => {
                 { text: 'Gestión Docentes', icon: <SupervisorAccountIcon />, path: '/admin/gestion-docentes' },
                 { text: 'Reportes Tutorías', icon: <AssessmentIcon />, path: '/admin/reportes-tutorias' },
                 { text: 'Gestión Preguntas', icon: <AssignmentIcon />, path: '/admin/gestion-encuestas' },
-                { text: 'Listado Encuestas', icon: <AssessmentIcon />, path: '/admin/listado-encuestas' },
+                { text: 'Listado Encuestas', icon: <AssessmentIcon />, path: '/admin/listado-encuestas' }
             ];
         }
         return [];

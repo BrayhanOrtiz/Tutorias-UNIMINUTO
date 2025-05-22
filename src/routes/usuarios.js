@@ -8,7 +8,8 @@ import {
   crearUsuarioDocente,
   eliminarUsuario,
   obtenerUsuarioActual,
-  obtenerUsuariosPorRol
+  obtenerUsuariosPorRol,
+  obtenerDocentes
 } from '../controllers/usuariosController.js';
 import { verifyToken } from '../middleware/auth.js';
 
@@ -82,6 +83,90 @@ router.get('/', obtenerUsuarios);
  */
 router.get('/me', verifyToken, obtenerUsuarioActual);
 
+/**
+ * @swagger
+ * /api/usuarios/docentes:
+ *   get:
+ *     summary: Obtiene todos los docentes
+ *     tags: [Usuarios]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Lista de docentes
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                       nombre:
+ *                         type: string
+ *                       apellido:
+ *                         type: string
+ *                       correo_institucional:
+ *                         type: string
+ *                       rol_id:
+ *                         type: integer
+ *                       nombre_rol:
+ *                         type: string
+ *       500:
+ *         description: Error al obtener docentes
+ */
+router.get('/docentes', verifyToken, obtenerDocentes);
+
+/**
+ * @swagger
+ * /api/usuarios/rol/{rol_id}:
+ *   get:
+ *     summary: Obtiene usuarios filtrados por rol
+ *     tags: [Usuarios]
+ *     parameters:
+ *       - in: path
+ *         name: rol_id
+ *         schema:
+ *           type: integer
+ *         required: true
+ *         description: ID del rol
+ *     responses:
+ *       200:
+ *         description: Lista de usuarios filtrados por rol
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                       nombre:
+ *                         type: string
+ *                       apellido:
+ *                         type: string
+ *                       correo_institucional:
+ *                         type: string
+ *                       rol_id:
+ *                         type: integer
+ *                       nombre_rol:
+ *                         type: string
+ *       500:
+ *         description: Error al obtener usuarios
+ */
+router.get('/rol/:rol_id', obtenerUsuariosPorRol);
 
 /**
  * @swagger
@@ -287,51 +372,5 @@ router.put(
  */
 // Eliminar
 router.delete('/:id', eliminarUsuario);
-
-
-/**
- * @swagger
- * /api/usuarios/rol/{rol_id}:
- *   get:
- *     summary: Obtiene usuarios filtrados por rol
- *     tags: [Usuarios]
- *     parameters:
- *       - in: path
- *         name: rol_id
- *         schema:
- *           type: integer
- *         required: true
- *         description: ID del rol
- *     responses:
- *       200:
- *         description: Lista de usuarios filtrados por rol
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 success:
- *                   type: boolean
- *                 data:
- *                   type: array
- *                   items:
- *                     type: object
- *                     properties:
- *                       id:
- *                         type: integer
- *                       nombre:
- *                         type: string
- *                       apellido:
- *                         type: string
- *                       correo_institucional:
- *                         type: string
- *                       rol_id:
- *                         type: integer
- *                       nombre_rol:
- *                         type: string
- *       500:
- *         description: Error al obtener usuarios
- */
-router.get('/rol/:rol_id', obtenerUsuariosPorRol);
 
 export default router;
