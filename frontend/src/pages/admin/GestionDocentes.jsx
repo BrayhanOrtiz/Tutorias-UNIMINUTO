@@ -33,6 +33,7 @@ const GestionDocentes = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [openDialog, setOpenDialog] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState({
         id: '',
         nombre: '',
@@ -67,6 +68,7 @@ const GestionDocentes = () => {
 
     const handleOpenDialog = () => {
         setOpenDialog(true);
+        setIsEditing(false);
         setFormData({
             id: '',
             nombre: '',
@@ -93,27 +95,47 @@ const GestionDocentes = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await api.post('/usuarios/docentes', formData);
+            let response;
+            if (isEditing) {
+                response = await api.put(`/usuarios/${formData.id}`, formData);
+            } else {
+                response = await api.post('/usuarios/docentes', formData);
+            }
 
             if (response.data.success) {
-                showNotification('Docente agregado exitosamente', 'success');
+                showNotification(
+                    isEditing ? 'Docente actualizado exitosamente' : 'Docente agregado exitosamente',
+                    'success'
+                );
                 handleCloseDialog();
                 cargarDocentes();
             } else {
-                showNotification(response.data.message || 'Error al agregar el docente', 'error');
+                showNotification(
+                    response.data.message || `Error al ${isEditing ? 'actualizar' : 'agregar'} el docente`,
+                    'error'
+                );
             }
         } catch (error) {
-            console.error('Error al agregar docente:', error);
+            console.error(`Error al ${isEditing ? 'actualizar' : 'agregar'} docente:`, error);
             showNotification(
-                error.response?.data?.message || 'Error al agregar el docente',
+                error.response?.data?.message || `Error al ${isEditing ? 'actualizar' : 'agregar'} el docente`,
                 'error'
             );
         }
     };
 
     const handleEdit = (docente) => {
-        console.log('Editar docente:', docente);
-        // Implementar lógica para editar (abrir modal/formulario)
+        setOpenDialog(true);
+        setIsEditing(true);
+        setFormData({
+            id: docente.id,
+            nombre: docente.nombre,
+            apellido: docente.apellido,
+            correo_institucional: docente.correo_institucional,
+            contraseña: '', // No mostramos la contraseña por seguridad
+            fecha_nacimiento: docente.fecha_nacimiento,
+            experticia: docente.experticia || ''
+        });
     };
 
     const handleDelete = async (docenteId) => {
@@ -225,7 +247,7 @@ const GestionDocentes = () => {
             )}
 
             <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="sm" fullWidth>
-                <DialogTitle>Agregar Nuevo Docente</DialogTitle>
+                <DialogTitle>{isEditing ? 'Editar Docente' : 'Agregar Nuevo Docente'}</DialogTitle>
                 <DialogContent>
                     <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
                         <Grid container spacing={2}>
