@@ -17,7 +17,6 @@ import {
     DialogActions,
     Button,
     TextField,
-    Snackbar,
     Alert,
     CircularProgress,
     FormControl,
@@ -29,6 +28,7 @@ import {
 import { Visibility as VisibilityIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import api from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
+import { useNotification } from '../../components/NotificationSystem';
 
 const TutoriasEstudiante = () => {
     const [tutorias, setTutorias] = useState([]);
@@ -41,25 +41,9 @@ const TutoriasEstudiante = () => {
     const [loading, setLoading] = useState(true);
     const [preguntas, setPreguntas] = useState([]);
     const [respuestas, setRespuestas] = useState({});
-    const [snackbar, setSnackbar] = useState({
-        open: false,
-        message: '',
-        severity: 'success'
-    });
     const { user } = useAuth();
+    const { showNotification } = useNotification();
     const estudianteId = user?.id;
-
-    const showSnackbar = (message, severity = 'success') => {
-        setSnackbar({
-            open: true,
-            message,
-            severity
-        });
-    };
-
-    const handleCloseSnackbar = () => {
-        setSnackbar(prev => ({ ...prev, open: false }));
-    };
 
     useEffect(() => {
         if (estudianteId) {
@@ -75,27 +59,23 @@ const TutoriasEstudiante = () => {
             }
 
             const response = await api.get(`/tutorias/estudiante/${estudianteId}`);
-            console.log('Respuesta del servidor:', response.data); // Para depuración
+            console.log('Respuesta del servidor:', response.data);
             
-            // Verificar si la respuesta es un array directamente
             if (Array.isArray(response.data)) {
                 setTutorias(response.data);
             }
-            // Verificar si la respuesta tiene el formato esperado
             else if (response.data && response.data.data) {
                 setTutorias(response.data.data);
             }
-            // Si la respuesta tiene success: false
             else if (response.data && response.data.success === false) {
                 throw new Error(response.data.error || 'Error al cargar las tutorías');
             }
-            // Si no hay datos
             else {
                 setTutorias([]);
             }
         } catch (error) {
             console.error('Error al cargar tutorías:', error);
-            console.error('Detalles del error:', error.response?.data); // Para depuración
+            console.error('Detalles del error:', error.response?.data);
             
             let errorMessage = 'Error al cargar las tutorías';
             
@@ -107,8 +87,8 @@ const TutoriasEstudiante = () => {
                 errorMessage = error.message;
             }
             
-            showSnackbar(errorMessage, 'error');
-            setTutorias([]); // Establecer array vacío en caso de error
+            showNotification(errorMessage, 'error');
+            setTutorias([]);
         } finally {
             setLoading(false);
         }
@@ -116,7 +96,7 @@ const TutoriasEstudiante = () => {
 
     const handleOpenDialog = (tutoria) => {
         setSelectedTutoria(tutoria);
-        setObservaciones('');
+        setObservaciones(tutoria.observaciones || '');
         setOpenDialog(true);
     };
 
@@ -132,7 +112,7 @@ const TutoriasEstudiante = () => {
 
     const handleOpenDeleteDialog = (tutoria) => {
         if (!canDeleteTutoria(tutoria)) {
-            showSnackbar('No se puede eliminar esta tutoría porque ya ha sido firmada o habilitada para firma', 'warning');
+            showNotification('No se puede eliminar esta tutoría porque ya ha sido firmada o habilitada para firma', 'warning');
             return;
         }
         setTutoriaToDelete(tutoria);
@@ -151,7 +131,7 @@ const TutoriasEstudiante = () => {
             const response = await api.delete(`/tutorias/${tutoriaToDelete.id}`);
             
             if (response.status === 200 || response.status === 204) {
-                showSnackbar('Tutoría eliminada exitosamente');
+                showNotification('Tutoría eliminada exitosamente', 'success');
                 handleCloseDeleteDialog();
                 await cargarTutorias();
             } else {
@@ -161,11 +141,11 @@ const TutoriasEstudiante = () => {
             console.error('Error al eliminar tutoría:', error);
             
             if (error.response?.status === 200 || error.response?.status === 204) {
-                showSnackbar('Tutoría eliminada exitosamente');
+                showNotification('Tutoría eliminada exitosamente', 'success');
                 handleCloseDeleteDialog();
                 await cargarTutorias();
             } else {
-                showSnackbar(
+                showNotification(
                     error.response?.data?.message || 
                     'Error al eliminar la tutoría. Por favor, intente nuevamente.',
                     'error'
@@ -178,7 +158,6 @@ const TutoriasEstudiante = () => {
         try {
             const response = await api.get('/pregunta-encuesta');
             setPreguntas(response.data);
-            // Inicializar respuestas vacías
             const respuestasIniciales = {};
             response.data.forEach(pregunta => {
                 respuestasIniciales[pregunta.id] = pregunta.tipo_pregunta === 'binaria' ? '' : 0;
@@ -186,7 +165,7 @@ const TutoriasEstudiante = () => {
             setRespuestas(respuestasIniciales);
         } catch (error) {
             console.error('Error al cargar preguntas:', error);
-            showSnackbar('Error al cargar las preguntas de la encuesta', 'error');
+            showNotification('Error al cargar las preguntas de la encuesta', 'error');
         }
     };
 
@@ -198,33 +177,29 @@ const TutoriasEstudiante = () => {
     };
 
     const handleEncuestaSubmit = async () => {
-        // Validar que todas las preguntas tengan respuesta
         const preguntasSinRespuesta = preguntas.filter(pregunta => {
             const respuesta = respuestas[pregunta.id];
             return pregunta.tipo_pregunta === 'binaria' ? !respuesta : respuesta === 0;
         });
 
         if (preguntasSinRespuesta.length > 0) {
-            showSnackbar('Por favor, responda todas las preguntas', 'error');
+            showNotification('Por favor, responda todas las preguntas', 'error');
             return;
         }
 
         setLoading(true);
         try {
-            // Registrar la asistencia
             await api.post('/asistencia-tutoria', {
                 tutoria_id: selectedTutoria.id,
                 estudiante_id: estudianteId,
                 observaciones: 'Asistencia registrada con encuesta de satisfacción'
             });
 
-            // Crear la encuesta
             const encuestaResponse = await api.post('/encuesta-satisfaccion', {
                 tutoria_id: selectedTutoria.id
             });
             const encuesta = encuestaResponse.data;
 
-            // Guardar las respuestas
             const respuestasArray = Object.entries(respuestas).map(([preguntaId, valor]) => ({
                 encuesta_satisfaccion_id: encuesta.id,
                 pregunta_encuesta_id: preguntaId,
@@ -233,12 +208,12 @@ const TutoriasEstudiante = () => {
 
             await api.post('/respuesta-encuesta/batch', respuestasArray);
             
-            showSnackbar('Encuesta y firma registradas exitosamente', 'success');
+            showNotification('Encuesta y firma registradas exitosamente', 'success');
             setOpenEncuestaDialog(false);
             await cargarTutorias();
         } catch (error) {
             console.error('Error al enviar encuesta:', error);
-            showSnackbar('Error al registrar la encuesta y firma', 'error');
+            showNotification('Error al registrar la encuesta y firma', 'error');
         } finally {
             setLoading(false);
         }
@@ -246,7 +221,6 @@ const TutoriasEstudiante = () => {
 
     const handleFirmarTutoria = async (tutoriaId) => {
         try {
-            // Verificar que la tutoría existe y está habilitada para firma
             const tutoria = tutorias.find(t => t.id === tutoriaId);
             if (!tutoria) {
                 throw new Error('Tutoría no encontrada');
@@ -262,7 +236,7 @@ const TutoriasEstudiante = () => {
             await cargarPreguntas();
             setOpenEncuestaDialog(true);
         } catch (error) {
-            showSnackbar(error.message, 'error');
+            showNotification(error.message, 'error');
         }
     };
 
@@ -504,21 +478,6 @@ const TutoriasEstudiante = () => {
                     </Button>
                 </DialogActions>
             </Dialog>
-
-            <Snackbar
-                open={snackbar.open}
-                autoHideDuration={6000}
-                onClose={handleCloseSnackbar}
-                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-            >
-                <Alert
-                    onClose={handleCloseSnackbar}
-                    severity={snackbar.severity}
-                    sx={{ width: '100%' }}
-                >
-                    {snackbar.message}
-                </Alert>
-            </Snackbar>
         </Box>
     );
 };

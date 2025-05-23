@@ -10,22 +10,20 @@ import {
     InputLabel,
     Select,
     MenuItem,
-    Snackbar
+    CircularProgress
 } from '@mui/material';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
+import { useNotification } from '../../components/NotificationSystem';
 
 const ReportesDocente = () => {
     const [mes, setMes] = useState('');
     const [anio, setAnio] = useState(new Date().getFullYear());
     const [error, setError] = useState('');
-    const [snackbar, setSnackbar] = useState({
-        open: false,
-        message: '',
-        severity: 'success'
-    });
+    const [loading, setLoading] = useState(false);
     const { user } = useAuth();
     const docenteId = user?.id;
+    const { showNotification } = useNotification();
 
     const meses = [
         { value: 1, label: 'Enero' },
@@ -44,82 +42,111 @@ const ReportesDocente = () => {
 
     const anios = Array.from({ length: 5 }, (_, i) => new Date().getFullYear() - i);
 
-    const showSnackbar = (message, severity = 'success') => {
-        setSnackbar({
-            open: true,
-            message,
-            severity
-        });
-    };
-
-    const handleCloseSnackbar = () => {
-        setSnackbar(prev => ({ ...prev, open: false }));
-    };
-
     const handleGenerarReporte = async () => {
         if (!mes) {
             setError('Por favor seleccione un mes');
+            showNotification('Por favor seleccione un mes', 'warning');
             return;
         }
 
         if (!docenteId) {
             setError('No se pudo obtener el ID del docente');
-            showSnackbar('Error: No se pudo obtener el ID del docente', 'error');
+            showNotification('Error: No se pudo obtener el ID del docente', 'error');
             return;
         }
 
+        setLoading(true);
         try {
-            // Calcular fecha inicio y fin del mes seleccionado
+            const token = localStorage.getItem('token');
+            if (!token) {
+                throw new Error('No hay token de autenticación');
+            }
+
+            // Calcular fecha de inicio y fin del mes
             const fechaInicio = new Date(anio, mes - 1, 1).toISOString().split('T')[0];
             const fechaFin = new Date(anio, mes, 0).toISOString().split('T')[0];
 
-            console.log('Enviando parámetros:', {
-                docente_id: docenteId,
-                fecha_inicio: fechaInicio,
-                fecha_fin: fechaFin
+            console.log('Enviando petición para generar reporte...', {
+                docenteId,
+                fechaInicio,
+                fechaFin
             });
 
-            const response = await axios.get(
-                `${import.meta.env.VITE_API_URL}/reportes/tutorias-docente`,
-                {
-                    params: {
-                        docente_id: docenteId,
-                        fecha_inicio: fechaInicio,
-                        fecha_fin: fechaFin
-                    },
-                    responseType: 'blob',
-                    headers: {
-                        'Authorization': `Bearer ${localStorage.getItem('token')}`
-                    }
+            const response = await axios.get('/api/reportes/tutorias-docente', {
+                params: { 
+                    docente_id: docenteId,
+                    fecha_inicio: fechaInicio,
+                    fecha_fin: fechaFin
+                },
+                responseType: 'blob',
+                headers: {
+                    'Authorization': `Bearer ${token}`
                 }
-            );
+            });
+
+            console.log('Respuesta recibida:', {
+                type: response.data.type,
+                size: response.data.size,
+                headers: response.headers
+            });
 
             // Crear un enlace para descargar el archivo
-            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const blob = new Blob([response.data], { 
+                type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            });
+            const url = window.URL.createObjectURL(blob);
             const link = document.createElement('a');
             link.href = url;
             link.setAttribute('download', `reporte_tutorias_${mes}_${anio}.xlsx`);
             document.body.appendChild(link);
             link.click();
             link.remove();
-            setError('');
-            showSnackbar('Reporte generado exitosamente');
+            window.URL.revokeObjectURL(url);
+
+            showNotification('Reporte generado exitosamente', 'success');
         } catch (error) {
             console.error('Error al generar reporte:', error);
-            const errorMessage = error.response?.data?.error || 'Error al generar el reporte. Por favor, intente nuevamente.';
-            setError(errorMessage);
-            showSnackbar(errorMessage, 'error');
+            console.error('Detalles del error:', {
+                message: error.message,
+                response: error.response?.data,
+                status: error.response?.status,
+                headers: error.response?.headers
+            });
+
+            if (error.message === 'No hay token de autenticación') {
+                showNotification('Error de autenticación. Por favor, inicie sesión nuevamente.', 'error');
+            } else if (error.response?.status === 404) {
+                const mesSeleccionado = meses.find(m => m.value === parseInt(mes))?.label;
+                showNotification(
+                    `No hay tutorías registradas para ${mesSeleccionado} de ${anio}`,
+                    'info'
+                );
+            } else {
+                showNotification(
+                    error.response?.data?.message || 
+                    'Error al generar el reporte. Por favor, intente nuevamente.',
+                    'error'
+                );
+            }
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
         <Box>
-            <Typography variant="h5" gutterBottom>
-                Reportes de Tutorías
-            </Typography>
-
             <Paper sx={{ p: 3, mb: 3 }}>
-                <Grid container spacing={3}>
+                <Typography variant="h6" gutterBottom>
+                    Generar Reporte de Tutorías
+                </Typography>
+                
+                {error && (
+                    <Alert severity="error" sx={{ mb: 2 }}>
+                        {error}
+                    </Alert>
+                )}
+
+                <Grid container spacing={2}>
                     <Grid item xs={12} md={6}>
                         <FormControl fullWidth>
                             <InputLabel>Mes</InputLabel>
@@ -154,20 +181,15 @@ const ReportesDocente = () => {
                     </Grid>
                 </Grid>
 
-                {error && (
-                    <Alert severity="error" sx={{ mt: 2 }}>
-                        {error}
-                    </Alert>
-                )}
-
                 <Box sx={{ mt: 3 }}>
                     <Button
                         variant="contained"
                         color="primary"
                         onClick={handleGenerarReporte}
-                        disabled={!mes}
+                        disabled={!mes || loading}
+                        startIcon={loading ? <CircularProgress size={20} color="inherit" /> : null}
                     >
-                        Generar Reporte Excel
+                        {loading ? 'Generando...' : 'Generar Reporte Excel'}
                     </Button>
                 </Box>
             </Paper>
@@ -187,21 +209,6 @@ const ReportesDocente = () => {
                     <li>Estado de las tutorías (completadas/pendientes)</li>
                 </ul>
             </Paper>
-
-            <Snackbar
-                open={snackbar.open}
-                autoHideDuration={6000}
-                onClose={handleCloseSnackbar}
-                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-            >
-                <Alert
-                    onClose={handleCloseSnackbar}
-                    severity={snackbar.severity}
-                    sx={{ width: '100%' }}
-                >
-                    {snackbar.message}
-                </Alert>
-            </Snackbar>
         </Box>
     );
 };
