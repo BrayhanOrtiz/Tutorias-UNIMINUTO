@@ -9,6 +9,11 @@ import ListAltIcon from '@mui/icons-material/ListAlt';
 import { PieChart, Pie, Cell, Legend } from 'recharts';
 import { useNotification } from '../../components/NotificationSystem';
 import { useAuth } from '../../context/AuthContext';
+// Importaciones para Date/Time Pickers
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import esLocale from 'date-fns/locale/es';
 
 // Colores para la torta
 const PIE_COLORS = ['#1976d2', '#2e7d32', '#ed6c02', '#9c27b0', '#00bcd4', '#ff9800', '#e91e63', '#607d8b'];
@@ -164,9 +169,15 @@ const DashboardEstudiante = () => {
     try {
       const token = localStorage.getItem('token');
       
-      // Obtener la fecha y hora seleccionada
-      const fechaSeleccionada = new Date(form.fecha_hora_agendada);
+      // Obtener la fecha y hora seleccionada (ahora un objeto Date de DateTimePicker)
+      const fechaSeleccionada = form.fecha_hora_agendada;
       
+      // Validar si la fecha es válida
+      if (!fechaSeleccionada || !(fechaSeleccionada instanceof Date) || isNaN(fechaSeleccionada)) {
+           showNotification('Por favor, selecciona una fecha y hora válida', 'warning');
+           return;
+      }
+
       // Crear una fecha en UTC manteniendo la hora local
       const fechaHoraLocal = new Date(Date.UTC(
         fechaSeleccionada.getFullYear(),
@@ -360,16 +371,16 @@ const DashboardEstudiante = () => {
           <Dialog open={openForm} onClose={handleCloseForm}>
             <DialogTitle>Agendar Tutoría</DialogTitle>
             <DialogContent>
-              <TextField
-                margin="dense"
-                label="Fecha y hora"
-                type="datetime-local"
-                name="fecha_hora_agendada"
-                fullWidth
-                value={form.fecha_hora_agendada}
-                onChange={handleFormChange}
-                InputLabelProps={{ shrink: true }}
-              />
+              <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={esLocale}>
+                <DateTimePicker
+                  label="Fecha y hora"
+                  value={form.fecha_hora_agendada ? new Date(form.fecha_hora_agendada) : null} // Usar new Date() para el valor
+                  onChange={(newValue) => {
+                    setForm({ ...form, fecha_hora_agendada: newValue }); // Guardar objeto Date directamente
+                  }}
+                  renderInput={(params) => <TextField {...params} fullWidth margin="dense" />}
+                />
+              </LocalizationProvider>
               <TextField
                 margin="dense"
                 label="Tema"

@@ -174,11 +174,27 @@ const TutoriasDocente = () => {
                         : tutoria
                 )
             );
+
+            // Determinar el mensaje de error a mostrar
+            const backendErrorMessage = error.response?.data?.message;
+            let displayMessage = 'Error al habilitar la firma. Por favor, intente nuevamente.';
+
+            // Verificar si el mensaje del backend indica un problema de horario (ej: si contiene 'horario', 'hora', 'rango', etc.)
+            // **Nota:** La efectividad de esto depende del mensaje exacto que envía el backend.
+            if (backendErrorMessage) {
+                const lowerCaseMessage = backendErrorMessage.toLowerCase();
+                if (lowerCaseMessage.includes('horario') || lowerCaseMessage.includes('hora') || lowerCaseMessage.includes('rango') || lowerCaseMessage.includes('time')) {
+                     displayMessage = 'No puedes habilitar la firma si no estas en el horario acordado';
+                } else {
+                     displayMessage = backendErrorMessage; // Usar el mensaje del backend si no es de horario
+                }
+            }
+
             showNotification(
-                error.response?.data?.message || 
-                'Error al habilitar la firma. Por favor, intente nuevamente.',
+                displayMessage,
                 'error'
             );
+
         } finally {
             setLoading(false);
         }

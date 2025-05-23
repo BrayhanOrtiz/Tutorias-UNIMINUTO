@@ -21,12 +21,17 @@ import {
     Grid,
     Card,
     CardContent,
-    Divider
+    Divider,
+    MenuItem
 } from '@mui/material';
 import { Delete as DeleteIcon, Edit as EditIcon } from '@mui/icons-material';
 import api from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 import { useNotification } from '../../components/NotificationSystem';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import esLocale from 'date-fns/locale/es';
 
 const DIAS_SEMANA = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
 const HORAS_DIA = Array.from({ length: 12 }, (_, i) => `${i + 6}:00`); // De 6:00 a 17:00
@@ -42,8 +47,8 @@ const HorariosDocente = () => {
     const [experticia, setExperticia] = useState('');
     const [formData, setFormData] = useState({
         dia: '',
-        hora_inicio: '',
-        hora_fin: '',
+        hora_inicio: null,
+        hora_fin: null,
         salon: ''
     });
 
@@ -109,18 +114,28 @@ const HorariosDocente = () => {
     const handleOpen = (horario = null) => {
         if (horario) {
             setEditingHorario(horario);
+            const [horaInicioStr, minInicioStr, segInicioStr] = horario.hora_inicio.split(':');
+            const horaInicioDate = new Date();
+            horaInicioDate.setHours(parseInt(horaInicioStr, 10), parseInt(minInicioStr, 10), parseInt(segInicioStr, 10));
+            horaInicioDate.setFullYear(1900, 0, 1);
+
+            const [horaFinStr, minFinStr, segFinStr] = horario.hora_fin.split(':');
+            const horaFinDate = new Date();
+            horaFinDate.setHours(parseInt(horaFinStr, 10), parseInt(minFinStr, 10), parseInt(segFinStr, 10));
+            horaFinDate.setFullYear(1900, 0, 1);
+
             setFormData({
                 dia: horario.dia_semana,
-                hora_inicio: horario.hora_inicio,
-                hora_fin: horario.hora_fin,
+                hora_inicio: horaInicioDate,
+                hora_fin: horaFinDate,
                 salon: horario.salon
             });
         } else {
             setEditingHorario(null);
             setFormData({
                 dia: '',
-                hora_inicio: '',
-                hora_fin: '',
+                hora_inicio: null,
+                hora_fin: null,
                 salon: ''
             });
         }
@@ -132,11 +147,26 @@ const HorariosDocente = () => {
         setEditingHorario(null);
         setFormData({
             dia: '',
-            hora_inicio: '',
-            hora_fin: '',
+            hora_inicio: null,
+            hora_fin: null,
             salon: ''
         });
         setError('');
+    };
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
+    };
+
+    const handleTimeChange = (name, dateValue) => {
+        setFormData(prev => ({
+            ...prev,
+            [name]: dateValue
+        }));
     };
 
     const handleSubmit = async (e) => {
@@ -145,26 +175,36 @@ const HorariosDocente = () => {
         setError('');
 
         try {
-            // Validar que todos los campos estén llenos
             if (!formData.dia || !formData.hora_inicio || !formData.hora_fin || !formData.salon) {
                 setError('Todos los campos son requeridos');
                 return;
             }
 
-            // Validar que la hora de inicio sea menor que la hora de fin
-            if (formData.hora_inicio >= formData.hora_fin) {
+            if (!(formData.hora_inicio instanceof Date) || isNaN(formData.hora_inicio.getTime()) ||
+                !(formData.hora_fin instanceof Date) || isNaN(formData.hora_fin.getTime())) {
+                setError('Por favor, seleccione horas válidas');
+                return;
+            }
+
+            if (formData.hora_inicio.getTime() >= formData.hora_fin.getTime()) {
                 setError('La hora de inicio debe ser menor que la hora de fin');
                 return;
             }
 
-            // Asegurar que las horas tengan el formato correcto (HH:MM:SS)
-            const horaInicio = formData.hora_inicio.includes(':') ? formData.hora_inicio : `${formData.hora_inicio}:00`;
-            const horaFin = formData.hora_fin.includes(':') ? formData.hora_fin : `${formData.hora_fin}:00`;
+            const formatTimeToHHMMSS = (date) => {
+                const hours = date.getHours().toString().padStart(2, '0');
+                const minutes = date.getMinutes().toString().padStart(2, '0');
+                const seconds = date.getSeconds().toString().padStart(2, '0');
+                return `${hours}:${minutes}:${seconds}`;
+            };
+
+            const horaInicioFormatted = formatTimeToHHMMSS(formData.hora_inicio);
+            const horaFinFormatted = formatTimeToHHMMSS(formData.hora_fin);
 
             const horarioData = {
                 dia_semana: formData.dia,
-                hora_inicio: horaInicio,
-                hora_fin: horaFin,
+                hora_inicio: horaInicioFormatted,
+                hora_fin: horaFinFormatted,
                 salon: formData.salon,
                 usuario_id: docenteId
             };
@@ -185,7 +225,7 @@ const HorariosDocente = () => {
             
             if (response.data.success) {
                 handleClose();
-                await cargarHorarios(); // Esperar a que se recarguen los horarios
+                await cargarHorarios();
                 showNotification(response.data.message || 'Horario guardado exitosamente');
             } else {
                 setError(response.data.message || 'Error al guardar el horario');
@@ -209,7 +249,7 @@ const HorariosDocente = () => {
             const response = await api.delete(`/horarios/${id}`);
             
             if (response.data.success) {
-                await cargarHorarios(); // Esperar a que se recarguen los horarios
+                await cargarHorarios();
                 showNotification('Horario eliminado exitosamente');
             } else {
                 showNotification(response.data.message || 'Error al eliminar el horario', 'error');
@@ -303,7 +343,6 @@ const HorariosDocente = () => {
                 </Box>
             ) : (
                 <Grid container spacing={3}>
-                    {/* Vista de Calendario Semanal */}
                     <Grid item xs={12}>
                         <Paper sx={{ p: 2, mb: 3 }}>
                             <Typography variant="h6" gutterBottom>
@@ -371,7 +410,6 @@ const HorariosDocente = () => {
                         </Paper>
                     </Grid>
 
-                    {/* Sección de Experticia */}
                     <Grid item xs={12}>
                         <Paper sx={{ p: 2 }}>
                             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
@@ -398,7 +436,6 @@ const HorariosDocente = () => {
                         </Paper>
                     </Grid>
 
-                    {/* Tabla de Horarios */}
                     <Grid item xs={12}>
                         <Paper>
                             <TableContainer>
@@ -459,52 +496,57 @@ const HorariosDocente = () => {
                 </DialogTitle>
                 <DialogContent>
                     <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
-                        <TextField
-                            fullWidth
-                            select
-                            label="Día"
-                            value={formData.dia}
-                            onChange={(e) => setFormData({ ...formData, dia: e.target.value })}
-                            margin="normal"
-                            required
-                            SelectProps={{
-                                native: true,
-                            }}
-                        >
-                            <option value="">Seleccione un día</option>
-                            {DIAS_SEMANA.map((dia) => (
-                                <option key={dia} value={dia}>{dia}</option>
-                            ))}
-                        </TextField>
-                        <TextField
-                            fullWidth
-                            label="Hora Inicio"
-                            type="time"
-                            value={formData.hora_inicio}
-                            onChange={(e) => setFormData({ ...formData, hora_inicio: e.target.value })}
-                            margin="normal"
-                            required
-                            InputLabelProps={{ shrink: true }}
-                        />
-                        <TextField
-                            fullWidth
-                            label="Hora Fin"
-                            type="time"
-                            value={formData.hora_fin}
-                            onChange={(e) => setFormData({ ...formData, hora_fin: e.target.value })}
-                            margin="normal"
-                            required
-                            InputLabelProps={{ shrink: true }}
-                        />
-                        <TextField
-                            fullWidth
-                            label="Salón"
-                            value={formData.salon}
-                            onChange={(e) => setFormData({ ...formData, salon: e.target.value })}
-                            margin="normal"
-                            required
-                            placeholder="Ej: 101, Aula 2, etc."
-                        />
+                        <Grid container spacing={2}>
+                            <Grid item xs={12}>
+                                <TextField
+                                    fullWidth
+                                    select
+                                    label="Día"
+                                    name="dia"
+                                    value={formData.dia}
+                                    onChange={handleInputChange}
+                                    margin="normal"
+                                    required
+                                >
+                                    {DIAS_SEMANA.map((dia) => (
+                                        <MenuItem key={dia} value={dia}>
+                                            {dia}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={esLocale}>
+                                    <TimePicker
+                                        label="Hora Inicio"
+                                        value={formData.hora_inicio}
+                                        onChange={(newValue) => handleTimeChange('hora_inicio', newValue)}
+                                        renderInput={(params) => <TextField {...params} fullWidth margin="dense" required />}
+                                    />
+                                </LocalizationProvider>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={esLocale}>
+                                    <TimePicker
+                                        label="Hora Fin"
+                                        value={formData.hora_fin}
+                                        onChange={(newValue) => handleTimeChange('hora_fin', newValue)}
+                                        renderInput={(params) => <TextField {...params} fullWidth margin="dense" required />}
+                                    />
+                                </LocalizationProvider>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    fullWidth
+                                    label="Salón"
+                                    value={formData.salon}
+                                    onChange={(e) => setFormData({ ...formData, salon: e.target.value })}
+                                    margin="normal"
+                                    required
+                                    placeholder="Ej: A101, B205, etc."
+                                />
+                            </Grid>
+                        </Grid>
                     </Box>
                 </DialogContent>
                 <DialogActions>
@@ -522,7 +564,6 @@ const HorariosDocente = () => {
                 </DialogActions>
             </Dialog>
 
-            {/* Diálogo para editar experticia */}
             <Dialog open={openExperticia} onClose={handleCloseExperticia}>
                 <DialogTitle>Editar Experticia</DialogTitle>
                 <DialogContent>

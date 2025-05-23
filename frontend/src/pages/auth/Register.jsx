@@ -33,6 +33,7 @@ const Register = () => {
   const [carreras, setCarreras] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [formErrors, setFormErrors] = useState({});
   const [success, setSuccess] = useState('');
   const [showError, setShowError] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
@@ -54,9 +55,63 @@ const Register = () => {
   }, []);
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
     setError('');
     setShowError(false);
+
+    const fieldError = validateField(name, value, form);
+    setFormErrors(prev => ({ ...prev, [name]: fieldError }));
+  };
+
+  const validateField = (name, value, currentForm) => {
+    let error = '';
+    switch (name) {
+      case 'nombres':
+        if (!value) error = 'El nombre es requerido';
+        else if (!/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]*$/.test(value)) error = 'Solo se permiten letras y ñ';
+        break;
+      case 'apellidos':
+        if (!value) error = 'El apellido es requerido';
+        else if (!/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]*$/.test(value)) error = 'Solo se permiten letras y ñ';
+        break;
+      case 'id':
+        if (!value) error = 'El ID es requerido';
+        else if (!/^[0-9]*$/.test(value)) error = 'Solo se permiten números';
+        else if (value.length > 10) error = 'Máximo 10 dígitos';
+        break;
+      case 'correo_institucional':
+        if (!value) error = 'El correo institucional es requerido';
+        else if (!/^[^\s@]+@uniminuto\.edu\.co$/.test(value)) error = 'Debe ser un correo @uniminuto.edu.co válido';
+        break;
+      case 'contraseña':
+        if (!value) error = 'La contraseña es requerida';
+        else if (value.length > 100) error = 'Máximo 100 caracteres';
+        break;
+      case 'carrera_id':
+        if (!value) error = 'La carrera es requerida';
+        break;
+      case 'fecha_nacimiento':
+        if (!value) error = 'La fecha de nacimiento es requerida';
+        break;
+      default:
+        break;
+    }
+    return error;
+  };
+
+  const validateForm = () => {
+    let errors = {};
+    let isValid = true;
+    Object.keys(form).forEach(key => {
+      const error = validateField(key, form[key], form);
+      if (error) {
+        errors[key] = error;
+        isValid = false;
+      }
+    });
+    setFormErrors(errors);
+    return isValid;
   };
 
   const handleSubmit = async (e) => {
@@ -66,9 +121,9 @@ const Register = () => {
     setShowError(false);
     setShowSuccess(false);
     setSuccess('');
-    // Validación básica
-    if (!form.nombres || !form.apellidos || !form.id || !form.correo_institucional || !form.contraseña || !form.carrera_id) {
-      setError('Por favor, completa todos los campos.');
+
+    if (!validateForm()) {
+      setError('Por favor, corrija los errores en el formulario.');
       setShowError(true);
       setLoading(false);
       return;
@@ -175,6 +230,8 @@ const Register = () => {
                   ),
                   style: { color: '#f1f5f9' },
                 }}
+                error={!!formErrors.nombres}
+                helperText={formErrors.nombres}
                 sx={{
                   '& .MuiOutlinedInput-root': {
                     '& fieldset': { borderColor: '#475569' },
@@ -193,6 +250,8 @@ const Register = () => {
                 onChange={handleChange}
                 fullWidth
                 required
+                error={!!formErrors.apellidos}
+                helperText={formErrors.apellidos}
                 InputLabelProps={{ style: { color: '#cbd5e1' } }}
                 InputProps={{
                   startAdornment: (
@@ -220,6 +279,8 @@ const Register = () => {
                 onChange={handleChange}
                 fullWidth
                 required
+                error={!!formErrors.id}
+                helperText={formErrors.id}
                 InputLabelProps={{ style: { color: '#cbd5e1' } }}
                 InputProps={{
                   startAdornment: (
@@ -248,6 +309,8 @@ const Register = () => {
                 fullWidth
                 required
                 type="email"
+                error={!!formErrors.correo_institucional}
+                helperText={formErrors.correo_institucional}
                 InputLabelProps={{ style: { color: '#cbd5e1' } }}
                 InputProps={{
                   startAdornment: (
@@ -276,6 +339,8 @@ const Register = () => {
                 fullWidth
                 required
                 type={showPassword ? 'text' : 'password'}
+                error={!!formErrors.contraseña}
+                helperText={formErrors.contraseña}
                 InputLabelProps={{ style: { color: '#cbd5e1' } }}
                 InputProps={{
                   startAdornment: (
@@ -285,7 +350,12 @@ const Register = () => {
                   ),
                   endAdornment: (
                     <InputAdornment position="end">
-                      <IconButton onClick={() => setShowPassword((v) => !v)} edge="end" sx={{ color: '#facc15' }}>
+                      <IconButton
+                        onClick={() => setShowPassword(prev => !prev)}
+                        edge="end"
+                        disabled={loading}
+                        sx={{ color: '#facc15' }}
+                      >
                         {showPassword ? <VisibilityOff /> : <Visibility />}
                       </IconButton>
                     </InputAdornment>
@@ -311,6 +381,8 @@ const Register = () => {
                 fullWidth
                 required
                 type="date"
+                error={!!formErrors.fecha_nacimiento}
+                helperText={formErrors.fecha_nacimiento}
                 InputLabelProps={{ shrink: true, style: { color: '#cbd5e1' } }}
                 InputProps={{
                   startAdornment: (
@@ -339,6 +411,8 @@ const Register = () => {
                 onChange={handleChange}
                 fullWidth
                 required
+                error={!!formErrors.carrera_id}
+                helperText={formErrors.carrera_id}
                 InputLabelProps={{ style: { color: '#cbd5e1' } }}
                 InputProps={{
                   startAdornment: (

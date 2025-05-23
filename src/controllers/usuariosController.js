@@ -1,6 +1,7 @@
 import { validationResult } from 'express-validator';
 import sql from '../db/connection.js';
 // import logo from '../../assets/logo-uniminuto.png';
+// import bcrypt from 'bcrypt'; // Eliminar la importación de bcrypt
 
 
 //crear Usuario
@@ -151,10 +152,16 @@ export const actualizarUsuario = async (req, res) => {
         updates.push('correo_institucional = $' + (values.length + 1));
         values.push(correo_institucional);
       }
-      if (contraseña !== undefined) {
+      
+      // **Modificación aquí:** Solo actualizar contraseña si no es undefined Y NO está vacía
+      if (contraseña !== undefined && contraseña !== '') {
+        // **Nota:** Las contraseñas NO se están hasheando en este proyecto.
+        // En un proyecto real o de producción, SIEMPRE debes hashear las contraseñas.
+        // const hashedPassword = await bcrypt.hash(contraseña, 10); // Eliminar línea de hasheo
         updates.push('"contraseña" = $' + (values.length + 1));
-        values.push(contraseña);
+        values.push(contraseña); // Usar la contraseña sin hashear
       }
+
       if (carrera_id !== undefined) {
         updates.push('carrera_id = $' + (values.length + 1));
         values.push(carrera_id);
@@ -181,6 +188,8 @@ export const actualizarUsuario = async (req, res) => {
 
         [user] = await tx.unsafe(query, values);
       } else {
+        // Si no hay campos para actualizar (excepto la contraseña si estaba vacía),
+        // simplemente obtener el usuario existente
         [user] = await tx`SELECT * FROM usuario WHERE id = ${id}`;
       }
 
