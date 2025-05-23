@@ -1,6 +1,23 @@
-import { useState, useEffect } from 'react';
-import { Box, Typography, Grid, Card, CardContent, Button, CircularProgress, Alert, Dialog, DialogTitle, DialogContent, DialogActions, TextField, MenuItem } from '@mui/material';
+import { useState, useEffect, useMemo } from 'react';
+import { Box, Typography, Grid, Card, CardContent, Button, CircularProgress, Alert, Dialog, DialogTitle, DialogContent, DialogActions, TextField, MenuItem, Paper, ButtonGroup, Divider } from '@mui/material';
 import axios from 'axios';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, LabelList } from 'recharts';
+import SchoolIcon from '@mui/icons-material/School';
+import PeopleIcon from '@mui/icons-material/People';
+import AssignmentIcon from '@mui/icons-material/Assignment';
+import ListAltIcon from '@mui/icons-material/ListAlt';
+import { PieChart, Pie, Cell, Legend } from 'recharts';
+import { useNotification } from '../../components/NotificationSystem';
+
+const chartData = [
+  { name: 'Ene', tutorias: 2 },
+  { name: 'Feb', tutorias: 3 },
+  { name: 'Mar', tutorias: 5 },
+  { name: 'Abr', tutorias: 8 },
+];
+
+// Colores para la torta
+const PIE_COLORS = ['#1976d2', '#2e7d32', '#ed6c02', '#9c27b0', '#00bcd4', '#ff9800', '#e91e63', '#607d8b'];
 
 const DashboardEstudiante = () => {
   const [estudiante, setEstudiante] = useState(null);
@@ -16,6 +33,62 @@ const DashboardEstudiante = () => {
     tema_id: ''
   });
   const [horariosDocentes, setHorariosDocentes] = useState({});
+  const [selectedRange, setSelectedRange] = useState('Hoy');
+  const { showNotification } = useNotification();
+
+  // Tarjetas de resumen
+  const metricData = useMemo(() => {
+    const totalTutorias = tutorias.length;
+    const docentesUnicos = new Set(tutorias.map(t => t.docente_id)).size;
+    return [
+      { label: 'Tutorías', value: totalTutorias, icon: <SchoolIcon fontSize="large" color="primary" /> },
+      { label: 'Docentes', value: docentesUnicos, icon: <PeopleIcon fontSize="large" color="primary" /> },
+      { label: 'Tareas', value: 3, icon: <AssignmentIcon fontSize="large" color="primary" /> },
+      { label: 'Encuestas', value: 2, icon: <ListAltIcon fontSize="large" color="primary" /> },
+    ];
+  }, [tutorias]);
+
+  // Próximas tutorías (las más cercanas en el futuro)
+  const proximasTutorias = useMemo(() => {
+    const ahora = new Date();
+    return tutorias
+      .filter(t => new Date(t.fecha_hora_agendada) > ahora)
+      .sort((a, b) => new Date(a.fecha_hora_agendada) - new Date(b.fecha_hora_agendada))
+      .slice(0, 3);
+  }, [tutorias]);
+
+  // Gráfica 1: Estado de las tutorías
+  const estadosTutorias = useMemo(() => {
+    const estados = {
+      'Pendiente de asistencia': 0,
+      'Asistencia registrada': 0,
+      'Cancelada': 0
+    };
+    tutorias.forEach(t => {
+      if (t.estado === 'cancelada') {
+        estados['Cancelada']++;
+      } else if (t.firmada_estudiante) {
+        estados['Asistencia registrada']++;
+      } else {
+        estados['Pendiente de asistencia']++;
+      }
+    });
+    return Object.entries(estados).map(([name, value]) => ({ name, value }));
+  }, [tutorias]);
+
+  // Gráfica 2: Docentes con los que más ha tenido tutorías
+  const tutoriasPorDocente = useMemo(() => {
+    const conteo = {};
+    tutorias.forEach(t => {
+      if (t.nombre_docente) {
+        conteo[t.nombre_docente] = (conteo[t.nombre_docente] || 0) + 1;
+      }
+    });
+    return Object.entries(conteo)
+      .map(([name, value]) => ({ name, value }))
+      .sort((a, b) => b.value - a.value)
+      .slice(0, 5); // Top 5 docentes
+  }, [tutorias]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -127,19 +200,82 @@ const DashboardEstudiante = () => {
       }, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      alert('¡Tutoría agendada con éxito!');
+      showNotification('¡Tutoría agendada con éxito!', 'success');
       handleCloseForm();
     } catch (e) {
       console.error('Error al agendar la tutoría:', e);
-      alert('Error al agendar la tutoría');
+      showNotification('Error al agendar la tutoría', 'error');
     }
   };
+
+  const handleRangeChange = (range) => setSelectedRange(range);
 
   return (
     <Box sx={{ p: 3 }}>
       <Typography variant="h4" gutterBottom>
         Panel de Estudiante
       </Typography>
+      {/* Tarjetas de resumen */}
+      <Grid container spacing={2} mb={2}>
+        {metricData.map((metric) => (
+          <Grid item xs={12} sm={6} md={3} key={metric.label}>
+            <Paper elevation={3} sx={{ p: 2, display: 'flex', alignItems: 'center', gap: 2 }}>
+              {metric.icon}
+              <Box>
+                <Typography variant="subtitle2" color="text.secondary">{metric.label}</Typography>
+                <Typography variant="h5" fontWeight="bold">{metric.value}</Typography>
+              </Box>
+            </Paper>
+          </Grid>
+        ))}
+      </Grid>
+      {/* Solo las dos gráficas, ocupando toda la fila en desktop */}
+      <Grid container spacing={2} mb={4}>
+        <Grid item xs={12} md={6}>
+          <Paper elevation={3} sx={{ p: 3, mb: 2 }}>
+            <Typography variant="subtitle1" gutterBottom>
+              Estado de tus tutorías
+            </Typography>
+            {tutorias.length === 0 ? (
+              <Typography variant="body2" color="text.secondary">Aún no tienes tutorías agendadas para mostrar estados.</Typography>
+            ) : (
+              <ResponsiveContainer width="100%" height={180}>
+                <BarChart data={estadosTutorias} layout="vertical">
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis type="number" allowDecimals={false} />
+                  <YAxis dataKey="name" type="category" width={120} />
+                  <Tooltip />
+                  <Bar dataKey="value" fill="#1976d2">
+                    <LabelList dataKey="value" position="right" />
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            )}
+          </Paper>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <Paper elevation={3} sx={{ p: 3 }}>
+            <Typography variant="subtitle1" gutterBottom>
+              Docentes con los que más has tenido tutorías
+            </Typography>
+            {tutoriasPorDocente.length === 0 ? (
+              <Typography variant="body2" color="text.secondary">Aún no tienes tutorías agendadas para mostrar docentes.</Typography>
+            ) : (
+              <ResponsiveContainer width="100%" height={180}>
+                <BarChart data={tutoriasPorDocente} layout="vertical">
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis type="number" allowDecimals={false} />
+                  <YAxis dataKey="name" type="category" width={120} />
+                  <Tooltip />
+                  <Bar dataKey="value" fill="#2e7d32">
+                    <LabelList dataKey="value" position="right" />
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            )}
+          </Paper>
+        </Grid>
+      </Grid>
       {loading ? (
         <Box sx={{ display: 'flex', justifyContent: 'center', p: 3 }}>
           <CircularProgress />
