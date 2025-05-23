@@ -43,6 +43,7 @@ const GestionDocentes = () => {
         fecha_nacimiento: new Date().toISOString().split('T')[0],
         experticia: ''
     });
+    const [formErrors, setFormErrors] = useState({});
     const { showNotification } = useNotification();
 
     const cargarDocentes = async () => {
@@ -78,10 +79,53 @@ const GestionDocentes = () => {
             fecha_nacimiento: new Date().toISOString().split('T')[0],
             experticia: ''
         });
+        setFormErrors({}); // Limpiar errores al abrir el diálogo
     };
 
     const handleCloseDialog = () => {
         setOpenDialog(false);
+        setFormErrors({}); // Limpiar errores al cerrar
+    };
+
+    const validateField = (name, value) => {
+        let error = '';
+        switch (name) {
+            case 'id':
+                if (!/^[0-9]*$/.test(value)) {
+                    error = 'El ID solo debe contener números';
+                } else if (value.length > 8) {
+                    error = 'El ID no debe exceder los 8 dígitos';
+                }
+                break;
+            case 'nombre':
+                if (!/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]*$/.test(value)) {
+                    error = 'El nombre solo debe contener letras y ñ';
+                }
+                break;
+            case 'apellido':
+                if (!/^[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]*$/.test(value)) {
+                    error = 'El apellido solo debe contener letras y ñ';
+                }
+                break;
+            case 'correo_institucional':
+                if (!/^[^\s@]+@uniminuto\.edu\.co$/.test(value)) {
+                    error = 'Debe ser un correo @uniminuto.edu.co válido';
+                }
+                break;
+            case 'contraseña':
+                if (value.length > 50) {
+                    error = 'La contraseña no debe exceder los 50 caracteres';
+                }
+                break;
+            case 'experticia':
+                if (value.length > 200) {
+                    error = 'La experticia no debe exceder los 200 caracteres';
+                }
+                break;
+            default:
+                break;
+        }
+        return error;
     };
 
     const handleInputChange = (e) => {
@@ -90,10 +134,49 @@ const GestionDocentes = () => {
             ...prev,
             [name]: value
         }));
+        
+        // Validar el campo al cambiar
+        const error = validateField(name, value);
+        setFormErrors(prev => ({
+            ...prev,
+            [name]: error
+        }));
+    };
+
+    const validateForm = () => {
+        let errors = {};
+        let isValid = true;
+        // Validar todos los campos
+        Object.keys(formData).forEach(key => {
+             // No validar contraseña si estamos editando y el campo está vacío
+            if (isEditing && key === 'contraseña' && formData[key] === '') {
+                return; 
+            }
+            const error = validateField(key, formData[key]);
+            if (error) {
+                errors[key] = error;
+                isValid = false;
+            }
+        });
+        setFormErrors(errors);
+        return isValid;
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!validateForm()) {
+            showNotification('Por favor, corrija los errores en el formulario', 'warning');
+            return;
+        }
+
+        // Si estamos agregando y el campo de contraseña está vacío, mostrar error (es requerido)
+        if (!isEditing && !formData.contraseña) {
+             setFormErrors(prev => ({ ...prev, contraseña: 'La contraseña es requerida para nuevos docentes' }));
+             showNotification('Por favor, complete el campo de contraseña', 'warning');
+             return;
+        }
+
         try {
             let response;
             if (isEditing) {
@@ -331,6 +414,10 @@ const GestionDocentes = () => {
                                     name="id"
                                     value={formData.id}
                                     onChange={handleInputChange}
+                                    error={!!formErrors.id}
+                                    helperText={formErrors.id}
+                                    // Deshabilitar edición de ID si estamos editando
+                                    disabled={isEditing}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -341,6 +428,8 @@ const GestionDocentes = () => {
                                     name="nombre"
                                     value={formData.nombre}
                                     onChange={handleInputChange}
+                                    error={!!formErrors.nombre}
+                                    helperText={formErrors.nombre}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -351,6 +440,8 @@ const GestionDocentes = () => {
                                     name="apellido"
                                     value={formData.apellido}
                                     onChange={handleInputChange}
+                                    error={!!formErrors.apellido}
+                                    helperText={formErrors.apellido}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -362,17 +453,21 @@ const GestionDocentes = () => {
                                     type="email"
                                     value={formData.correo_institucional}
                                     onChange={handleInputChange}
+                                    error={!!formErrors.correo_institucional}
+                                    helperText={formErrors.correo_institucional}
                                 />
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
-                                    required
+                                    required={!isEditing} // Requerido solo al agregar
                                     fullWidth
                                     label="Contraseña"
                                     name="contraseña"
                                     type="password"
                                     value={formData.contraseña}
                                     onChange={handleInputChange}
+                                    error={!!formErrors.contraseña}
+                                    helperText={formErrors.contraseña || (isEditing ? 'Dejar vacío para no cambiar' : '')}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -402,6 +497,8 @@ const GestionDocentes = () => {
                                     name="experticia"
                                     value={formData.experticia}
                                     onChange={handleInputChange}
+                                    error={!!formErrors.experticia}
+                                    helperText={formErrors.experticia}
                                     multiline
                                     rows={2}
                                 />
