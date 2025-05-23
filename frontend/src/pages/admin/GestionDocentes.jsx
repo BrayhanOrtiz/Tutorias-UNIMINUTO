@@ -160,9 +160,81 @@ const GestionDocentes = () => {
         }
     };
 
-    const handleExportTutorias = (docenteId) => {
-        console.log('Exportar tutorías de docente ID:', docenteId);
-        // Implementar lógica para exportar tutorías
+    const handleExportTutorias = async (docenteId) => {
+        try {
+            setLoading(true);
+            // Calcular la fecha de inicio (6 meses atrás) y la fecha de fin (hoy)
+            const fechaFin = new Date();
+            const fechaInicio = new Date();
+            fechaInicio.setMonth(fechaInicio.getMonth() - 6);
+
+            // Formatear las fechas a 'YYYY-MM-DD'
+            const formatFecha = (date) => {
+                const year = date.getFullYear();
+                const month = (date.getMonth() + 1).toString().padStart(2, '0');
+                const day = date.getDate().toString().padStart(2, '0');
+                return `${year}-${month}-${day}`;
+            };
+
+            const fechaInicioFormatted = formatFecha(fechaInicio);
+            const fechaFinFormatted = formatFecha(fechaFin);
+
+            const response = await api.get('/reportes/tutorias-docente', {
+                params: { 
+                    docente_id: docenteId,
+                    fecha_inicio: fechaInicioFormatted,
+                    fecha_fin: fechaFinFormatted
+                },
+                responseType: 'blob', // Importante para manejar la descarga del archivo
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+
+            // Crear un objeto URL para el blob
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            
+            // Crear un enlace temporal y simular el clic para descargar
+            const link = document.createElement('a');
+            link.href = url;
+            
+            // Obtener el nombre del docente para el nombre del archivo
+            const docente = docentes.find(d => d.id === docenteId);
+            // Asegurarse de tener un docente antes de intentar acceder a sus propiedades
+            const nombreArchivo = docente ? `reporte_tutorias_${docente.nombre}_${docente.apellido}_${new Date().toISOString().split('T')[0]}.xlsx` : `reporte_tutorias_${docenteId}_${new Date().toISOString().split('T')[0]}.xlsx`;
+            
+            link.setAttribute('download', nombreArchivo);
+            document.body.appendChild(link);
+            link.click();
+            
+            // Limpiar
+            link.parentNode.removeChild(link);
+            window.URL.revokeObjectURL(url);
+            
+            showNotification('Reporte de tutorías exportado exitosamente', 'success');
+        } catch (error) {
+            console.error('Error al exportar tutorías:', error);
+            console.error('Detalles del error:', {
+                message: error.message,
+                response: error.response?.data,
+                status: error.response?.status,
+                headers: error.response?.headers
+            });
+
+            if (error.message === 'No hay token de autenticación') {
+                showNotification('Error de autenticación. Por favor, inicie sesión nuevamente.', 'error');
+            } else if (error.response?.status === 404) {
+                 showNotification('No se encontraron tutorías para este docente o el endpoint no responde.', 'info');
+            } else {
+                showNotification(
+                    error.response?.data?.message || 
+                    'Error al exportar el reporte de tutorías. Por favor, intente nuevamente.',
+                    'error'
+                );
+            }
+        } finally {
+            setLoading(false);
+        }
     };
 
     // --- Renderizado --- //
