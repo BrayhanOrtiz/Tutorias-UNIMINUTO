@@ -44,36 +44,67 @@ export const crearUsuarioEstudiante = async (req, res) => {
 export const crearUsuarioDocente = async (req, res) => {
   const {
     id, nombre, apellido, correo_institucional,
-    contraseña, carrera_id, fecha_nacimiento
+    contraseña, fecha_nacimiento, experticia
   } = req.body;
 
+  // Validar campos requeridos
+  if (!id || !nombre || !apellido || !correo_institucional || !contraseña) {
+    return res.status(400).json({ 
+      success: false, 
+      message: 'Faltan campos requeridos: id, nombre, apellido, correo_institucional y contraseña son obligatorios' 
+    });
+  }
+
   try {
+    // Verificar si el usuario ya existe
+    const [existingUser] = await sql`
+      SELECT id FROM usuario WHERE id = ${id} OR correo_institucional = ${correo_institucional}
+    `;
+
+    if (existingUser) {
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Ya existe un usuario con ese ID o correo institucional' 
+      });
+    }
+
     const newUser = await sql.begin(async (tx) => {
       const [user] = await tx`
         INSERT INTO usuario
-          (id, nombre, apellido, correo_institucional, "contraseña", carrera_id, fecha_nacimiento)
+          (id, nombre, apellido, correo_institucional, "contraseña", fecha_nacimiento, experticia)
         VALUES
           (
-            ${id ?? null},
-            ${nombre ?? null},
-            ${apellido ?? null},
-            ${correo_institucional ?? null},
-            ${contraseña ?? null},
-            ${carrera_id ?? null},
-            ${fecha_nacimiento ?? null}
+            ${id},
+            ${nombre},
+            ${apellido},
+            ${correo_institucional},
+            ${contraseña},
+            ${fecha_nacimiento ?? null},
+            ${experticia ?? null}
           )
         RETURNING *
       `;
+
       await tx`
         INSERT INTO usuario_rol (usuario_id, rol_id)
-        VALUES (${user.id}, 3)
+        VALUES (${user.id}, 2)
       `;
+
       return user;
     });
 
-    res.status(201).json({ success: true, data: newUser });
+    res.status(201).json({ 
+      success: true, 
+      data: newUser,
+      message: 'Docente creado exitosamente' 
+    });
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    console.error('Error al crear usuario docente:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Error al crear el docente',
+      error: error.message 
+    });
   }
 };
 
