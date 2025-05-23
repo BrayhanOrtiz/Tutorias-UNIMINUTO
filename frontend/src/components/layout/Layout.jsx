@@ -79,7 +79,7 @@ const Layout = ({ children }) => {
     const getPageTitle = () => {
         const path = location.pathname;
         if (path.startsWith('/docente')) {
-            if (path === '/docente') return 'Dashboard Docente';
+            if (path === '/docente') return ' Panel de Docente';
             if (path.includes('/horarios')) return 'Horarios';
             if (path.includes('/tutorias')) return 'Tutorías';
             if (path.includes('/reportes')) return 'Reportes';
@@ -93,7 +93,7 @@ const Layout = ({ children }) => {
             return 'Estudiante';
         }
         if (path.startsWith('/admin')) {
-            if (path === '/admin') return 'Panel de Administración';
+            if (path === '/admin') return 'Dashboard';
             if (path.includes('/admin/gestion-docentes')) return 'Gestión de Docentes';
             if (path.includes('/admin/reportes-tutorias')) return 'Reportes de Tutorías';
             if (path.includes('/admin/gestion-encuestas')) return 'Gestión de Preguntas';
@@ -106,7 +106,7 @@ const Layout = ({ children }) => {
     const getMenuItems = () => {
         if (user?.rol_id === 2) {
             return [
-                { text: 'Dashboard', icon: <DashboardIcon />, path: '/docente' },
+                { text: 'Docente', icon: <DashboardIcon />, path: '/docente' },
                 { text: 'Horarios', icon: <ScheduleIcon />, path: '/docente/horarios' },
                 { text: 'Tutorías', icon: <SchoolIcon />, path: '/docente/tutorias' },
                 { text: 'Reportes', icon: <AssessmentIcon />, path: '/docente/reportes' }
@@ -120,7 +120,7 @@ const Layout = ({ children }) => {
             ];
         } else if (user?.rol_id === 3) {
             return [
-                { text: 'Panel Admin', icon: <DashboardIcon />, path: '/admin' },
+                { text: 'Dashboard', icon: <DashboardIcon />, path: '/admin' },
                 { text: 'Gestión Docentes', icon: <SupervisorAccountIcon />, path: '/admin/gestion-docentes' },
                 { text: 'Reportes Tutorías', icon: <AssessmentIcon />, path: '/admin/reportes-tutorias' },
                 { text: 'Gestión Preguntas', icon: <AssignmentIcon />, path: '/admin/gestion-encuestas' },
