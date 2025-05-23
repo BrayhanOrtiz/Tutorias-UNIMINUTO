@@ -10,13 +10,6 @@ import { PieChart, Pie, Cell, Legend } from 'recharts';
 import { useNotification } from '../../components/NotificationSystem';
 import { useAuth } from '../../context/AuthContext';
 
-const chartData = [
-  { name: 'Ene', tutorias: 2 },
-  { name: 'Feb', tutorias: 3 },
-  { name: 'Mar', tutorias: 5 },
-  { name: 'Abr', tutorias: 8 },
-];
-
 // Colores para la torta
 const PIE_COLORS = ['#1976d2', '#2e7d32', '#ed6c02', '#9c27b0', '#00bcd4', '#ff9800', '#e91e63', '#607d8b'];
 
@@ -34,7 +27,6 @@ const DashboardEstudiante = () => {
     tema_id: ''
   });
   const [horariosDocentes, setHorariosDocentes] = useState({});
-  const [selectedRange, setSelectedRange] = useState('Hoy');
   const { showNotification } = useNotification();
   const { user } = useAuth();
 
@@ -48,15 +40,6 @@ const DashboardEstudiante = () => {
       { label: 'Tareas', value: 3, icon: <AssignmentIcon fontSize="large" color="primary" /> },
       { label: 'Encuestas', value: 2, icon: <ListAltIcon fontSize="large" color="primary" /> },
     ];
-  }, [tutorias]);
-
-  // Próximas tutorías (las más cercanas en el futuro)
-  const proximasTutorias = useMemo(() => {
-    const ahora = new Date();
-    return tutorias
-      .filter(t => new Date(t.fecha_hora_agendada) > ahora)
-      .sort((a, b) => new Date(a.fecha_hora_agendada) - new Date(b.fecha_hora_agendada))
-      .slice(0, 3);
   }, [tutorias]);
 
   // Gráfica 1: Estado de las tutorías
@@ -120,7 +103,7 @@ const DashboardEstudiante = () => {
           setTutorias(Array.isArray(resTut.data) ? resTut.data : []);
         }
       } catch (e) {
-        setError('Error al cargar la información');
+        setError('Error al cargar la información: ' + e.message);
       }
       setLoading(false);
     };
@@ -211,8 +194,6 @@ const DashboardEstudiante = () => {
       showNotification('Error al agendar la tutoría', 'error');
     }
   };
-
-  const handleRangeChange = (range) => setSelectedRange(range);
 
   return (
     <Box sx={{ p: 3 }}>
