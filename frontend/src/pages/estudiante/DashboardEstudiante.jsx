@@ -8,6 +8,7 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import { PieChart, Pie, Cell, Legend } from 'recharts';
 import { useNotification } from '../../components/NotificationSystem';
+import { useAuth } from '../../context/AuthContext';
 
 const chartData = [
   { name: 'Ene', tutorias: 2 },
@@ -35,6 +36,7 @@ const DashboardEstudiante = () => {
   const [horariosDocentes, setHorariosDocentes] = useState({});
   const [selectedRange, setSelectedRange] = useState('Hoy');
   const { showNotification } = useNotification();
+  const { user } = useAuth();
 
   // Tarjetas de resumen
   const metricData = useMemo(() => {
@@ -91,30 +93,30 @@ const DashboardEstudiante = () => {
   }, [tutorias]);
 
   useEffect(() => {
+    if (!user) return;
+    setEstudiante(null);
+    setDocentes([]);
+    setTutorias([]);
+    setLoading(true);
+    setError(null);
     const fetchData = async () => {
-      setLoading(true);
-      setError(null);
       try {
         // Obtener datos del estudiante actual
         const token = localStorage.getItem('token');
         const resEst = await axios.get('/api/usuarios/me', {
           headers: { Authorization: `Bearer ${token}` }
         });
-        console.log('Respuesta estudiante:', resEst.data);
         setEstudiante(resEst.data.data);
-
         // Obtener docentes
-        const resDoc = await axios.get('/api/usuarios/rol/2');
-        console.log('Respuesta docentes:', resDoc.data);
+        const resDoc = await axios.get('/api/usuarios/rol/2', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
         setDocentes(Array.isArray(resDoc.data.data) ? resDoc.data.data : []);
-        console.log('Docentes:', resDoc.data.data);
-
         // Obtener tutorías del estudiante
         if (resEst.data.data) {
           const resTut = await axios.get(`/api/tutorias/estudiante/${resEst.data.data.id}`, {
             headers: { Authorization: `Bearer ${token}` }
           });
-          console.log('Respuesta tutorías:', resTut.data);
           setTutorias(Array.isArray(resTut.data) ? resTut.data : []);
         }
       } catch (e) {
@@ -123,30 +125,32 @@ const DashboardEstudiante = () => {
       setLoading(false);
     };
     fetchData();
-  }, []);
+  }, [user]);
 
+  // Nuevo: Cargar horarios individuales por docente
   useEffect(() => {
-    const fetchHorarios = async () => {
+    if (!docentes.length) return;
+    const token = localStorage.getItem('token');
+    const fetchHorariosPorDocente = async (docenteId) => {
       try {
-        const token = localStorage.getItem('token');
-        const res = await axios.get('/api/horarios/tutorias', {
+        const res = await axios.get(`/api/horarios/usuario/${docenteId}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
-        console.log('Respuesta horarios:', res.data);
-        // Agrupa por usuario_id (asegúrate de que ambos sean tipo número)
-        const agrupados = {};
-        res.data.data.forEach(h => {
-          const key = Number(h.usuario_id);
-          if (!agrupados[key]) agrupados[key] = [];
-          agrupados[key].push(h);
-        });
-        setHorariosDocentes(agrupados);
+        return res.data.data || [];
       } catch {
-        setHorariosDocentes({});
+        return [];
       }
     };
-    fetchHorarios();
-  }, []);
+    const cargarHorarios = async () => {
+      const nuevosHorarios = {};
+      await Promise.all(docentes.map(async (docente) => {
+        const docenteId = Number(docente.id);
+        nuevosHorarios[docenteId] = await fetchHorariosPorDocente(docenteId);
+      }));
+      setHorariosDocentes(nuevosHorarios);
+    };
+    cargarHorarios();
+  }, [docentes]);
 
   // Cargar temas al abrir el formulario
   const cargarTemas = async () => {

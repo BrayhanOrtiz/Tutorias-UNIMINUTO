@@ -1,17 +1,13 @@
-import { useState } from 'react';
-import { Box, Typography, Grid, Paper, ButtonGroup, Button, Card, CardContent } from '@mui/material';
+import { useState, useEffect } from 'react';
+import { Box, Typography, Grid, Paper, ButtonGroup, Button, Card, CardContent, CircularProgress, Alert } from '@mui/material';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import ListAltIcon from '@mui/icons-material/ListAlt';
-
-const metricData = [
-  { label: 'Docentes', value: 25, icon: <SupervisorAccountIcon fontSize="large" color="primary" /> },
-  { label: 'Reportes', value: 12, icon: <AssessmentIcon fontSize="large" color="primary" /> },
-  { label: 'Preguntas', value: 40, icon: <AssignmentIcon fontSize="large" color="primary" /> },
-  { label: 'Encuestas', value: 18, icon: <ListAltIcon fontSize="large" color="primary" /> },
-];
+import axios from 'axios';
+import { useAuth } from '../../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const chartData = [
   { name: 'Ene', encuestas: 5 },
@@ -20,10 +16,50 @@ const chartData = [
   { name: 'Abr', encuestas: 18 },
 ];
 
+const CARD_COLORS = ['#FFD600', '#0033A0', '#E2001A', '#2E7D32'];
+
 const DashboardAdmin = () => {
+  const { user } = useAuth();
   const [selectedRange, setSelectedRange] = useState('Hoy');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [metricData, setMetricData] = useState([
+    { label: 'Docentes', value: 0, icon: <SupervisorAccountIcon fontSize="large" color="primary" /> },
+    { label: 'Reportes', value: 12, icon: <AssessmentIcon fontSize="large" color="primary" /> },
+    { label: 'Preguntas', value: 0, icon: <AssignmentIcon fontSize="large" color="primary" /> },
+    { label: 'Encuestas', value: 0, icon: <ListAltIcon fontSize="large" color="primary" /> },
+  ]);
 
   const handleRangeChange = (range) => setSelectedRange(range);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user) return;
+    setLoading(true);
+    setError(null);
+    const fetchMetrics = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        // Docentes
+        const resDoc = await axios.get('/api/usuarios/rol/2', { headers: { Authorization: `Bearer ${token}` } });
+        // Preguntas
+        const resPreg = await axios.get('/api/pregunta-encuesta', { headers: { Authorization: `Bearer ${token}` } });
+        // Encuestas
+        const resEnc = await axios.get('/api/encuesta-satisfaccion', { headers: { Authorization: `Bearer ${token}` } });
+        setMetricData([
+          { label: 'Docentes', value: Array.isArray(resDoc.data.data) ? resDoc.data.data.length : 0, icon: <SupervisorAccountIcon fontSize="large" color="primary" /> },
+          { label: 'Reportes', value: 12, icon: <AssessmentIcon fontSize="large" color="primary" /> },
+          { label: 'Preguntas', value: Array.isArray(resPreg.data) ? resPreg.data.length : (resPreg.data.data?.length || 0), icon: <AssignmentIcon fontSize="large" color="primary" /> },
+          { label: 'Encuestas', value: Array.isArray(resEnc.data) ? resEnc.data.length : (resEnc.data.data?.length || 0), icon: <ListAltIcon fontSize="large" color="primary" /> },
+        ]);
+      } catch (e) {
+        setError('Error al cargar las métricas');
+      }
+      setLoading(false);
+    };
+    fetchMetrics();
+  }, [user]);
 
   // Menú de navegación (se mantiene debajo del dashboard principal)
   const menuItems = [
@@ -62,77 +98,27 @@ const DashboardAdmin = () => {
       <Typography variant="h4" gutterBottom>
         Panel de Administración
       </Typography>
-
-      {/* Tarjetas de métricas */}
-      <Grid container spacing={2} mb={2}>
-        {metricData.map((metric) => (
-          <Grid item xs={12} sm={6} md={3} key={metric.label}>
-            <Paper elevation={3} sx={{ p: 2, display: 'flex', alignItems: 'center', gap: 2 }}>
-              {metric.icon}
-              <Box>
-                <Typography variant="subtitle2" color="text.secondary">{metric.label}</Typography>
-                <Typography variant="h5" fontWeight="bold">{metric.value}</Typography>
-              </Box>
-            </Paper>
-          </Grid>
-        ))}
-      </Grid>
-
-      {/* Filtros de tiempo */}
-      <Box mb={2} display="flex" justifyContent="flex-end">
-        <ButtonGroup variant="outlined" color="primary">
-          {['Hoy', '7 Días', '15 Días', '30 Días', '90 Días'].map((range) => (
-            <Button
-              key={range}
-              variant={selectedRange === range ? 'contained' : 'outlined'}
-              onClick={() => handleRangeChange(range)}
-            >
-              {range}
-            </Button>
+      {loading ? (
+        <Box sx={{ display: 'flex', justifyContent: 'center', p: 3 }}>
+          <CircularProgress />
+        </Box>
+      ) : error ? (
+        <Alert severity="error">{error}</Alert>
+      ) : (
+        <Grid container spacing={2} mb={2}>
+          {metricData.map((metric) => (
+            <Grid item xs={12} sm={6} md={3} key={metric.label}>
+              <Paper elevation={3} sx={{ p: 2, display: 'flex', alignItems: 'center', gap: 2 }}>
+                {metric.icon}
+                <Box>
+                  <Typography variant="subtitle2" color="text.secondary">{metric.label}</Typography>
+                  <Typography variant="h5" fontWeight="bold">{metric.value}</Typography>
+                </Box>
+              </Paper>
+            </Grid>
           ))}
-        </ButtonGroup>
-      </Box>
-
-      {/* Felicitación y gráfico */}
-      <Grid container spacing={2} mb={4}>
-        <Grid item xs={12} md={6}>
-          <Paper elevation={3} sx={{ p: 3 }}>
-            <Typography variant="h6" gutterBottom>
-              ¡Bienvenido Administrador! 🎉
-            </Typography>
-            <Typography variant="body1" color="text.secondary" mb={2}>
-              Aquí puedes ver un resumen de la actividad reciente del sistema.
-            </Typography>
-            <Box display="flex" gap={4}>
-              <Box>
-                <Typography variant="h4" fontWeight="bold">$4800</Typography>
-                <Typography variant="caption" color="text.secondary">Ingresos este año</Typography>
-              </Box>
-              <Box>
-                <Typography variant="h4" fontWeight="bold" color="error">$2300</Typography>
-                <Typography variant="caption" color="text.secondary">Ingresos año pasado</Typography>
-              </Box>
-            </Box>
-          </Paper>
         </Grid>
-        <Grid item xs={12} md={6}>
-          <Paper elevation={3} sx={{ p: 3, height: '100%' }}>
-            <Typography variant="subtitle1" gutterBottom>
-              Encuestas Realizadas
-            </Typography>
-            <ResponsiveContainer width="100%" height={180}>
-              <BarChart data={chartData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Bar dataKey="encuestas" fill="#1976d2" radius={[8, 8, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </Paper>
-        </Grid>
-      </Grid>
-
+      )}
       {/* Dashboard de Power BI */}
       <Grid item xs={12} sx={{ mb: 4 }}>
         <Card>
@@ -148,7 +134,6 @@ const DashboardAdmin = () => {
           </CardContent>
         </Card>
       </Grid>
-
       {/* Menú de navegación */}
       <Grid container spacing={3}>
         {menuItems.map((item, index) => (
@@ -156,30 +141,38 @@ const DashboardAdmin = () => {
             <Card 
               sx={{ 
                 height: '100%',
+                minHeight: 180,
                 display: 'flex',
                 flexDirection: 'column',
-                transition: 'transform 0.2s',
+                transition: 'transform 0.2s, box-shadow 0.2s',
+                backgroundColor: CARD_COLORS[index % CARD_COLORS.length],
+                color: '#fff',
+                boxShadow: '0 4px 16px 0 rgba(0,0,0,0.10)',
                 '&:hover': {
-                  transform: 'scale(1.02)',
-                  cursor: 'pointer'
+                  transform: 'scale(1.03)',
+                  boxShadow: '0 8px 24px 0 rgba(0,0,0,0.18)',
+                  cursor: 'pointer',
+                  filter: 'brightness(1.06)'
                 }
               }}
-              onClick={() => window.location.href = item.path}
+              onClick={() => navigate(item.path)}
             >
               <CardContent sx={{ 
                 flexGrow: 1,
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
-                textAlign: 'center'
+                textAlign: 'center',
+                color: CARD_COLORS[index % CARD_COLORS.length] === '#FFD600' ? '#333' : '#fff',
+                p: 2
               }}>
-                <Box sx={{ color: item.color, mb: 2 }}>
+                <Box sx={{ color: CARD_COLORS[index % CARD_COLORS.length] === '#FFD600' ? '#333' : '#fff', mb: 1, fontSize: 38 }}>
                   {item.icon}
                 </Box>
-                <Typography variant="h6" gutterBottom>
+                <Typography variant="h6" gutterBottom sx={{ color: CARD_COLORS[index % CARD_COLORS.length] === '#FFD600' ? '#333' : '#fff', fontWeight: 700, fontSize: 18 }}>
                   {item.title}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
+                <Typography variant="body2" sx={{ color: CARD_COLORS[index % CARD_COLORS.length] === '#FFD600' ? '#333' : '#fff', opacity: 0.95, fontSize: 14 }}>
                   {item.description}
                 </Typography>
               </CardContent>
