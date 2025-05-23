@@ -1,16 +1,16 @@
-import { useState } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { useNotification } from '../../components/NotificationSystem';
 import {
   Box,
   Paper,
   Typography,
   TextField,
   Button,
-  Snackbar,
-  Alert,
   InputAdornment,
-  IconButton
+  IconButton,
+  CircularProgress
 } from '@mui/material';
 import { Email, Lock, Visibility, VisibilityOff } from '@mui/icons-material';
 import logo from '../../assets/logo-uniminuto.png';
@@ -18,44 +18,74 @@ import logo from '../../assets/logo-uniminuto.png';
 const Login = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
+  const { showNotification } = useNotification();
   const [credentials, setCredentials] = useState({
     correo_institucional: '',
     contraseña: '',
   });
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [showError, setShowError] = useState(false);
 
-  const handleChange = (e) => {
+  // Efecto para mostrar el mensaje de error persistido al cargar el componente
+  useEffect(() => {
+    const errorMessage = localStorage.getItem('loginError');
+    if (errorMessage) {
+      showNotification(errorMessage, 'error', 6000);
+      localStorage.removeItem('loginError');
+    }
+  }, [showNotification]);
+
+  const handleChange = useCallback((e) => {
     const { name, value } = e.target;
     setCredentials((prev) => ({ ...prev, [name]: value }));
-    if (showError) {
-      setShowError(false);
-      setError('');
-    }
-  };
+  }, []);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
-    setError('');
+    
+    // Validación básica
+    if (!credentials.correo_institucional || !credentials.contraseña) {
+      showNotification('Por favor, completa todos los campos', 'warning');
+      return;
+    }
+
     setLoading(true);
-    setShowError(false);
+    
     try {
       const result = await login(credentials);
+      
       if (result.success) {
-        navigate('/');
+        showNotification('Inicio de sesión exitoso', 'success');
+        // Pequeño retraso antes de la navegación
+        setTimeout(() => {
+          navigate('/');
+        }, 1000);
       } else {
-        setError(result.error);
-        setShowError(true);
+        // Guardar el mensaje de error en localStorage
+        localStorage.setItem('loginError', result.error);
+        // Recargar la página
+        window.location.reload();
       }
-    } catch {
-      setError('Error al iniciar sesión. Por favor, intente nuevamente.');
-      setShowError(true);
+    } catch (error) {
+      console.error('Error en login:', error);
+      // Guardar el mensaje de error en localStorage
+      localStorage.setItem('loginError', 'Error al iniciar sesión. Por favor, intente nuevamente.');
+      // Recargar la página
+      window.location.reload();
     } finally {
       setLoading(false);
     }
-  };
+  }, [credentials, login, navigate, showNotification]);
+
+  const handleTogglePassword = useCallback((e) => {
+    e.preventDefault();
+    setShowPassword(prev => !prev);
+  }, []);
+
+  const handleNavigation = useCallback((path) => (e) => {
+    e.preventDefault();
+    navigate(path);
+  }, [navigate]);
 
   return (
     <Box
@@ -115,6 +145,7 @@ const Login = () => {
             fullWidth
             required
             autoFocus
+            disabled={loading}
             InputLabelProps={{ style: { color: '#cbd5e1' } }}
             InputProps={{
               startAdornment: (
@@ -140,6 +171,7 @@ const Login = () => {
             fullWidth
             required
             type={showPassword ? 'text' : 'password'}
+            disabled={loading}
             InputLabelProps={{ style: { color: '#cbd5e1' } }}
             InputProps={{
               startAdornment: (
@@ -149,7 +181,12 @@ const Login = () => {
               ),
               endAdornment: (
                 <InputAdornment position="end">
-                  <IconButton onClick={() => setShowPassword((v) => !v)} edge="end" sx={{ color: '#facc15' }}>
+                  <IconButton 
+                    onClick={handleTogglePassword}
+                    edge="end" 
+                    disabled={loading}
+                    sx={{ color: '#facc15' }}
+                  >
                     {showPassword ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
                 </InputAdornment>
@@ -169,6 +206,7 @@ const Login = () => {
             variant="contained"
             fullWidth
             size="large"
+            disabled={loading}
             sx={{
               mt: 2,
               fontWeight: 600,
@@ -179,39 +217,48 @@ const Login = () => {
               backgroundColor: '#3b82f6',
               boxShadow: '0 4px 14px #2563eb33',
               '&:hover': { backgroundColor: '#2563eb' },
+              position: 'relative',
             }}
-            disabled={loading}
           >
-            {loading ? 'Ingresando...' : 'Ingresar'}
+            {loading ? (
+              <>
+                <CircularProgress
+                  size={24}
+                  sx={{
+                    color: '#fff',
+                    position: 'absolute',
+                    top: '50%',
+                    left: '50%',
+                    marginTop: '-12px',
+                    marginLeft: '-12px',
+                  }}
+                />
+                <span style={{ visibility: 'hidden' }}>Ingresando...</span>
+              </>
+            ) : (
+              'Ingresar'
+            )}
           </Button>
         </Box>
         <Button
           variant="text"
           fullWidth
+          disabled={loading}
           sx={{ mt: 1, color: '#f8fafc', fontWeight: 600, textTransform: 'none' }}
-          onClick={() => navigate('/forgot-password')}
+          onClick={handleNavigation('/forgot-password')}
         >
           ¿Olvidaste tu contraseña? Recuperar acceso
         </Button>
         <Button
           variant="text"
           fullWidth
+          disabled={loading}
           sx={{ mt: 2, color: '#f8fafc', fontWeight: 600, textTransform: 'none' }}
-          onClick={() => navigate('/register')}
+          onClick={handleNavigation('/register')}
         >
           ¿No tienes cuenta? Regístrate
         </Button>
       </Paper>
-      <Snackbar
-        open={showError}
-        autoHideDuration={5000}
-        onClose={() => setShowError(false)}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-      >
-        <Alert severity="error" sx={{ width: '100%' }}>
-          {error}
-        </Alert>
-      </Snackbar>
     </Box>
   );
 };

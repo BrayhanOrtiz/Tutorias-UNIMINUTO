@@ -23,6 +23,7 @@ export const AuthProvider = ({ children }) => {
       setUser(response.data.data);
     } catch (error) {
       localStorage.removeItem('token');
+      setUser(null);
     } finally {
       setLoading(false);
     }
@@ -41,9 +42,25 @@ export const AuthProvider = ({ children }) => {
         throw new Error('Respuesta de login inválida');
       }
     } catch (error) {
+      let errorMessage = 'Error al iniciar sesión';
+      
+      if (error.response) {
+        // Error de respuesta del servidor
+        if (error.response.status === 401) {
+          errorMessage = 'Credenciales incorrectas. Por favor, verifica tu correo y contraseña.';
+        } else if (error.response.status === 404) {
+          errorMessage = 'Usuario no encontrado.';
+        } else if (error.response.data && error.response.data.message) {
+          errorMessage = error.response.data.message;
+        }
+      } else if (error.request) {
+        // Error de red
+        errorMessage = 'Error de conexión. Por favor, verifica tu conexión a internet.';
+      }
+
       return {
         success: false,
-        error: error.response?.data?.message || 'Error al iniciar sesión',
+        error: errorMessage
       };
     }
   };
