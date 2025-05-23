@@ -104,77 +104,70 @@ export const actualizarUsuario = async (req, res) => {
 
   try {
     const updatedUser = await sql.begin(async (tx) => {
-      // 1) Construir dinámicamente la parte SET de la consulta para usuario
-      // Preparamos las partes de la consulta y los valores por separado.
-      const setParts = [];
+      // Construir la consulta dinámicamente
+      const updates = [];
       const values = [];
-      let paramIndex = 1; // Para los parámetros de la consulta SQL
 
       if (nombre !== undefined) {
-        setParts.push(`nombre = $${paramIndex++}`);
+        updates.push('nombre = $' + (values.length + 1));
         values.push(nombre);
       }
       if (apellido !== undefined) {
-        setParts.push(`apellido = $${paramIndex++}`);
+        updates.push('apellido = $' + (values.length + 1));
         values.push(apellido);
       }
       if (correo_institucional !== undefined) {
-        setParts.push(`correo_institucional = $${paramIndex++}`);
+        updates.push('correo_institucional = $' + (values.length + 1));
         values.push(correo_institucional);
       }
       if (contraseña !== undefined) {
-        setParts.push(`"contraseña" = $${paramIndex++}`);
+        updates.push('"contraseña" = $' + (values.length + 1));
         values.push(contraseña);
       }
       if (carrera_id !== undefined) {
-        setParts.push(`carrera_id = $${paramIndex++}`);
+        updates.push('carrera_id = $' + (values.length + 1));
         values.push(carrera_id);
       }
       if (fecha_nacimiento !== undefined) {
-        setParts.push(`fecha_nacimiento = $${paramIndex++}`);
+        updates.push('fecha_nacimiento = $' + (values.length + 1));
         values.push(fecha_nacimiento);
       }
       if (experticia !== undefined) {
-        setParts.push(`experticia = $${paramIndex++}`);
+        updates.push('experticia = $' + (values.length + 1));
         values.push(experticia);
       }
 
       let user;
-      // Solo ejecutar UPDATE si hay algo que actualizar en la tabla usuario
-      if (setParts.length > 0) {
-        // Unimos las partes SET y agregamos el ID al final de los valores
+      // Solo ejecutar UPDATE si hay algo que actualizar
+      if (updates.length > 0) {
         const query = `
           UPDATE usuario
-          SET ${setParts.join(', ')}
-          WHERE id = $${paramIndex}
-          RETURNING *;
+          SET ${updates.join(', ')}
+          WHERE id = $${values.length + 1}
+          RETURNING *
         `;
-        values.push(id); // Agregar el ID para la cláusula WHERE
+        values.push(id);
 
-        // Ejecutar la consulta con los valores como array
-        [user] = await tx.query(query, values); // Asumiendo que .query(text, values) es el método
-
+        [user] = await tx.unsafe(query, values);
       } else {
-        // Si no hay campos de usuario para actualizar, simplemente obtener el usuario actual
         [user] = await tx`SELECT * FROM usuario WHERE id = ${id}`;
       }
 
-      // 2) Si envían rol_id, actualiza La relación en usuario_rol
-      // Esta parte ya maneja los parámetros correctamente con el template literal
-      if (rol_id != null) { 
+      // Actualizar rol si se proporciona
+      if (rol_id != null) {
         await tx`
           UPDATE usuario_rol
           SET rol_id = ${rol_id}
-          WHERE usuario_id = ${id};
+          WHERE usuario_id = ${id}
         `;
       }
 
-      return user; // O el usuario actualizado completo si se recuperó
+      return user;
     });
 
     res.status(200).json({ success: true, data: updatedUser });
   } catch (error) {
-    console.error('Error en actualizarUsuario:', error); // Log detallado del error en el backend
+    console.error('Error en actualizarUsuario:', error);
     res.status(500).json({ success: false, message: error.message });
   }
 };

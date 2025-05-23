@@ -21,13 +21,12 @@ import {
     Grid,
     Card,
     CardContent,
-    Divider,
-    Snackbar
+    Divider
 } from '@mui/material';
 import { Delete as DeleteIcon, Edit as EditIcon } from '@mui/icons-material';
 import api from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
-import axios from 'axios';
+import { useNotification } from '../../components/NotificationSystem';
 
 const DIAS_SEMANA = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
 const HORAS_DIA = Array.from({ length: 12 }, (_, i) => `${i + 6}:00`); // De 6:00 a 17:00
@@ -41,11 +40,6 @@ const HorariosDocente = () => {
     const [loading, setLoading] = useState(false);
     const [loadingExperticia, setLoadingExperticia] = useState(false);
     const [experticia, setExperticia] = useState('');
-    const [snackbar, setSnackbar] = useState({
-        open: false,
-        message: '',
-        severity: 'success'
-    });
     const [formData, setFormData] = useState({
         dia: '',
         hora_inicio: '',
@@ -54,22 +48,11 @@ const HorariosDocente = () => {
     });
 
     const { user } = useAuth();
+    const { showNotification } = useNotification();
     const docenteId = user?.id;
 
     console.log('Usuario actual:', user);
     console.log('ID del docente:', docenteId);
-
-    const showSnackbar = (message, severity = 'success') => {
-        setSnackbar({
-            open: true,
-            message,
-            severity
-        });
-    };
-
-    const handleCloseSnackbar = () => {
-        setSnackbar(prev => ({ ...prev, open: false }));
-    };
 
     useEffect(() => {
         console.log('useEffect ejecutado, docenteId:', docenteId);
@@ -85,7 +68,6 @@ const HorariosDocente = () => {
         try {
             if (!docenteId) {
                 console.error('No hay ID de docente disponible en cargarHorarios');
-                showSnackbar('Error: No hay ID de docente disponible', 'error');
                 return;
             }
 
@@ -100,14 +82,12 @@ const HorariosDocente = () => {
                 console.log('Horarios cargados:', response.data.data);
             } else {
                 console.error('Error en la respuesta del servidor:', response.data);
-                showSnackbar(response.data.error || 'Error al cargar los horarios', 'error');
             }
         } catch (error) {
             console.error('Error al cargar horarios:', error);
             console.error('Detalles del error:', error.response?.data);
             console.error('Estado del error:', error.response?.status);
             console.error('Headers de la respuesta:', error.response?.headers);
-            showSnackbar(error.response?.data?.error || 'Error al cargar los horarios', 'error');
         }
     };
 
@@ -121,7 +101,6 @@ const HorariosDocente = () => {
             }
         } catch (error) {
             console.error('Error al cargar experticia:', error);
-            showSnackbar('Error al cargar la experticia', 'error');
         } finally {
             setLoadingExperticia(false);
         }
@@ -207,16 +186,14 @@ const HorariosDocente = () => {
             if (response.data.success) {
                 handleClose();
                 await cargarHorarios(); // Esperar a que se recarguen los horarios
-                showSnackbar(response.data.message || 'Horario guardado exitosamente');
+                showNotification(response.data.message || 'Horario guardado exitosamente');
             } else {
                 setError(response.data.message || 'Error al guardar el horario');
-                showSnackbar(response.data.message || 'Error al guardar el horario', 'error');
             }
         } catch (error) {
             console.error('Error al guardar horario:', error);
             const errorMessage = error.response?.data?.message || 'Error al guardar el horario. Por favor, intente nuevamente.';
             setError(errorMessage);
-            showSnackbar(errorMessage, 'error');
         } finally {
             setLoading(false);
         }
@@ -233,13 +210,13 @@ const HorariosDocente = () => {
             
             if (response.data.success) {
                 await cargarHorarios(); // Esperar a que se recarguen los horarios
-                showSnackbar('Horario eliminado exitosamente');
+                showNotification('Horario eliminado exitosamente');
             } else {
-                showSnackbar(response.data.message || 'Error al eliminar el horario', 'error');
+                showNotification(response.data.message || 'Error al eliminar el horario', 'error');
             }
         } catch (error) {
             console.error('Error al eliminar horario:', error);
-            showSnackbar(
+            showNotification(
                 error.response?.data?.message || 
                 'Error al eliminar el horario. Por favor, intente nuevamente.',
                 'error'
@@ -265,48 +242,26 @@ const HorariosDocente = () => {
 
     const handleGuardarExperticia = async () => {
         try {
-            if (!docenteId) {
-                showSnackbar('Error: No hay ID de docente disponible', 'error');
-                return;
-            }
-
-            if (!experticia.trim()) {
-                showSnackbar('La experticia no puede estar vacía', 'error');
-                return;
-            }
-
             setLoadingExperticia(true);
-            console.log('Enviando actualización de experticia:', {
-                docenteId,
-                experticia
-            });
-
-            console.log('Cuerpo de la solicitud PUT:', { experticia: experticia.trim() });
-
             const response = await api.put(`/usuarios/${docenteId}`, {
-                experticia: experticia.trim()
+                experticia: experticia
             });
-            
-            console.log('Respuesta del servidor:', response.data);
-            
+
             if (response.data.success) {
+                showNotification('Experticia actualizada exitosamente');
                 handleCloseExperticia();
-                showSnackbar('Experticia actualizada exitosamente');
-                setError('');
             } else {
-                const errorMessage = response.data.message || 'Error al actualizar la experticia';
-                setError(errorMessage);
-                showSnackbar(errorMessage, 'error');
+                showNotification(response.data.message || 'Error al actualizar la experticia', 'error');
             }
         } catch (error) {
             console.error('Error al actualizar experticia:', error);
             console.error('Detalles del error:', error.response?.data);
             console.error('Estado del error:', error.response?.status);
-            
-            const errorMessage = error.response?.data?.message || 
-                'Error al actualizar la experticia. Por favor, intente nuevamente.';
-            setError(errorMessage);
-            showSnackbar(errorMessage, 'error');
+            showNotification(
+                error.response?.data?.message || 
+                'Error al actualizar la experticia. Por favor, intente nuevamente.',
+                'error'
+            );
         } finally {
             setLoadingExperticia(false);
         }
@@ -596,21 +551,6 @@ const HorariosDocente = () => {
                     </Button>
                 </DialogActions>
             </Dialog>
-
-            <Snackbar
-                open={snackbar.open}
-                autoHideDuration={6000}
-                onClose={handleCloseSnackbar}
-                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-            >
-                <Alert 
-                    onClose={handleCloseSnackbar} 
-                    severity={snackbar.severity}
-                    sx={{ width: '100%' }}
-                >
-                    {snackbar.message}
-                </Alert>
-            </Snackbar>
         </Box>
     );
 };

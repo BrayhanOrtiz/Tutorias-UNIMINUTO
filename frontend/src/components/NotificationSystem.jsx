@@ -12,15 +12,15 @@ export const useNotification = () => {
 };
 
 export const NotificationProvider = ({ children }) => {
-  const [notification, setNotification] = useState({
+  const [snackbar, setSnackbar] = useState({
     open: false,
     message: '',
-    severity: 'info', // 'error', 'warning', 'info', 'success'
-    duration: 5000
+    severity: 'success'
   });
 
-  const showNotification = (message, severity = 'info', duration = 5000) => {
-    setNotification({
+  const showNotification = (message, severity = 'success', duration = 6000) => {
+    console.log('Mostrando notificación:', { message, severity, duration }); // Debug log
+    setSnackbar({
       open: true,
       message,
       severity,
@@ -28,31 +28,60 @@ export const NotificationProvider = ({ children }) => {
     });
   };
 
-  const hideNotification = () => {
-    setNotification(prev => ({ ...prev, open: false }));
+  const handleClose = () => {
+    setSnackbar(prev => ({ ...prev, open: false }));
   };
 
   return (
     <NotificationContext.Provider value={{ showNotification }}>
       {children}
       <Snackbar
-        open={notification.open}
-        autoHideDuration={notification.duration}
-        onClose={hideNotification}
+        open={snackbar.open}
+        autoHideDuration={snackbar.duration}
+        onClose={handleClose}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        sx={{
+          '& .MuiAlert-root': {
+            minWidth: '300px',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+            borderRadius: '8px',
+            fontSize: '1rem',
+            padding: '12px 20px'
+          }
+        }}
       >
         <Alert 
-          onClose={hideNotification} 
-          severity={notification.severity} 
+          onClose={handleClose} 
+          severity={snackbar.severity}
+          variant="filled"
           sx={{ 
             width: '100%',
-            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
             '& .MuiAlert-icon': {
               fontSize: '1.5rem'
+            },
+            '& .MuiAlert-message': {
+              fontSize: '1rem',
+              fontWeight: 500
+            },
+            '&.MuiAlert-filledSuccess': {
+              backgroundColor: '#2e7d32',
+              color: '#ffffff'
+            },
+            '&.MuiAlert-filledError': {
+              backgroundColor: '#d32f2f',
+              color: '#ffffff'
+            },
+            '&.MuiAlert-filledWarning': {
+              backgroundColor: '#ed6c02',
+              color: '#ffffff'
+            },
+            '&.MuiAlert-filledInfo': {
+              backgroundColor: '#0288d1',
+              color: '#ffffff'
             }
           }}
         >
-          {notification.message}
+          {snackbar.message}
         </Alert>
       </Snackbar>
     </NotificationContext.Provider>

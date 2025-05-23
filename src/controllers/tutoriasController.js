@@ -309,12 +309,16 @@ export const habilitarFirmaTutoria = async (req, res) => {
         // TODO: Implementar sistema de notificaciones
 
         res.json({
+            success: true,
             message: 'Firma habilitada exitosamente',
-            tutoria: result[0]
+            data: result[0]
         });
     } catch (error) {
         console.error('Error al habilitar firma:', error);
-        res.status(500).json({ error: 'Error al habilitar la firma de la tutoría' });
+        res.status(500).json({ 
+            success: false,
+            error: 'Error al habilitar la firma de la tutoría' 
+        });
     }
 };
 

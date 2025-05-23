@@ -23,6 +23,7 @@ import {
 import { Visibility as VisibilityIcon, Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import api from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
+import { useNotification } from '../../components/NotificationSystem';
 
 const TutoriasDocente = () => {
     const [tutorias, setTutorias] = useState([]);
@@ -31,26 +32,11 @@ const TutoriasDocente = () => {
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
     const [tutoriaToDelete, setTutoriaToDelete] = useState(null);
     const [observaciones, setObservaciones] = useState('');
-    const [snackbar, setSnackbar] = useState({
-        open: false,
-        message: '',
-        severity: 'success'
-    });
+    const [loading, setLoading] = useState(false);
     const { user } = useAuth();
     const docenteId = user?.id;
     const isEstudiante = user?.role === 'estudiante';
-
-    const showSnackbar = (message, severity = 'success') => {
-        setSnackbar({
-            open: true,
-            message,
-            severity
-        });
-    };
-
-    const handleCloseSnackbar = () => {
-        setSnackbar(prev => ({ ...prev, open: false }));
-    };
+    const { showNotification } = useNotification();
 
     useEffect(() => {
         if (docenteId) {
@@ -62,7 +48,7 @@ const TutoriasDocente = () => {
         try {
             if (!docenteId) {
                 console.error('No hay ID de docente disponible');
-                showSnackbar('Error: No hay ID de docente disponible', 'error');
+                showNotification('Error: No hay ID de docente disponible', 'error');
                 return;
             }
 
@@ -77,14 +63,14 @@ const TutoriasDocente = () => {
                 console.log('Tutorías cargadas:', response.data.data);
             } else {
                 console.error('Error en la respuesta del servidor:', response.data);
-                showSnackbar(response.data.error || 'Error al cargar las tutorías', 'error');
+                showNotification(response.data.error || 'Error al cargar las tutorías', 'error');
             }
         } catch (error) {
             console.error('Error al cargar tutorías:', error);
             console.error('Detalles del error:', error.response?.data);
             console.error('Estado del error:', error.response?.status);
             console.error('Headers de la respuesta:', error.response?.headers);
-            showSnackbar(
+            showNotification(
                 error.response?.data?.error || 
                 error.response?.data?.message || 
                 'Error al cargar las tutorías', 
@@ -116,16 +102,16 @@ const TutoriasDocente = () => {
             });
             handleCloseDialog();
             cargarTutorias();
-            showSnackbar('Asistencia registrada correctamente');
+            showNotification('Asistencia registrada correctamente');
         } catch (error) {
             console.error('Error al registrar asistencia:', error);
-            showSnackbar('Error al registrar la asistencia', 'error');
+            showNotification('Error al registrar la asistencia', 'error');
         }
     };
 
     const getEstadoChip = (tutoria) => {
         if (tutoria.firma_docente_habilitada && tutoria.firmada_estudiante) {
-                return <Chip label="Completada" color="success" />;
+            return <Chip label="Completada" color="success" />;
         } else if (tutoria.firma_docente_habilitada) {
             return <Chip label="Pendiente de firma del estudiante" color="warning" />;
         } else {
@@ -145,28 +131,56 @@ const TutoriasDocente = () => {
 
     const handleHabilitarFirma = async (tutoriaId) => {
         try {
+            setLoading(true);
+            // Actualizar el estado local inmediatamente
+            setTutorias(prevTutorias => 
+                prevTutorias.map(tutoria => 
+                    tutoria.id === tutoriaId 
+                        ? { ...tutoria, firma_docente_habilitada: true }
+                        : tutoria
+                )
+            );
+
             const response = await api.post(`/tutorias/${tutoriaId}/habilitar-firma`, {
-                docente_id: docenteId
+                docente_id: docenteId,
+                tutoria_id: tutoriaId
             });
             
-            if (response.data) {
-                showSnackbar('Firma habilitada exitosamente');
-                await cargarTutorias();
+            console.log('Respuesta del servidor:', response.data);
+            
+            if (response.data.success) {
+                // Asegurarnos de que el estado se mantenga actualizado
+                setTutorias(prevTutorias => 
+                    prevTutorias.map(tutoria => 
+                        tutoria.id === tutoriaId 
+                            ? { ...tutoria, firma_docente_habilitada: true }
+                            : tutoria
+                    )
+                );
+                // Mostrar notificación de éxito
+                showNotification('Firma habilitada exitosamente', 'success');
             } else {
-                showSnackbar(response.data.error || 'Error al habilitar la firma', 'error');
+                // Si no es éxito, mostrar error
+                showNotification(response.data.message || 'Error al habilitar la firma', 'error');
             }
         } catch (error) {
             console.error('Error al habilitar firma:', error);
-            if (error.response?.status === 200) {
-                showSnackbar('Firma habilitada exitosamente');
-                await cargarTutorias();
-            } else {
-                showSnackbar(
-                    error.response?.data?.error || 
-                    'Error al habilitar la firma. Por favor, intente nuevamente.',
-                    'error'
-                );
-            }
+            console.error('Detalles del error:', error.response?.data);
+            // Revertir el estado local en caso de error
+            setTutorias(prevTutorias => 
+                prevTutorias.map(tutoria => 
+                    tutoria.id === tutoriaId 
+                        ? { ...tutoria, firma_docente_habilitada: false }
+                        : tutoria
+                )
+            );
+            showNotification(
+                error.response?.data?.message || 
+                'Error al habilitar la firma. Por favor, intente nuevamente.',
+                'error'
+            );
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -177,11 +191,11 @@ const TutoriasDocente = () => {
             });
             if (response.data.success) {
                 cargarTutorias();
-                showSnackbar('Firma del estudiante habilitada correctamente');
+                showNotification('Firma del estudiante habilitada correctamente');
             }
         } catch (error) {
             console.error('Error al habilitar firma del estudiante:', error);
-            showSnackbar(error.response?.data?.error || 'Error al habilitar la firma del estudiante', 'error');
+            showNotification(error.response?.data?.error || 'Error al habilitar la firma del estudiante', 'error');
         }
     };
 
@@ -209,7 +223,7 @@ const TutoriasDocente = () => {
 
     const handleOpenDeleteDialog = (tutoria) => {
         if (!canDeleteTutoria(tutoria)) {
-            showSnackbar('No se puede eliminar esta tutoría porque ya ha sido firmada o habilitada para firma', 'warning');
+            showNotification('No se puede eliminar esta tutoría porque ya ha sido firmada o habilitada para firma', 'warning');
             return;
         }
         setTutoriaToDelete(tutoria);
@@ -228,21 +242,21 @@ const TutoriasDocente = () => {
             const response = await api.delete(`/tutorias/${tutoriaToDelete.id}`);
             
             if (response.status === 200 || response.status === 204) {
-                showSnackbar('Tutoría eliminada exitosamente');
+                showNotification('Tutoría eliminada exitosamente');
                 handleCloseDeleteDialog();
                 await cargarTutorias();
             } else {
-                showSnackbar('Error al eliminar la tutoría', 'error');
+                showNotification('Error al eliminar la tutoría', 'error');
             }
         } catch (error) {
             console.error('Error al eliminar tutoría:', error);
             
             if (error.response?.status === 200 || error.response?.status === 204) {
-                showSnackbar('Tutoría eliminada exitosamente');
+                showNotification('Tutoría eliminada exitosamente');
                 handleCloseDeleteDialog();
                 await cargarTutorias();
             } else {
-                showSnackbar(
+                showNotification(
                     error.response?.data?.message || 
                     'Error al eliminar la tutoría. Por favor, intente nuevamente.',
                     'error'
@@ -289,27 +303,34 @@ const TutoriasDocente = () => {
                                     })()}
                                 </TableCell>
                                 <TableCell>
-                                    {tutoria.firma_docente_habilitada && tutoria.firmada_estudiante ? (
-                                        <Chip label="OK" color="success" size="small" />
-                                    ) : (
-                                    <Chip
-                                        label={tutoria.estado || 'PENDIENTE'}
-                                            color={getEstadoVariant(tutoria)}
-                                        size="small"
-                                    />
-                                    )}
+                                    {getEstadoChip(tutoria)}
                                 </TableCell>
                                 <TableCell>
                                     {tutoria.firma_docente_habilitada ? (
-                                        <Chip label="Firma Habilitada" color="success" size="small" />
+                                        <Chip 
+                                            label="Firma Habilitada" 
+                                            color="success" 
+                                            size="small"
+                                            sx={{ 
+                                                backgroundColor: '#e8f5e9',
+                                                color: '#2e7d32',
+                                                '& .MuiChip-label': {
+                                                    fontWeight: 500
+                                                }
+                                            }}
+                                        />
                                     ) : (
                                         <Button
                                             variant="outlined"
                                             size="small"
                                             color="primary"
                                             onClick={() => handleHabilitarFirma(tutoria.id)}
+                                            disabled={loading}
+                                            sx={{
+                                                minWidth: '120px'
+                                            }}
                                         >
-                                            Habilitar Firma
+                                            {loading ? 'Habilitando...' : 'Habilitar Firma'}
                                         </Button>
                                     )}
                                 </TableCell>
@@ -400,21 +421,6 @@ const TutoriasDocente = () => {
                     </Button>
                 </DialogActions>
             </Dialog>
-
-            <Snackbar
-                open={snackbar.open}
-                autoHideDuration={6000}
-                onClose={handleCloseSnackbar}
-                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-            >
-                <Alert
-                    onClose={handleCloseSnackbar}
-                    severity={snackbar.severity}
-                    sx={{ width: '100%' }}
-                >
-                    {snackbar.message}
-                </Alert>
-            </Snackbar>
         </Box>
     );
 };
