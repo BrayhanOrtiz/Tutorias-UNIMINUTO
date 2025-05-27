@@ -25,6 +25,23 @@ const Login = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({
+    correo_institucional: '',
+    contraseña: ''
+  });
+
+  // Validación del correo institucional
+  const validateEmail = (email) => {
+    const emailRegex = /^[a-zA-ZñÑ._-]+@uniminuto\.edu\.co$/;
+    return emailRegex.test(email);
+  };
+
+  // Validación de la contraseña
+  const validatePassword = (password) => {
+    // Solo permite letras (incluyendo ñ), números y caracteres seguros
+    const passwordRegex = /^[a-zA-ZñÑ0-9@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/;
+    return passwordRegex.test(password);
+  };
 
   // Efecto para mostrar el mensaje de error persistido al cargar el componente
   useEffect(() => {
@@ -37,15 +54,55 @@ const Login = () => {
 
   const handleChange = useCallback((e) => {
     const { name, value } = e.target;
+    
+    // Validaciones en tiempo real
+    if (name === 'correo_institucional') {
+      if (!validateEmail(value) && value !== '') {
+        setErrors(prev => ({
+          ...prev,
+          correo_institucional: 'El correo debe ser @uniminuto.edu.co y solo puede contener letras, ñ, punto, guion y underscore'
+        }));
+      } else {
+        setErrors(prev => ({
+          ...prev,
+          correo_institucional: ''
+        }));
+      }
+    }
+
+    if (name === 'contraseña') {
+      if (!validatePassword(value) && value !== '') {
+        setErrors(prev => ({
+          ...prev,
+          contraseña: 'La contraseña solo puede contener letras, números y caracteres especiales seguros'
+        }));
+      } else {
+        setErrors(prev => ({
+          ...prev,
+          contraseña: ''
+        }));
+      }
+    }
+
     setCredentials((prev) => ({ ...prev, [name]: value }));
   }, []);
 
   const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
     
-    // Validación básica
+    // Validaciones antes de enviar
     if (!credentials.correo_institucional || !credentials.contraseña) {
       showNotification('Por favor, completa todos los campos', 'warning');
+      return;
+    }
+
+    if (!validateEmail(credentials.correo_institucional)) {
+      showNotification('El formato del correo institucional no es válido', 'error');
+      return;
+    }
+
+    if (!validatePassword(credentials.contraseña)) {
+      showNotification('La contraseña contiene caracteres no permitidos', 'error');
       return;
     }
 
@@ -146,6 +203,8 @@ const Login = () => {
             required
             autoFocus
             disabled={loading}
+            error={!!errors.correo_institucional}
+            helperText={errors.correo_institucional}
             InputLabelProps={{ style: { color: '#cbd5e1' } }}
             InputProps={{
               startAdornment: (
@@ -172,6 +231,8 @@ const Login = () => {
             required
             type={showPassword ? 'text' : 'password'}
             disabled={loading}
+            error={!!errors.contraseña}
+            helperText={errors.contraseña}
             InputLabelProps={{ style: { color: '#cbd5e1' } }}
             InputProps={{
               startAdornment: (

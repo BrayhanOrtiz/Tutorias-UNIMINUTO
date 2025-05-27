@@ -18,8 +18,93 @@ const ResetPassword = () => {
   const [error, setError] = useState('');
   const [showSuccess, setShowSuccess] = useState(false);
   const [showError, setShowError] = useState(false);
+  const [errors, setErrors] = useState({
+    correo: '',
+    password: '',
+    confirmPassword: ''
+  });
   const navigate = useNavigate();
   const { token } = useParams();
+
+  // Validación del correo institucional
+  const validateEmail = (email) => {
+    const emailRegex = /^[a-zA-ZñÑ._-]+@uniminuto\.edu\.co$/;
+    return emailRegex.test(email);
+  };
+
+  // Validación de la contraseña
+  const validatePassword = (password) => {
+    // Solo permite letras (incluyendo ñ), números y caracteres seguros
+    const passwordRegex = /^[a-zA-ZñÑ0-9@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/;
+    return passwordRegex.test(password);
+  };
+
+  // Validación de la fortaleza de la contraseña
+  const validatePasswordStrength = (password) => {
+    const minLength = 8;
+    const hasUpperCase = /[A-ZÑ]/.test(password);
+    const hasLowerCase = /[a-zñ]/.test(password);
+    const hasNumbers = /\d/.test(password);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+    return password.length >= minLength && hasUpperCase && hasLowerCase && hasNumbers && hasSpecialChar;
+  };
+
+  const handleEmailChange = (e) => {
+    const value = e.target.value;
+    setCorreo(value);
+    
+    if (!validateEmail(value) && value !== '') {
+      setErrors(prev => ({
+        ...prev,
+        correo: 'El correo debe ser @uniminuto.edu.co y solo puede contener letras, ñ, punto, guion y underscore'
+      }));
+    } else {
+      setErrors(prev => ({
+        ...prev,
+        correo: ''
+      }));
+    }
+  };
+
+  const handlePasswordChange = (e) => {
+    const value = e.target.value;
+    setPassword(value);
+    
+    if (!validatePassword(value) && value !== '') {
+      setErrors(prev => ({
+        ...prev,
+        password: 'La contraseña solo puede contener letras, números y caracteres especiales seguros'
+      }));
+    } else if (!validatePasswordStrength(value) && value !== '') {
+      setErrors(prev => ({
+        ...prev,
+        password: 'La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial'
+      }));
+    } else {
+      setErrors(prev => ({
+        ...prev,
+        password: ''
+      }));
+    }
+  };
+
+  const handleConfirmPasswordChange = (e) => {
+    const value = e.target.value;
+    setConfirmPassword(value);
+    
+    if (value !== password && value !== '') {
+      setErrors(prev => ({
+        ...prev,
+        confirmPassword: 'Las contraseñas no coinciden'
+      }));
+    } else {
+      setErrors(prev => ({
+        ...prev,
+        confirmPassword: ''
+      }));
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,18 +113,43 @@ const ResetPassword = () => {
     setError('');
     setShowSuccess(false);
     setShowError(false);
+
+    // Validaciones antes de enviar
     if (!correo || !password || !confirmPassword) {
       setError('Por favor, completa todos los campos.');
       setShowError(true);
       setLoading(false);
       return;
     }
+
+    if (!validateEmail(correo)) {
+      setError('El formato del correo institucional no es válido.');
+      setShowError(true);
+      setLoading(false);
+      return;
+    }
+
+    if (!validatePassword(password)) {
+      setError('La contraseña contiene caracteres no permitidos.');
+      setShowError(true);
+      setLoading(false);
+      return;
+    }
+
+    if (!validatePasswordStrength(password)) {
+      setError('La contraseña no cumple con los requisitos de seguridad.');
+      setShowError(true);
+      setLoading(false);
+      return;
+    }
+
     if (password !== confirmPassword) {
       setError('Las contraseñas no coinciden.');
       setShowError(true);
       setLoading(false);
       return;
     }
+
     try {
       await api.post(`/login/reset-password/${token}`, {
         correo_institucional: correo,
@@ -101,10 +211,12 @@ const ResetPassword = () => {
             label="Correo institucional"
             name="correo_institucional"
             value={correo}
-            onChange={e => setCorreo(e.target.value)}
+            onChange={handleEmailChange}
             fullWidth
             required
             type="email"
+            error={!!errors.correo}
+            helperText={errors.correo}
             InputLabelProps={{ style: { color: '#cbd5e1' } }}
             InputProps={{
               startAdornment: (
@@ -126,10 +238,12 @@ const ResetPassword = () => {
             label="Nueva contraseña"
             name="nueva_contraseña"
             value={password}
-            onChange={e => setPassword(e.target.value)}
+            onChange={handlePasswordChange}
             fullWidth
             required
             type={showPassword ? 'text' : 'password'}
+            error={!!errors.password}
+            helperText={errors.password}
             InputLabelProps={{ style: { color: '#cbd5e1' } }}
             InputProps={{
               startAdornment: (
@@ -158,10 +272,12 @@ const ResetPassword = () => {
             label="Confirmar contraseña"
             name="confirmar_contraseña"
             value={confirmPassword}
-            onChange={e => setConfirmPassword(e.target.value)}
+            onChange={handleConfirmPasswordChange}
             fullWidth
             required
             type={showConfirm ? 'text' : 'password'}
+            error={!!errors.confirmPassword}
+            helperText={errors.confirmPassword}
             InputLabelProps={{ style: { color: '#cbd5e1' } }}
             InputProps={{
               startAdornment: (
