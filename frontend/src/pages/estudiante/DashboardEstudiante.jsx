@@ -293,34 +293,36 @@ const DashboardEstudiante = () => {
               const docenteId = Number(docente.id);
               return (
                 <Grid item xs={12} md={6} lg={4} key={docente.id}>
-                  <Card>
-                    <CardContent>
-                      <Typography variant="h6">
-                        {docente.nombre} {docente.apellido}
-                      </Typography>
-                      <Typography variant="body2" color="textSecondary">
-                        Experticia: {docente.experticia || 'No especificada'}
-                      </Typography>
-                      <Box mt={2}>
-                        <Typography variant="subtitle2">Horarios:</Typography>
-                        {(horariosDocentes[docenteId] || []).map((h, i) => (
-                          <Typography key={i} variant="body2">
-                            {h.dia_semana} {h.hora_inicio} - {h.hora_fin} | Salón: {h.salon}
-                          </Typography>
-                        ))}
-                      </Box>
-                      <Box mt={2}>
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          onClick={() => handleOpenForm(docente)}
-                        >
-                          Agendar tutoría
-                        </Button>
-                      </Box>
-                    </CardContent>
-                  </Card>
-                </Grid>
+  <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+    <CardContent sx={{ flexGrow: 1 }}>
+      <Typography variant="h6">
+        {docente.nombre} {docente.apellido}
+      </Typography>
+      <Typography variant="body2" color="textSecondary">
+        Experticia: {docente.experticia || 'No especificada'}
+      </Typography>
+      <Box mt={2}>
+        <Typography variant="subtitle2">Horarios:</Typography>
+        {(horariosDocentes[docenteId] || []).map((h, i) => (
+          <Typography key={i} variant="body2">
+            {h.dia_semana} {h.hora_inicio} - {h.hora_fin} | Salón: {h.salon}
+          </Typography>
+        ))}
+      </Box>
+    </CardContent>
+    <Box sx={{ p: 2 }}>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={() => handleOpenForm(docente)}
+        fullWidth
+      >
+        Agendar tutoría
+      </Button>
+    </Box>
+  </Card>
+</Grid>
+
               );
             })}
           </Grid>

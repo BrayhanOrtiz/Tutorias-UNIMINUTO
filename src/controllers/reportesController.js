@@ -131,6 +131,12 @@ export const generarReporteTutoriasDocente = async (req, res) => {
             return res.status(404).json({ error: 'Docente no encontrado' });
         }
 
+        // Ajustar la fecha_fin para incluir todo el día si viene como YYYY-MM-DD
+        let fechaFinParam = fecha_fin;
+        if (/^\d{4}-\d{2}-\d{2}$/.test(fecha_fin)) {
+            fechaFinParam = fecha_fin + ' 23:59:59';
+        }
+
         let query = sql`
             SELECT 
                 t.id as tutoria_id,
@@ -152,7 +158,7 @@ export const generarReporteTutoriasDocente = async (req, res) => {
             LEFT JOIN asistencia_tutoria at ON t.id = at.tutoria_id
             WHERE t.docente_id = ${docente_id}
             AND t.fecha_hora_agendada >= ${fecha_inicio}
-            AND t.fecha_hora_agendada <= ${fecha_fin}
+            AND t.fecha_hora_agendada <= ${fechaFinParam}
             ORDER BY t.fecha_hora_agendada DESC
         `;
 
