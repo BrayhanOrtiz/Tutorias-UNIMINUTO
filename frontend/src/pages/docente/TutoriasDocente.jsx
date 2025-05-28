@@ -18,7 +18,11 @@ import {
     Button,
     TextField,
     Snackbar,
-    Alert
+    Alert,
+    FormControl,
+    InputLabel,
+    Select,
+    MenuItem
 } from '@mui/material';
 import { Visibility as VisibilityIcon, Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import api from '../../services/api';
@@ -37,6 +41,9 @@ const TutoriasDocente = () => {
     const docenteId = user?.id;
     const isEstudiante = user?.role === 'estudiante';
     const { showNotification } = useNotification();
+    const [filtroEstado, setFiltroEstado] = useState('');
+    const [filtroFirma, setFiltroFirma] = useState('');
+    const [filtroTema, setFiltroTema] = useState('');
 
     useEffect(() => {
         if (docenteId) {
@@ -281,11 +288,71 @@ const TutoriasDocente = () => {
         }
     };
 
+    // Filtrado y ordenamiento de tutorías
+    const tutoriasFiltradas = tutorias
+        .filter(t => {
+            if (filtroEstado === 'completada') return t.firma_docente_habilitada && t.firmada_estudiante;
+            if (filtroEstado === 'pendiente') return !t.firma_docente_habilitada && !t.firmada_estudiante;
+            if (filtroEstado === 'pendiente_firma_estudiante') return t.firma_docente_habilitada && !t.firmada_estudiante;
+            return true;
+        })
+        .filter(t => {
+            if (filtroFirma === 'habilitada') return t.firma_docente_habilitada;
+            if (filtroFirma === 'no_habilitada') return !t.firma_docente_habilitada;
+            return true;
+        })
+        .filter(t => {
+            if (filtroTema) return t.nombre_tema === filtroTema;
+            return true;
+        })
+        .sort((a, b) => new Date(b.fecha_hora_agendada) - new Date(a.fecha_hora_agendada));
+
     return (
         <Box>
             <Typography variant="h5" gutterBottom>
                 Tutorías
             </Typography>
+
+            <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
+                <FormControl size="small" sx={{ minWidth: 180 }}>
+                    <InputLabel>Estado</InputLabel>
+                    <Select
+                        value={filtroEstado}
+                        label="Estado"
+                        onChange={e => setFiltroEstado(e.target.value)}
+                    >
+                        <MenuItem value="">Todos</MenuItem>
+                        <MenuItem value="completada">Completada</MenuItem>
+                        <MenuItem value="pendiente">Pendiente</MenuItem>
+                        <MenuItem value="pendiente_firma_estudiante">Pendiente de firma del estudiante</MenuItem>
+                    </Select>
+                </FormControl>
+                <FormControl size="small" sx={{ minWidth: 180 }}>
+                    <InputLabel>Firma</InputLabel>
+                    <Select
+                        value={filtroFirma}
+                        label="Firma"
+                        onChange={e => setFiltroFirma(e.target.value)}
+                    >
+                        <MenuItem value="">Todas</MenuItem>
+                        <MenuItem value="habilitada">Habilitada</MenuItem>
+                        <MenuItem value="no_habilitada">No habilitada</MenuItem>
+                    </Select>
+                </FormControl>
+                <FormControl size="small" sx={{ minWidth: 180 }}>
+                    <InputLabel>Tema</InputLabel>
+                    <Select
+                        value={filtroTema}
+                        label="Tema"
+                        onChange={e => setFiltroTema(e.target.value)}
+                    >
+                        <MenuItem value="">Todos</MenuItem>
+                        {Array.from(new Set(tutorias.map(t => t.nombre_tema))).map(tema => (
+                            <MenuItem key={tema} value={tema}>{tema}</MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+            </Box>
 
             <TableContainer component={Paper}>
                 <Table>
@@ -300,7 +367,7 @@ const TutoriasDocente = () => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {tutorias.map((tutoria) => (
+                        {tutoriasFiltradas.map((tutoria) => (
                             <TableRow key={tutoria.id}>
                                 <TableCell>{tutoria.nombre_estudiante}</TableCell>
                                 <TableCell>{tutoria.nombre_tema}</TableCell>
