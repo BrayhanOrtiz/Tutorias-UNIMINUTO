@@ -248,8 +248,13 @@ const GestionDocentes = () => {
             setLoading(true);
             // Calcular la fecha de inicio (6 meses atrás) y la fecha de fin (hoy)
             const fechaFin = new Date();
+            // Ajustar la fecha fin para incluir todo el día actual
+            fechaFin.setHours(23, 59, 59, 999);
+            
             const fechaInicio = new Date();
             fechaInicio.setMonth(fechaInicio.getMonth() - 6);
+            // Ajustar la fecha inicio para comenzar desde el inicio del día
+            fechaInicio.setHours(0, 0, 0, 0);
 
             // Formatear las fechas a 'YYYY-MM-DD'
             const formatFecha = (date) => {
@@ -262,13 +267,18 @@ const GestionDocentes = () => {
             const fechaInicioFormatted = formatFecha(fechaInicio);
             const fechaFinFormatted = formatFecha(fechaFin);
 
+            console.log('Fechas del reporte:', {
+                inicio: fechaInicioFormatted,
+                fin: fechaFinFormatted
+            });
+
             const response = await api.get('/reportes/tutorias-docente', {
                 params: { 
                     docente_id: docenteId,
                     fecha_inicio: fechaInicioFormatted,
                     fecha_fin: fechaFinFormatted
                 },
-                responseType: 'blob', // Importante para manejar la descarga del archivo
+                responseType: 'blob',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
@@ -295,26 +305,12 @@ const GestionDocentes = () => {
             window.URL.revokeObjectURL(url);
             
             showNotification('Reporte de tutorías exportado exitosamente', 'success');
+            
+            // Actualizar la lista de tutorías después de generar el reporte
+            await cargarDocentes();
         } catch (error) {
             console.error('Error al exportar tutorías:', error);
-            console.error('Detalles del error:', {
-                message: error.message,
-                response: error.response?.data,
-                status: error.response?.status,
-                headers: error.response?.headers
-            });
-
-            if (error.message === 'No hay token de autenticación') {
-                showNotification('Error de autenticación. Por favor, inicie sesión nuevamente.', 'error');
-            } else if (error.response?.status === 404) {
-                 showNotification('No se encontraron tutorías para este docente o el endpoint no responde.', 'info');
-            } else {
-                showNotification(
-                    error.response?.data?.message || 
-                    'Error al exportar el reporte de tutorías. Por favor, intente nuevamente.',
-                    'error'
-                );
-            }
+            showNotification('Error al exportar el reporte de tutorías', 'error');
         } finally {
             setLoading(false);
         }
