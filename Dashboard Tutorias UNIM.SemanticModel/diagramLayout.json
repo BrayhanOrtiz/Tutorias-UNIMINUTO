@@ -4,8 +4,8 @@
     {
       "ordinal": 0,
       "scrollPosition": {
-        "x": 2.8186662944777869,
-        "y": 0
+        "x": 0,
+        "y": 178.98530969933947
       },
       "nodes": [
         {
@@ -126,8 +126,8 @@
         },
         {
           "location": {
-            "x": 527.94663891184291,
-            "y": 453.67196396556852
+            "x": 595.59462997930984,
+            "y": 490.31462579377973
           },
           "nodeIndex": "encuesta_satisfaccion?select=* (2)",
           "nodeLineageTag": "5ed0a389-0253-41d2-a982-8c776184bb48",
@@ -136,6 +136,32 @@
             "width": 234
           },
           "zIndex": 3
+        },
+        {
+          "location": {
+            "x": 1059,
+            "y": 267.77365513624233
+          },
+          "nodeIndex": "respuesta_encuesta?select=*",
+          "nodeLineageTag": "9931fddb-c88d-4097-b1f6-69923cadf4bf",
+          "size": {
+            "height": 176,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 1343,
+            "y": 279.77365513624233
+          },
+          "nodeIndex": "pregunta_encuesta?select=* (2)",
+          "nodeLineageTag": "be5e37a4-d050-4074-88f5-6d73258d6801",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 0
         }
       ],
       "name": "Todas las tablas",

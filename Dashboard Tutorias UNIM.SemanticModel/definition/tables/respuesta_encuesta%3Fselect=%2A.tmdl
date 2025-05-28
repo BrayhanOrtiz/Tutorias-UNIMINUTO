@@ -1,0 +1,53 @@
+table 'respuesta_encuesta?select=*'
+	lineageTag: 9931fddb-c88d-4097-b1f6-69923cadf4bf
+
+	column id
+		dataType: int64
+		formatString: 0
+		lineageTag: 3a1774a6-432f-4e17-9b7d-d02c8bf0fc94
+		summarizeBy: sum
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	column encuesta_satisfaccion_id
+		dataType: int64
+		formatString: 0
+		lineageTag: b4f7dbb9-f986-4f8a-82d1-314d36eca20c
+		summarizeBy: sum
+		sourceColumn: encuesta_satisfaccion_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column pregunta_encuesta_id
+		dataType: int64
+		formatString: 0
+		lineageTag: bb4d0d1a-690a-4d99-b9ad-515d6ac99a24
+		summarizeBy: sum
+		sourceColumn: pregunta_encuesta_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column respuesta
+		dataType: string
+		lineageTag: 42d3b6f0-5906-435c-8199-c70cb042bc79
+		summarizeBy: none
+		sourceColumn: respuesta
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'respuesta_encuesta?select=*' = m
+		mode: import
+		source =
+				let
+				    Origen = Json.Document(Web.Contents("https://todqutcrfyuqdqckjhlt.supabase.co/rest/v1/respuesta_encuesta?select=*", [Headers=[apikey="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvZHF1dGNyZnl1cWRxY2tqaGx0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU4ODczNzYsImV4cCI6MjA2MTQ2MzM3Nn0.HjZ6YxCYUKj2m5aaydriz-ZFQl93M7kyUGCxM1Hjwr4", Authorization="Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvZHF1dGNyZnl1cWRxY2tqaGx0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU4ODczNzYsImV4cCI6MjA2MTQ2MzM3Nn0.HjZ6YxCYUKj2m5aaydriz-ZFQl93M7kyUGCxM1Hjwr4"]])),
+				    #"Convertida en tabla" = Table.FromList(Origen, Splitter.SplitByNothing(), null, null, ExtraValues.Error),
+				    #"Se expandió Column1" = Table.ExpandRecordColumn(#"Convertida en tabla", "Column1", {"id", "encuesta_satisfaccion_id", "pregunta_encuesta_id", "respuesta"}, {"id", "encuesta_satisfaccion_id", "pregunta_encuesta_id", "respuesta"}),
+				    #"Tipo cambiado" = Table.TransformColumnTypes(#"Se expandió Column1",{{"id", Int64.Type}, {"encuesta_satisfaccion_id", Int64.Type}, {"pregunta_encuesta_id", Int64.Type}, {"respuesta", type text}})
+				in
+				    #"Tipo cambiado"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

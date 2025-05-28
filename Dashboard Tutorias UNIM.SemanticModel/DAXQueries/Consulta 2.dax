@@ -1,5 +1,1 @@
-TotalTutoriasporTema = 
-CALCULATE(
-    COUNTROWS('Tutoria'),  // ¡Falta la coma aquí en tu versión!
-    NOT(ISBLANK('Tutoria'[tema_id]))
-)
+Estudiante = COUNT(tutoria[id])

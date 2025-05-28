@@ -1,0 +1,43 @@
+table 'pregunta_encuesta?select=* (2)'
+	lineageTag: be5e37a4-d050-4074-88f5-6d73258d6801
+
+	column id
+		dataType: int64
+		formatString: 0
+		lineageTag: 5c491c7b-fb4e-4524-a0bb-4535a51dac42
+		summarizeBy: sum
+		sourceColumn: id
+
+		annotation SummarizationSetBy = Automatic
+
+	column texto_pregunta
+		dataType: string
+		lineageTag: 3f3674cc-436c-4762-b5ba-9c3ebd2e7a57
+		summarizeBy: none
+		sourceColumn: texto_pregunta
+
+		annotation SummarizationSetBy = Automatic
+
+	column tipo_pregunta
+		dataType: string
+		lineageTag: 7e08f5bd-0c7b-40be-b693-1c1a67a194a3
+		summarizeBy: none
+		sourceColumn: tipo_pregunta
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'pregunta_encuesta?select=* (2)' = m
+		mode: import
+		source =
+				let
+				    Origen = Json.Document(Web.Contents("https://todqutcrfyuqdqckjhlt.supabase.co/rest/v1/pregunta_encuesta?select=*", [Headers=[apikey="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvZHF1dGNyZnl1cWRxY2tqaGx0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU4ODczNzYsImV4cCI6MjA2MTQ2MzM3Nn0.HjZ6YxCYUKj2m5aaydriz-ZFQl93M7kyUGCxM1Hjwr4", Authorization="Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRvZHF1dGNyZnl1cWRxY2tqaGx0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU4ODczNzYsImV4cCI6MjA2MTQ2MzM3Nn0.HjZ6YxCYUKj2m5aaydriz-ZFQl93M7kyUGCxM1Hjwr4"]])),
+				    #"Convertida en tabla" = Table.FromList(Origen, Splitter.SplitByNothing(), null, null, ExtraValues.Error),
+				    #"Se expandió Column1" = Table.ExpandRecordColumn(#"Convertida en tabla", "Column1", {"id", "texto_pregunta", "tipo_pregunta"}, {"id", "texto_pregunta", "tipo_pregunta"}),
+				    #"Tipo cambiado" = Table.TransformColumnTypes(#"Se expandió Column1",{{"id", Int64.Type}, {"texto_pregunta", type text}, {"tipo_pregunta", type text}})
+				in
+				    #"Tipo cambiado"
+
+	annotation PBI_NavigationStepName = Navegación
+
+	annotation PBI_ResultType = Table
+

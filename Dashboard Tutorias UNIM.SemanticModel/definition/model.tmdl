@@ -6,7 +6,7 @@ model Model
 		legacyRedirects
 		returnErrorValuesAsNull
 
-annotation PBI_QueryOrder = ["Tabla Usuario","asistencia_tutoria","carrera?select=*","encuesta_satisfaccion?select=*","historial_cambios?select=*","horario?select=*","tema?select=*","Tutoria","usuario_rol?select=*","rol?select=*","encuesta_satisfaccion?select=* (2)","pregunta_encuesta?select=*"]
+annotation PBI_QueryOrder = ["Tabla Usuario","asistencia_tutoria","carrera?select=*","encuesta_satisfaccion?select=*","historial_cambios?select=*","horario?select=*","tema?select=*","Tutoria","usuario_rol?select=*","rol?select=*","encuesta_satisfaccion?select=* (2)","pregunta_encuesta?select=*","respuesta_encuesta?select=*","pregunta_encuesta?select=* (2)"]
 
 annotation __PBI_TimeIntelligenceEnabled = 1
 
@@ -30,6 +30,8 @@ ref table LocalDateTable_d6b6e936-2da4-4194-88d8-dedb0891ae52
 ref table 'usuario_rol?select=*'
 ref table 'rol?select=*'
 ref table 'encuesta_satisfaccion?select=* (2)'
+ref table 'respuesta_encuesta?select=*'
+ref table 'pregunta_encuesta?select=* (2)'
 
 ref cultureInfo es-MX
 
