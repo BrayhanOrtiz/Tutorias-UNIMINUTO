@@ -69,3 +69,7 @@ relationship bfea1acd-b37c-80f8-de22-3a60e8b3755d
 	fromColumn: 'usuario_rol?select=*'.rol_id
 	toColumn: 'rol?select=*'.id
 
+relationship 820214e1-97e7-0245-9648-c9fbc957b833
+	fromColumn: 'respuesta_encuesta?select=*'.pregunta_encuesta_id
+	toColumn: 'pregunta_encuesta?select=* (2)'.id
+

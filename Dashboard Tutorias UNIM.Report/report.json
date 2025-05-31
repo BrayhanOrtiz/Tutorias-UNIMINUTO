@@ -1,6 +1,13 @@
 {
   "config": "{\"version\":\"5.59\",\"themeCollection\":{\"baseTheme\":{\"name\":\"CY24SU10\",\"version\":\"5.63\",\"type\":2}},\"activeSectionIndex\":0,\"defaultDrillFilterOtherVisuals\":true,\"linguisticSchemaSyncVersion\":2,\"settings\":{\"useNewFilterPaneExperience\":true,\"allowChangeFilterTypes\":true,\"useStylableVisualContainerHeader\":true,\"queryLimitOption\":6,\"exportDataMode\":1,\"useDefaultAggregateDisplayName\":true,\"useEnhancedTooltips\":true},\"objects\":{\"section\":[{\"properties\":{\"verticalAlignment\":{\"expr\":{\"Literal\":{\"Value\":\"'Top'\"}}}}}]}}",
   "layoutOptimization": 0,
+  "pods": [
+    {
+      "boundSection": "4775028610c47c616132",
+      "config": "{}",
+      "name": "866b893642454116aa77"
+    }
+  ],
   "resourcePackages": [
     {
       "resourcePackage": {
@@ -19,21 +26,21 @@
   ],
   "sections": [
     {
-      "config": "{}",
-      "displayName": "Página 1",
+      "config": "{\"objects\":{\"outspacePane\":[{\"properties\":{\"width\":{\"expr\":{\"Literal\":{\"Value\":\"181L\"}}}}}]}}",
+      "displayName": "Dashboard",
       "displayOption": 1,
       "filters": "[]",
       "height": 720.00,
       "name": "4775028610c47c616132",
       "visualContainers": [
         {
-          "config": "{\"name\":\"c2203b19afc4370f88fe\",\"layouts\":[{\"id\":0,\"position\":{\"x\":650.0787401574803,\"y\":0,\"z\":1001,\"width\":629.9212598425197,\"height\":359.4750656167979,\"tabOrder\":1001}}],\"singleVisual\":{\"visualType\":\"clusteredBarChart\",\"projections\":{\"Category\":[{\"queryRef\":\"Tabla Usuario.Nombre Completo\",\"active\":true}],\"Y\":[{\"queryRef\":\"CountNonNull(Tutoria.id)\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"t\",\"Entity\":\"Tabla Usuario\",\"Type\":0},{\"Name\":\"t1\",\"Entity\":\"Tutoria\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"t\"}},\"Property\":\"Nombre Completo\"},\"Name\":\"Tabla Usuario.Nombre Completo\",\"NativeReferenceName\":\"Nombre Completo\"},{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"t1\"}},\"Property\":\"id\"}},\"Function\":5},\"Name\":\"CountNonNull(Tutoria.id)\",\"NativeReferenceName\":\"Recuento de id\"}],\"OrderBy\":[{\"Direction\":1,\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"t\"}},\"Property\":\"Nombre Completo\"}}}]},\"drillFilterOtherVisuals\":true}}",
+          "config": "{\"name\":\"c2203b19afc4370f88fe\",\"layouts\":[{\"id\":0,\"position\":{\"x\":650.0787401574803,\"y\":0,\"z\":2000,\"width\":629.9212598425197,\"height\":359.4750656167979,\"tabOrder\":2000}}],\"singleVisual\":{\"visualType\":\"clusteredBarChart\",\"projections\":{\"Category\":[{\"queryRef\":\"Tabla Usuario.Nombre Completo\",\"active\":true}],\"Y\":[{\"queryRef\":\"Sum(asistencia_tutoria.estudiante_id)\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"t\",\"Entity\":\"Tabla Usuario\",\"Type\":0},{\"Name\":\"a\",\"Entity\":\"asistencia_tutoria\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"t\"}},\"Property\":\"Nombre Completo\"},\"Name\":\"Tabla Usuario.Nombre Completo\",\"NativeReferenceName\":\"Nombre Completo\"},{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"a\"}},\"Property\":\"estudiante_id\"}},\"Function\":5},\"Name\":\"Sum(asistencia_tutoria.estudiante_id)\",\"NativeReferenceName\":\"Recuento de estudiante_id\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"a\"}},\"Property\":\"estudiante_id\"}},\"Function\":5}}}]},\"drillFilterOtherVisuals\":true}}",
           "filters": "[]",
           "height": 359.48,
           "width": 629.92,
           "x": 650.08,
           "y": 0.00,
-          "z": 1001.00
+          "z": 2000.00
         },
         {
           "config": "{\"name\":\"d0b0e942494d56adc241\",\"layouts\":[{\"id\":0,\"position\":{\"x\":0,\"y\":0,\"z\":0,\"width\":640,\"height\":360,\"tabOrder\":0}}],\"singleVisual\":{\"visualType\":\"clusteredBarChart\",\"projections\":{\"Category\":[{\"queryRef\":\"tema?select=*.nombre_tema\",\"active\":true}],\"Y\":[{\"queryRef\":\"CountNonNull(asistencia_tutoria.tutoria_id)\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"t\",\"Entity\":\"tema?select=*\",\"Type\":0},{\"Name\":\"a\",\"Entity\":\"asistencia_tutoria\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"t\"}},\"Property\":\"nombre_tema\"},\"Name\":\"tema?select=*.nombre_tema\",\"NativeReferenceName\":\"TEMA\"},{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"a\"}},\"Property\":\"tutoria_id\"}},\"Function\":5},\"Name\":\"CountNonNull(asistencia_tutoria.tutoria_id)\",\"NativeReferenceName\":\"TUTORIAS\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"a\"}},\"Property\":\"tutoria_id\"}},\"Function\":5}}}]},\"columnProperties\":{\"tema?select=*.nombre_tema\":{\"displayName\":\"TEMA\"},\"CountNonNull(asistencia_tutoria.tutoria_id)\":{\"displayName\":\"TUTORIAS\"}},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true,\"objects\":{\"categoryAxis\":[{\"properties\":{\"bold\":{\"expr\":{\"Literal\":{\"Value\":\"true\"}}}}}],\"dataPoint\":[{\"properties\":{\"borderShow\":{\"expr\":{\"Literal\":{\"Value\":\"false\"}}}}}]}}}",
@@ -45,7 +52,7 @@
           "z": 0.00
         },
         {
-          "config": "{\"name\":\"d4a1bb17dec1dd250b5c\",\"layouts\":[{\"id\":0,\"position\":{\"x\":0,\"y\":370,\"z\":1000,\"width\":640,\"height\":350,\"tabOrder\":1000}}],\"singleVisual\":{\"visualType\":\"barChart\",\"projections\":{\"Y\":[{\"queryRef\":\"CountNonNull(asistencia_tutoria.tutoria_id)\"}],\"Series\":[{\"queryRef\":\"carrera?select=*.nombre_carrera\"}],\"Category\":[{\"queryRef\":\"Tabla Usuario.Nombre Completo\",\"active\":true}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"a\",\"Entity\":\"asistencia_tutoria\",\"Type\":0},{\"Name\":\"c\",\"Entity\":\"carrera?select=*\",\"Type\":0},{\"Name\":\"t\",\"Entity\":\"Tabla Usuario\",\"Type\":0}],\"Select\":[{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"a\"}},\"Property\":\"tutoria_id\"}},\"Function\":5},\"Name\":\"CountNonNull(asistencia_tutoria.tutoria_id)\",\"NativeReferenceName\":\"Recuento de tutoria_id\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"c\"}},\"Property\":\"nombre_carrera\"},\"Name\":\"carrera?select=*.nombre_carrera\",\"NativeReferenceName\":\"nombre_carrera\"},{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"t\"}},\"Property\":\"Nombre Completo\"},\"Name\":\"Tabla Usuario.Nombre Completo\",\"NativeReferenceName\":\"Nombre Completo\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"a\"}},\"Property\":\"tutoria_id\"}},\"Function\":5}}}]},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true}}",
+          "config": "{\"name\":\"d4a1bb17dec1dd250b5c\",\"layouts\":[{\"id\":0,\"position\":{\"x\":0,\"y\":370,\"z\":1000,\"width\":640,\"height\":350,\"tabOrder\":1000}}],\"singleVisual\":{\"visualType\":\"barChart\",\"projections\":{\"Category\":[{\"queryRef\":\"Tabla Usuario.Nombre Completo\",\"active\":true}],\"Y\":[{\"queryRef\":\"Sum(Tutoria.docente_id)\"}]},\"prototypeQuery\":{\"Version\":2,\"From\":[{\"Name\":\"t\",\"Entity\":\"Tabla Usuario\",\"Type\":0},{\"Name\":\"t1\",\"Entity\":\"Tutoria\",\"Type\":0}],\"Select\":[{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"t\"}},\"Property\":\"Nombre Completo\"},\"Name\":\"Tabla Usuario.Nombre Completo\",\"NativeReferenceName\":\"Nombre Completo\"},{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"t1\"}},\"Property\":\"docente_id\"}},\"Function\":5},\"Name\":\"Sum(Tutoria.docente_id)\",\"NativeReferenceName\":\"Recuento de docente_id\"}],\"OrderBy\":[{\"Direction\":2,\"Expression\":{\"Aggregation\":{\"Expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"t1\"}},\"Property\":\"docente_id\"}},\"Function\":5}}}]},\"drillFilterOtherVisuals\":true,\"hasDefaultSort\":true}}",
           "filters": "[{\"name\":\"7a2d76af047aac793d18\",\"expression\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Entity\":\"rol?select=*\"}},\"Property\":\"id\"}},\"filter\":{\"Version\":2,\"From\":[{\"Name\":\"r\",\"Entity\":\"rol?select=*\",\"Type\":0}],\"Where\":[{\"Condition\":{\"Comparison\":{\"ComparisonKind\":0,\"Left\":{\"Column\":{\"Expression\":{\"SourceRef\":{\"Source\":\"r\"}},\"Property\":\"id\"}},\"Right\":{\"Literal\":{\"Value\":\"1L\"}}}}}]},\"type\":\"Advanced\",\"howCreated\":1}]",
           "height": 350.00,
           "width": 640.00,

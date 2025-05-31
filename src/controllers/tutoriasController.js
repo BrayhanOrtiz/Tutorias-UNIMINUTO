@@ -1,4 +1,17 @@
 import sql from '../db/connection.js';
+import nodemailer from 'nodemailer';
+import 'dotenv/config';
+
+// Configurar el transporte de correo
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+    },
+    debug: true,
+    logger: true
+});
 
 // Obtener todas las tutorías
 export const getTutorias = async (req, res) => {
@@ -71,19 +84,19 @@ export const createTutoria = async (req, res) => {
     
     try {
         // Verificar si existe el estudiante
-        const estudiante = await sql`SELECT id FROM usuario WHERE id = ${estudiante_id}`;
+        const estudiante = await sql`SELECT id, nombre, apellido, correo_institucional FROM usuario WHERE id = ${estudiante_id}`;
         if (estudiante.length === 0) {
             return res.status(400).json({ error: 'El estudiante no existe' });
         }
 
         // Verificar si existe el docente
-        const docente = await sql`SELECT id FROM usuario WHERE id = ${docente_id}`;
+        const docente = await sql`SELECT id, nombre, apellido, correo_institucional FROM usuario WHERE id = ${docente_id}`;
         if (docente.length === 0) {
             return res.status(400).json({ error: 'El docente no existe' });
         }
 
         // Verificar si existe el tema
-        const tema = await sql`SELECT id FROM tema WHERE id = ${tema_id}`;
+        const tema = await sql`SELECT id, nombre_tema FROM tema WHERE id = ${tema_id}`;
         if (tema.length === 0) {
             return res.status(400).json({ error: 'El tema no existe' });
         }
@@ -109,6 +122,61 @@ export const createTutoria = async (req, res) => {
                 ${firmada_estudiante}
             ) RETURNING *
         `;
+
+        // Enviar correo al docente
+        const fechaFormateada = new Date(fecha_hora_agendada).toLocaleString('es-ES', {
+            timeZone: 'America/Bogota',
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        });
+
+        const mailOptions = {
+            from: {
+                name: 'Tutorias UNIMINUTO',
+                address: process.env.EMAIL_USER
+            },
+            to: docente[0].correo_institucional,
+            subject: 'Nueva Tutoría Agendada - Tutorias UNIMINUTO',
+            html: `
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 5px;">
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <h2 style="color: #2c3e50; margin: 0;">Nueva Tutoría Agendada</h2>
+                        <p style="color: #7f8c8d; margin: 10px 0;">Tutorias UNIMINUTO</p>
+                    </div>
+                    <div style="background-color: #f8f9fa; padding: 20px; border-radius: 5px; margin-bottom: 20px;">
+                        <p>Hola ${docente[0].nombre} ${docente[0].apellido},</p>
+                        <p>Se ha agendado una nueva tutoría con los siguientes detalles:</p>
+                        <ul style="list-style: none; padding: 0;">
+                            <li style="margin-bottom: 10px;"><strong>Estudiante:</strong> ${estudiante[0].nombre} ${estudiante[0].apellido}</li>
+                            <li style="margin-bottom: 10px;"><strong>Tema:</strong> ${tema[0].nombre_tema}</li>
+                            <li style="margin-bottom: 10px;"><strong>Fecha y Hora:</strong> ${fechaFormateada}</li>
+                        </ul>
+                        <p>Por favor, asegúrese de estar disponible en el horario indicado.</p>
+                    </div>
+                    <div style="text-align: center; color: #7f8c8d; font-size: 12px; margin-top: 20px; padding-top: 20px; border-top: 1px solid #eee;">
+                        <p>Este es un correo automático, por favor no respondas a este mensaje.</p>
+                        <p>© ${new Date().getFullYear()} Tutorias UNIMINUTO</p>
+                    </div>
+                </div>
+            `,
+            headers: {
+                'X-Priority': '1',
+                'X-MSMail-Priority': 'High',
+                'Importance': 'high'
+            }
+        };
+
+        try {
+            await transporter.sendMail(mailOptions);
+            console.log('Correo de notificación enviado al docente');
+        } catch (error) {
+            console.error('Error al enviar correo de notificación:', error);
+            // No enviamos error al cliente si falla el envío del correo
+        }
 
         res.status(201).json(result[0]);
     } catch (error) {

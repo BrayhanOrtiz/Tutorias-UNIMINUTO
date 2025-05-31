@@ -23,7 +23,7 @@ table 'respuesta_encuesta?select=*'
 		dataType: int64
 		formatString: 0
 		lineageTag: bb4d0d1a-690a-4d99-b9ad-515d6ac99a24
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: pregunta_encuesta_id
 
 		annotation SummarizationSetBy = Automatic

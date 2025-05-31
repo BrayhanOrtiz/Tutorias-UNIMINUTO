@@ -5,7 +5,7 @@ table 'pregunta_encuesta?select=* (2)'
 		dataType: int64
 		formatString: 0
 		lineageTag: 5c491c7b-fb4e-4524-a0bb-4535a51dac42
-		summarizeBy: sum
+		summarizeBy: none
 		sourceColumn: id
 
 		annotation SummarizationSetBy = Automatic
