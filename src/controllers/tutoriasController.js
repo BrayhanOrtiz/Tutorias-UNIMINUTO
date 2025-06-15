@@ -123,7 +123,7 @@ export const createTutoria = async (req, res) => {
             ) RETURNING *
         `;
 
-        // Enviar correo al docente
+        // Crear notificación para el estudiante
         const fechaFormateada = new Date(fecha_hora_agendada).toLocaleString('es-ES', {
             timeZone: 'America/Bogota',
             year: 'numeric',
@@ -134,6 +134,54 @@ export const createTutoria = async (req, res) => {
             hour12: false
         });
 
+        try {
+            // Crear notificación para el estudiante
+            await sql`
+                INSERT INTO notificaciones (
+                    usuario_id,
+                    titulo,
+                    mensaje,
+                    tipo,
+                    enlace,
+                    leida,
+                    fecha_creacion
+                ) VALUES (
+                    ${estudiante_id},
+                    'Tutoría Agendada Exitosamente',
+                    ${`Has agendado una tutoría con el docente ${docente[0].nombre} ${docente[0].apellido} sobre "${tema[0].nombre_tema}" para el ${fechaFormateada}`},
+                    'tutoria',
+                    '/estudiante/tutorias',
+                    false,
+                    CURRENT_TIMESTAMP
+                )
+            `;
+
+            // Crear notificación para el docente
+            await sql`
+                INSERT INTO notificaciones (
+                    usuario_id,
+                    titulo,
+                    mensaje,
+                    tipo,
+                    enlace,
+                    leida,
+                    fecha_creacion
+                ) VALUES (
+                    ${docente_id},
+                    'Nueva Tutoría Agendada',
+                    ${`El estudiante ${estudiante[0].nombre} ${estudiante[0].apellido} ha agendado una tutoría sobre "${tema[0].nombre_tema}" para el ${fechaFormateada}`},
+                    'tutoria',
+                    '/docente/tutorias',
+                    false,
+                    CURRENT_TIMESTAMP
+                )
+            `;
+        } catch (error) {
+            console.error('Error al crear notificaciones:', error);
+            // No enviamos error al cliente si falla la creación de notificaciones
+        }
+
+        // Enviar correo al docente
         const mailOptions = {
             from: {
                 name: 'Tutorias UNIMINUTO',

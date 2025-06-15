@@ -36,6 +36,7 @@ import {
 } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import NotificationBell from '../NotificationBell';
 
 const drawerWidth = 240;
 
@@ -167,7 +168,8 @@ const Layout = ({ children }) => {
                     ml: { sm: `${drawerWidth}px` },
                     bgcolor: 'white',
                     color: 'text.primary',
-                    boxShadow: 1
+                    boxShadow: 1,
+                    zIndex: (theme) => theme.zIndex.drawer + 1
                 }}
             >
                 <Toolbar>
@@ -186,6 +188,8 @@ const Layout = ({ children }) => {
                         {getPageTitle()}
                     </Typography>
 
+                    <NotificationBell />
+
                     {/* Información del usuario */}
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                         <Typography variant="body1" sx={{ display: { xs: 'none', sm: 'block' } }}>
@@ -198,6 +202,9 @@ const Layout = ({ children }) => {
                             onClick={handleMenuOpen}
                             size="small"
                             sx={{ ml: 2 }}
+                            aria-controls={Boolean(anchorEl) ? 'account-menu' : undefined}
+                            aria-haspopup="true"
+                            aria-expanded={Boolean(anchorEl) ? 'true' : undefined}
                         >
                             <Avatar sx={{ width: 32, height: 32, bgcolor: 'primary.main' }}>
                                 {user?.nombre?.charAt(0)?.toUpperCase()}

@@ -18,6 +18,7 @@ import usuariosRoutes from './src/routes/usuarios.js';
 import reportesRoutes from './src/routes/reportes.js';
 import loginRoutes from './src/routes/login.js';
 import temasRoutes from './src/routes/temas.js';
+import notificacionesRoutes from './src/routes/notificacionesRoutes.js';
 
 const app = express();
 
@@ -67,6 +68,8 @@ app.use('/api/carreras', carrerasRoutes);
 app.use('/api/usuarios', usuariosRoutes);
 app.use('/api/reportes', reportesRoutes);
 app.use('/api/temas', temasRoutes);
+app.use('/api/notificaciones', notificacionesRoutes);
+
 // Ruta de prueba
 app.get('/', (req, res) => {
     res.json({ message: 'API de Tutorías UNIMINUTO funcionando correctamente' });
